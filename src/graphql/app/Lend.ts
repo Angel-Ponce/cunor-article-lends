@@ -17,24 +17,25 @@ const DateTime = scalarType({
   description: "DateTime custom scalar type",
   //To parse arguments
   parseValue: (value) => {
-    if (isValid(value)) return value;
+    if (isValid(new Date(`${value}`))) return new Date(`${value}`);
 
     throw new GraphQLError("Provided value is not a valid Date", {
       extensions: { exception: { code: "BAD_USER_INPUT" } },
     });
   },
-  //To serialize
+  //To query
   serialize: (value) => {
-    if (value instanceof Date) return value.getTime();
+    if (isValid(new Date(`${value}`))) return value;
 
     throw new GraphQLError(
       "GraphQL DateTime Scalar serializer expected a `Date` object"
     );
   },
-  //To query DateTime
+  //To ??
   parseLiteral: (ast) => {
-    if (ast.kind == Kind.INT) {
-      return new Date(parseInt(ast.value, 10));
+    console.log({ ast });
+    if (ast.kind == Kind.INT || ast.kind == Kind.STRING) {
+      return new Date(new Date(ast.value));
     }
 
     return null;
