@@ -33,6 +33,11 @@ export interface NexusGenObjects {
     name: string; // String!
   }
   Mutation: {};
+  PhisicalState: { // root type
+    description?: string | null; // String
+    id: number; // Int!
+    name: string; // String!
+  }
   Query: {};
 }
 
@@ -53,11 +58,19 @@ export interface NexusGenFieldTypes {
   }
   Mutation: { // field return type
     createInstitution: NexusGenRootTypes['Institution']; // Institution!
+    createPhisicalState: NexusGenRootTypes['PhisicalState']; // PhisicalState!
     deleteInstitution: NexusGenRootTypes['Institution']; // Institution!
     updateInstitution: NexusGenRootTypes['Institution']; // Institution!
   }
+  PhisicalState: { // field return type
+    description: string | null; // String
+    id: number; // Int!
+    institution: NexusGenRootTypes['Institution']; // Institution!
+    name: string; // String!
+  }
   Query: { // field return type
     institution: NexusGenRootTypes['Institution']; // Institution!
+    phisicalState: NexusGenRootTypes['PhisicalState']; // PhisicalState!
   }
 }
 
@@ -68,17 +81,29 @@ export interface NexusGenFieldTypeNames {
   }
   Mutation: { // field return type name
     createInstitution: 'Institution'
+    createPhisicalState: 'PhisicalState'
     deleteInstitution: 'Institution'
     updateInstitution: 'Institution'
   }
+  PhisicalState: { // field return type name
+    description: 'String'
+    id: 'Int'
+    institution: 'Institution'
+    name: 'String'
+  }
   Query: { // field return type name
     institution: 'Institution'
+    phisicalState: 'PhisicalState'
   }
 }
 
 export interface NexusGenArgTypes {
   Mutation: {
     createInstitution: { // args
+      name: string; // String!
+    }
+    createPhisicalState: { // args
+      description?: string | null; // String
       name: string; // String!
     }
     deleteInstitution: { // args
@@ -91,6 +116,9 @@ export interface NexusGenArgTypes {
   }
   Query: {
     institution: { // args
+      id: number; // Int!
+    }
+    phisicalState: { // args
       id: number; // Int!
     }
   }

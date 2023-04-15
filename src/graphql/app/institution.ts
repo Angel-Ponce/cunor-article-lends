@@ -1,10 +1,10 @@
 import { extendType, intArg, nonNull, objectType, stringArg } from "nexus";
 
-const Institution = objectType({
+export const Institution = objectType({
   name: "Institution",
-  definition: (m) => {
-    m.nonNull.int("id");
-    m.nonNull.string("name");
+  definition: (t) => {
+    t.nonNull.int("id");
+    t.nonNull.string("name");
   },
 });
 

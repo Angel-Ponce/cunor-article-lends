@@ -9,10 +9,19 @@ type Institution {
 
 type Mutation {
   createInstitution(name: String!): Institution!
+  createPhisicalState(description: String, name: String!): PhisicalState!
   deleteInstitution(id: Int!): Institution!
   updateInstitution(id: Int!, name: String): Institution!
 }
 
+type PhisicalState {
+  description: String
+  id: Int!
+  institution: Institution!
+  name: String!
+}
+
 type Query {
   institution(id: Int!): Institution!
+  phisicalState(id: Int!): PhisicalState!
 }

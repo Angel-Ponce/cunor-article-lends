@@ -23,12 +23,19 @@ export type Institution = {
 export type Mutation = {
   __typename?: 'Mutation';
   createInstitution: Institution;
+  createPhisicalState: PhisicalState;
   deleteInstitution: Institution;
   updateInstitution: Institution;
 };
 
 
 export type MutationCreateInstitutionArgs = {
+  name: Scalars['String'];
+};
+
+
+export type MutationCreatePhisicalStateArgs = {
+  description?: InputMaybe<Scalars['String']>;
   name: Scalars['String'];
 };
 
@@ -43,13 +50,27 @@ export type MutationUpdateInstitutionArgs = {
   name?: InputMaybe<Scalars['String']>;
 };
 
+export type PhisicalState = {
+  __typename?: 'PhisicalState';
+  description?: Maybe<Scalars['String']>;
+  id: Scalars['Int'];
+  institution: Institution;
+  name: Scalars['String'];
+};
+
 export type Query = {
   __typename?: 'Query';
   institution: Institution;
+  phisicalState: PhisicalState;
 };
 
 
 export type QueryInstitutionArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type QueryPhisicalStateArgs = {
   id: Scalars['Int'];
 };
 
