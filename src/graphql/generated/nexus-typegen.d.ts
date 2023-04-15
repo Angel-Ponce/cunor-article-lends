@@ -43,6 +43,11 @@ export interface NexusGenObjects {
     id: number; // Int!
     name: string; // String!
   }
+  PhisicalStatePage: { // root type
+    length: number; // Int!
+    pages: number; // Int!
+    rows: NexusGenRootTypes['PhisicalState'][]; // [PhisicalState!]!
+  }
   Query: {};
 }
 
@@ -78,10 +83,16 @@ export interface NexusGenFieldTypes {
     institution: NexusGenRootTypes['Institution']; // Institution!
     name: string; // String!
   }
+  PhisicalStatePage: { // field return type
+    length: number; // Int!
+    pages: number; // Int!
+    rows: NexusGenRootTypes['PhisicalState'][]; // [PhisicalState!]!
+  }
   Query: { // field return type
     institution: NexusGenRootTypes['Institution']; // Institution!
     institutions: NexusGenRootTypes['InstitutionPage']; // InstitutionPage!
     phisicalState: NexusGenRootTypes['PhisicalState']; // PhisicalState!
+    phisicalStates: NexusGenRootTypes['PhisicalStatePage']; // PhisicalStatePage!
   }
 }
 
@@ -107,10 +118,16 @@ export interface NexusGenFieldTypeNames {
     institution: 'Institution'
     name: 'String'
   }
+  PhisicalStatePage: { // field return type name
+    length: 'Int'
+    pages: 'Int'
+    rows: 'PhisicalState'
+  }
   Query: { // field return type name
     institution: 'Institution'
     institutions: 'InstitutionPage'
     phisicalState: 'PhisicalState'
+    phisicalStates: 'PhisicalStatePage'
   }
 }
 
@@ -141,6 +158,10 @@ export interface NexusGenArgTypes {
     }
     phisicalState: { // args
       id: number; // Int!
+    }
+    phisicalStates: { // args
+      limit: number; // Int!
+      page: number; // Int!
     }
   }
 }

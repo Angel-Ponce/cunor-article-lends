@@ -45,7 +45,6 @@ const institutions = extendType({
         authenticate(ctx);
 
         const totalRows = await ctx.prisma.institution.count();
-
         const pags = paginate(args.limit, args.page, totalRows);
 
         return {

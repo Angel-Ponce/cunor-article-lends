@@ -1,7 +1,7 @@
 import { extendType, intArg, nonNull, objectType, stringArg } from "nexus";
 import { Institution } from "./Institution";
 import { GraphQLError } from "graphql";
-import { authenticate } from "../../helpers";
+import { authenticate, modelPage, paginate } from "../../helpers";
 
 const PhisicalState = objectType({
   name: "PhisicalState",
@@ -51,6 +51,37 @@ const phisicalState = extendType({
   },
 });
 
+const PhisicalStatePage = modelPage(PhisicalState, "PhisicalStatePage");
+
+const phisicalStates = extendType({
+  type: "Query",
+  definition: (t) => {
+    t.field("phisicalStates", {
+      type: nonNull(PhisicalStatePage),
+      args: {
+        limit: nonNull(intArg({ default: 10 })),
+        page: nonNull(intArg({ default: 1 })),
+      },
+      resolve: async (_parent, args, ctx) => {
+        authenticate(ctx);
+
+        const totalRows = await ctx.prisma.phisicalState.count();
+        const pags = paginate(args.limit, args.page, totalRows);
+
+        return {
+          rows: await ctx.prisma.phisicalState.findMany({
+            skip: pags.skip,
+            take: pags.take,
+            select: { id: true, name: true, description: true },
+          }),
+          length: pags.length,
+          pages: pags.pages,
+        };
+      },
+    });
+  },
+});
+
 const createPhisicalState = extendType({
   type: "Mutation",
   definition: (t) => {
@@ -83,6 +114,7 @@ const createPhisicalState = extendType({
 const types = [
   PhisicalState,
   phisicalState,
+  phisicalStates,
   createPhisicalState,
   //   updateInstitution,
   //   deleteInstitution,

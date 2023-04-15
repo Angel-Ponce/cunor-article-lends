@@ -27,8 +27,15 @@ type PhisicalState {
   name: String!
 }
 
+type PhisicalStatePage {
+  length: Int!
+  pages: Int!
+  rows: [PhisicalState!]!
+}
+
 type Query {
   institution(id: Int!): Institution!
   institutions(limit: Int! = 10, page: Int! = 1): InstitutionPage!
   phisicalState(id: Int!): PhisicalState!
+  phisicalStates(limit: Int! = 10, page: Int! = 1): PhisicalStatePage!
 }
