@@ -26,6 +26,12 @@ input InputArticleLend {
 }
 
 type Institution {
+  countActiveLends: Int!
+  countArticles: Int!
+  countCompletedLends: Int!
+  countPhisicalStates: Int!
+  countProfessors: Int!
+  countUsers: Int!
   id: Int!
   name: String!
 }
@@ -124,10 +130,13 @@ type Query {
 }
 
 type User {
+  countActiveLends: Int!
+  countCompletedLends: Int!
   description: String
   id: Int!
   institution: Institution!
   lastname: String!
+  lends: [Lend!]!
   name: String!
   phone: String
   role: String!

@@ -28,6 +28,49 @@ export const User = objectType({
         return user.institution;
       },
     });
+    t.field("countActiveLends", {
+      type: nonNull("Int"),
+      resolve: (parent, _args, ctx) => {
+        return ctx.prisma.lend.count({
+          where: {
+            userId: parent.id,
+            deletedAt: null,
+            completed: false,
+          },
+        });
+      },
+    });
+    t.field("countCompletedLends", {
+      type: nonNull("Int"),
+      resolve: (parent, _args, ctx) => {
+        return ctx.prisma.lend.count({
+          where: {
+            userId: parent.id,
+            deletedAt: null,
+            completed: true,
+          },
+        });
+      },
+    });
+    t.nonNull.list.field("lends", {
+      type: nonNull("Lend"),
+      resolve: async (parent, _args, ctx) => {
+        const user = await ctx.prisma.user.findFirstOrThrow({
+          where: {
+            id: parent.id,
+          },
+          select: {
+            lends: {
+              where: {
+                deletedAt: null,
+              },
+            },
+          },
+        });
+
+        return user.lends;
+      },
+    });
   },
 });
 

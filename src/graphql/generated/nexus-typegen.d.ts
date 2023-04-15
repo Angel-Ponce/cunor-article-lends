@@ -145,6 +145,12 @@ export interface NexusGenFieldTypes {
     rows: NexusGenRootTypes['Article'][]; // [Article!]!
   }
   Institution: { // field return type
+    countActiveLends: number; // Int!
+    countArticles: number; // Int!
+    countCompletedLends: number; // Int!
+    countPhisicalStates: number; // Int!
+    countProfessors: number; // Int!
+    countUsers: number; // Int!
     id: number; // Int!
     name: string; // String!
   }
@@ -233,10 +239,13 @@ export interface NexusGenFieldTypes {
     users: NexusGenRootTypes['UserPage']; // UserPage!
   }
   User: { // field return type
+    countActiveLends: number; // Int!
+    countCompletedLends: number; // Int!
     description: string | null; // String
     id: number; // Int!
     institution: NexusGenRootTypes['Institution']; // Institution!
     lastname: string; // String!
+    lends: NexusGenRootTypes['Lend'][]; // [Lend!]!
     name: string; // String!
     phone: string | null; // String
     role: string; // String!
@@ -264,6 +273,12 @@ export interface NexusGenFieldTypeNames {
     rows: 'Article'
   }
   Institution: { // field return type name
+    countActiveLends: 'Int'
+    countArticles: 'Int'
+    countCompletedLends: 'Int'
+    countPhisicalStates: 'Int'
+    countProfessors: 'Int'
+    countUsers: 'Int'
     id: 'Int'
     name: 'String'
   }
@@ -352,10 +367,13 @@ export interface NexusGenFieldTypeNames {
     users: 'UserPage'
   }
   User: { // field return type name
+    countActiveLends: 'Int'
+    countCompletedLends: 'Int'
     description: 'String'
     id: 'Int'
     institution: 'Institution'
     lastname: 'String'
+    lends: 'Lend'
     name: 'String'
     phone: 'String'
     role: 'String'
