@@ -13,6 +13,7 @@ import { PhisicalState } from "./PhisicalState";
 import { User } from "./User";
 import { Professor } from "./Professor";
 import { isValid } from "date-fns";
+import { Article } from "./Article";
 
 export const DateTime = scalarType({
   name: "DateTime",
@@ -137,6 +138,23 @@ const Lend = objectType({
         });
 
         return lend.institution;
+      },
+    });
+    t.nonNull.list.field("articles", {
+      type: nonNull(Article),
+      resolve: async (parent, _args, ctx) => {
+        const lend = await ctx.prisma.lend.findUniqueOrThrow({
+          where: { id: parent.id },
+          select: {
+            articles: {
+              select: {
+                article: true,
+              },
+            },
+          },
+        });
+
+        return lend.articles.map((a) => a.article);
       },
     });
   },

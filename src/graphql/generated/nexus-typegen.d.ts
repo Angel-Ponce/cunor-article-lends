@@ -150,6 +150,7 @@ export interface NexusGenFieldTypes {
     rows: NexusGenRootTypes['Institution'][]; // [Institution!]!
   }
   Lend: { // field return type
+    articles: NexusGenRootTypes['Article'][]; // [Article!]!
     completed: boolean; // Boolean!
     createdAt: NexusGenScalars['DateTime']; // DateTime!
     dueDate: NexusGenScalars['DateTime']; // DateTime!
@@ -268,6 +269,7 @@ export interface NexusGenFieldTypeNames {
     rows: 'Institution'
   }
   Lend: { // field return type name
+    articles: 'Article'
     completed: 'Boolean'
     createdAt: 'DateTime'
     dueDate: 'DateTime'

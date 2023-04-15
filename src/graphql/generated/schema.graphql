@@ -32,6 +32,7 @@ type InstitutionPage {
 }
 
 type Lend {
+  articles: [Article!]!
   completed: Boolean!
   createdAt: DateTime!
   dueDate: DateTime!

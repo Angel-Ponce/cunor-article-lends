@@ -4,7 +4,7 @@ import { authenticate, exclude, modelPage, paginate } from "../../helpers";
 import { GraphQLError } from "graphql";
 import { PhisicalState } from "./PhisicalState";
 
-const Article = objectType({
+export const Article = objectType({
   name: "Article",
   definition: (t) => {
     t.nonNull.int("id");
