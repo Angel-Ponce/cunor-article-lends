@@ -76,6 +76,7 @@ export interface NexusGenFieldTypes {
     createPhisicalState: NexusGenRootTypes['PhisicalState']; // PhisicalState!
     deleteInstitution: NexusGenRootTypes['Institution']; // Institution!
     updateInstitution: NexusGenRootTypes['Institution']; // Institution!
+    updatePhisicalState: NexusGenRootTypes['PhisicalState']; // PhisicalState!
   }
   PhisicalState: { // field return type
     description: string | null; // String
@@ -111,6 +112,7 @@ export interface NexusGenFieldTypeNames {
     createPhisicalState: 'PhisicalState'
     deleteInstitution: 'Institution'
     updateInstitution: 'Institution'
+    updatePhisicalState: 'PhisicalState'
   }
   PhisicalState: { // field return type name
     description: 'String'
@@ -144,6 +146,11 @@ export interface NexusGenArgTypes {
       id: number; // Int!
     }
     updateInstitution: { // args
+      id: number; // Int!
+      name?: string | null; // String
+    }
+    updatePhisicalState: { // args
+      description?: string | null; // String
       id: number; // Int!
       name?: string | null; // String
     }

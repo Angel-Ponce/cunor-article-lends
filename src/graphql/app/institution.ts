@@ -99,18 +99,12 @@ const updateInstitution = extendType({
           },
         });
 
-        await ctx.prisma.institution.update({
+        return await ctx.prisma.institution.update({
           where: {
             id: args.id,
           },
           data: {
             name: args.name || institution.name,
-          },
-        });
-
-        return ctx.prisma.institution.findUniqueOrThrow({
-          where: {
-            id: args.id,
           },
         });
       },
@@ -126,22 +120,14 @@ const deleteInstitution = extendType({
       args: {
         id: nonNull(intArg()),
       },
-      resolve: async (_parent, args, ctx) => {
+      resolve: (_parent, args, ctx) => {
         authenticate(ctx);
 
-        const institution = await ctx.prisma.institution.findUniqueOrThrow({
+        return ctx.prisma.institution.delete({
           where: {
             id: args.id,
           },
         });
-
-        await ctx.prisma.institution.delete({
-          where: {
-            id: args.id,
-          },
-        });
-
-        return institution;
       },
     });
   },

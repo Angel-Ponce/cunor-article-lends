@@ -18,6 +18,7 @@ type Mutation {
   createPhisicalState(description: String, name: String!): PhisicalState!
   deleteInstitution(id: Int!): Institution!
   updateInstitution(id: Int!, name: String): Institution!
+  updatePhisicalState(description: String, id: Int!, name: String): PhisicalState!
 }
 
 type PhisicalState {

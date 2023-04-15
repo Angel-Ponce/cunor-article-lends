@@ -1,6 +1,5 @@
 import { extendType, intArg, nonNull, objectType, stringArg } from "nexus";
 import { Institution } from "./Institution";
-import { GraphQLError } from "graphql";
 import { authenticate, modelPage, paginate } from "../../helpers";
 
 const PhisicalState = objectType({
@@ -40,11 +39,6 @@ const phisicalState = extendType({
           where: {
             id: args.id,
           },
-          select: {
-            id: true,
-            name: true,
-            description: true,
-          },
         });
       },
     });
@@ -72,7 +66,6 @@ const phisicalStates = extendType({
           rows: await ctx.prisma.phisicalState.findMany({
             skip: pags.skip,
             take: pags.take,
-            select: { id: true, name: true, description: true },
           }),
           length: pags.length,
           pages: pags.pages,
@@ -100,10 +93,36 @@ const createPhisicalState = extendType({
             description: args.description,
             institutionId: ctx.user?.institutionId || 0,
           },
-          select: {
-            id: true,
-            name: true,
-            description: true,
+        });
+      },
+    });
+  },
+});
+
+const updatePhisicalState = extendType({
+  type: "Mutation",
+  definition: (t) => {
+    t.field("updatePhisicalState", {
+      type: nonNull(PhisicalState),
+      args: {
+        id: nonNull(intArg()),
+        name: stringArg(),
+        description: stringArg(),
+      },
+      resolve: async (_parent, args, ctx) => {
+        const phisicalState = await ctx.prisma.phisicalState.findUniqueOrThrow({
+          where: {
+            id: args.id,
+          },
+        });
+
+        return await ctx.prisma.phisicalState.update({
+          where: {
+            id: args.id,
+          },
+          data: {
+            name: args.name || phisicalState.name,
+            description: args.description || phisicalState.description,
           },
         });
       },
@@ -116,7 +135,7 @@ const types = [
   phisicalState,
   phisicalStates,
   createPhisicalState,
-  //   updateInstitution,
+  updatePhisicalState,
   //   deleteInstitution,
 ];
 
