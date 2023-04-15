@@ -78,7 +78,7 @@ type Mutation {
   completeLend(articlesStates: [InputArticleLendCompleted!]!, id: Int!): Lend!
   createArticle(description: String, name: String!, phisicalStateId: Int!, serial: String): Article!
   createInstitution(name: String!): Institution!
-  createLend(articles: [InputArticleLend!]!, dueDate: DateTime!, phisicalStateId: Int!, professorId: Int!): Lend!
+  createLend(articles: [InputArticleLend!]!, dueDate: DateTime!, professorId: Int!): Lend!
   createPhisicalState(description: String, name: String!): PhisicalState!
   createProfessor(lastname: String!, name: String!, personalRegister: String!, phone: String): Professor!
   createUser(description: String, lastname: String!, name: String!, password: String!, phone: String, role: String!, username: String!): User!

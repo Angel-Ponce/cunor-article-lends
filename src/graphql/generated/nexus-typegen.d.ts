@@ -430,7 +430,6 @@ export interface NexusGenArgTypes {
     createLend: { // args
       articles: NexusGenInputs['InputArticleLend'][]; // [InputArticleLend!]!
       dueDate: NexusGenScalars['DateTime']; // DateTime!
-      phisicalStateId: number; // Int!
       professorId: number; // Int!
     }
     createPhisicalState: { // args

@@ -95,7 +95,7 @@ const ArticleLend = objectType({
           },
         });
 
-        const phisicalState = await ctx.prisma.phisicalState.findFirstOrThrow({
+        const phisicalState = await ctx.prisma.phisicalState.findFirst({
           where: {
             id: lend.articles[0].finalPhisicalStateId || 0,
           },
@@ -265,7 +265,6 @@ const createLend = extendType({
       args: {
         professorId: nonNull(intArg()),
         dueDate: nonNull(DateTime),
-        phisicalStateId: nonNull(intArg()),
         articles: nonNull(list(nonNull(InputArticleLend))),
       },
       resolve: (_parent, args, ctx) => {
