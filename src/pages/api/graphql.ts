@@ -6,6 +6,7 @@ import { RequestHandler } from "micro/types/src/lib";
 import { context } from "../../graphql/context";
 import { schema } from "../../graphql/schema";
 import { IncomingMessage } from "http";
+import jwt from "jwt-simple";
 
 export const config = {
   // We don't want body parser to process the requests
@@ -19,7 +20,13 @@ const cors = Cors();
 const apolloServer = new ApolloServer({
   schema,
   context: ({ req }: { req: IncomingMessage }) => {
-    return { ...context, token: req.headers.authorization };
+    const auth = req.headers.authorization;
+
+    const user = auth
+      ? jwt.decode(auth, process.env.JWT_SECRET || "")
+      : undefined;
+
+    return { ...context, user };
   },
   plugins: [ApolloServerPluginLandingPageLocalDefault({ embed: true })],
   introspection: true,

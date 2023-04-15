@@ -1,5 +1,6 @@
 import { extendType, intArg, nonNull, objectType, stringArg } from "nexus";
 import { Institution } from "./Institution";
+import { GraphQLError } from "graphql";
 
 const PhisicalState = objectType({
   name: "PhisicalState",
@@ -52,11 +53,13 @@ const createPhisicalState = extendType({
         description: stringArg(),
       },
       resolve: (_parent, args, ctx) => {
+        if (!ctx.user) throw new GraphQLError("Must authenticate");
+
         return ctx.prisma.phisicalState.create({
           data: {
             name: args.name,
             description: args.description,
-            institutionId: 1,
+            institutionId: ctx.user.institutionId,
           },
         });
       },
