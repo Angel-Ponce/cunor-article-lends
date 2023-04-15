@@ -20,9 +20,10 @@ const institution = extendType({
       resolve: (_parent, args, ctx) => {
         authenticate(ctx);
 
-        return ctx.prisma.institution.findUniqueOrThrow({
+        return ctx.prisma.institution.findFirstOrThrow({
           where: {
             id: args.id,
+            deletedAt: null,
           },
         });
       },
@@ -51,6 +52,9 @@ const institutions = extendType({
           rows: await ctx.prisma.institution.findMany({
             skip: pags.skip,
             take: pags.take,
+            where: {
+              deletedAt: null,
+            },
           }),
           length: pags.length,
           pages: pags.pages,
@@ -93,9 +97,10 @@ const updateInstitution = extendType({
       resolve: async (_parent, args, ctx) => {
         authenticate(ctx);
 
-        const institution = await ctx.prisma.institution.findUniqueOrThrow({
+        const institution = await ctx.prisma.institution.findFirstOrThrow({
           where: {
             id: args.id,
+            deletedAt: null,
           },
         });
 
@@ -116,20 +121,21 @@ const deleteInstitution = extendType({
   type: "Mutation",
   definition: (t) => {
     t.field("deleteInstitution", {
-      type: nonNull("String"),
+      type: nonNull(Institution),
       args: {
         id: nonNull(intArg()),
       },
       resolve: async (_parent, args, ctx) => {
         authenticate(ctx);
 
-        await ctx.prisma.institution.delete({
+        return await ctx.prisma.institution.update({
           where: {
             id: args.id,
           },
+          data: {
+            deletedAt: new Date(),
+          },
         });
-
-        return "Deleted successfully";
       },
     });
   },

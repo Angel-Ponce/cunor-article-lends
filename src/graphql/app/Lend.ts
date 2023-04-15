@@ -6,10 +6,9 @@ import {
   nonNull,
   objectType,
   scalarType,
-  stringArg,
 } from "nexus";
 import { Institution } from "./Institution";
-import { authenticate, exclude, modelPage, paginate } from "../../helpers";
+import { authenticate, modelPage, paginate } from "../../helpers";
 import { GraphQLError, Kind } from "graphql";
 import { PhisicalState } from "./PhisicalState";
 import { User } from "./User";
@@ -173,9 +172,10 @@ const lend = extendType({
       resolve: (_parent, args, ctx) => {
         authenticate(ctx);
 
-        return ctx.prisma.lend.findUniqueOrThrow({
+        return ctx.prisma.lend.findFirstOrThrow({
           where: {
             id: args.id,
+            deletedAt: null,
           },
         });
       },
@@ -204,37 +204,11 @@ const lends = extendType({
           rows: await ctx.prisma.lend.findMany({
             skip: pags.skip,
             take: pags.take,
+            where: { deletedAt: null },
           }),
           length: pags.length,
           pages: pags.pages,
         };
-      },
-    });
-  },
-});
-
-const createLend = extendType({
-  type: "Mutation",
-  definition: (t) => {
-    t.field("createLend", {
-      type: nonNull(Lend),
-      args: {
-        professorId: nonNull(intArg()),
-        dueDate: nonNull(DateTime),
-        phisicalStateId: nonNull(intArg()),
-      },
-      resolve: (_parent, args, ctx) => {
-        authenticate(ctx);
-
-        return ctx.prisma.lend.create({
-          data: {
-            userId: ctx.user?.id || 0,
-            professorId: args.professorId,
-            dueDate: args.dueDate,
-            initialPhisicalStateId: args.phisicalStateId,
-            institutionId: ctx.user?.institutionId || 0,
-          },
-        });
       },
     });
   },
@@ -248,27 +222,27 @@ const InputArticleLend = inputObjectType({
   },
 });
 
-const completeLend = extendType({
+const createLend = extendType({
   type: "Mutation",
   definition: (t) => {
-    t.field("completeLend", {
+    t.field("createLend", {
       type: nonNull(Lend),
       args: {
-        id: nonNull(intArg()),
+        professorId: nonNull(intArg()),
+        dueDate: nonNull(DateTime),
         phisicalStateId: nonNull(intArg()),
         articles: nonNull(list(nonNull(InputArticleLend))),
       },
-      resolve: async (_parent, args, ctx) => {
+      resolve: (_parent, args, ctx) => {
         authenticate(ctx);
 
-        return await ctx.prisma.lend.update({
-          where: {
-            id: args.id,
-          },
+        return ctx.prisma.lend.create({
           data: {
-            completed: true,
-            realDueDate: new Date(),
-            finalPhisicalStateId: args.phisicalStateId,
+            userId: ctx.user?.id || 0,
+            professorId: args.professorId,
+            dueDate: args.dueDate,
+            initialPhisicalStateId: args.phisicalStateId,
+            institutionId: ctx.user?.institutionId || 0,
             articles: {
               create: args.articles.map((a) => ({
                 articleId: a.articleId,
@@ -282,24 +256,52 @@ const completeLend = extendType({
   },
 });
 
+const completeLend = extendType({
+  type: "Mutation",
+  definition: (t) => {
+    t.field("completeLend", {
+      type: nonNull(Lend),
+      args: {
+        id: nonNull(intArg()),
+        phisicalStateId: nonNull(intArg()),
+      },
+      resolve: async (_parent, args, ctx) => {
+        authenticate(ctx);
+
+        return await ctx.prisma.lend.update({
+          where: {
+            id: args.id,
+          },
+          data: {
+            completed: true,
+            realDueDate: new Date(),
+            finalPhisicalStateId: args.phisicalStateId,
+          },
+        });
+      },
+    });
+  },
+});
+
 const deleteLend = extendType({
   type: "Mutation",
   definition: (t) => {
     t.field("deleteLend", {
-      type: nonNull("String"),
+      type: nonNull(Lend),
       args: {
         id: nonNull(intArg()),
       },
       resolve: async (_parent, args, ctx) => {
         authenticate(ctx);
 
-        await ctx.prisma.lend.delete({
+        return await ctx.prisma.lend.update({
           where: {
             id: args.id,
           },
+          data: {
+            deletedAt: new Date(),
+          },
         });
-
-        return "Deleted successfully";
       },
     });
   },

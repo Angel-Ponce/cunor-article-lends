@@ -57,19 +57,19 @@ type LendPage {
 }
 
 type Mutation {
-  completeLend(articles: [InputArticleLend!]!, id: Int!, phisicalStateId: Int!): Lend!
+  completeLend(id: Int!, phisicalStateId: Int!): Lend!
   createArticle(description: String, name: String!, phisicalStateId: Int!, serial: String): Article!
   createInstitution(name: String!): Institution!
-  createLend(dueDate: DateTime!, phisicalStateId: Int!, professorId: Int!): Lend!
+  createLend(articles: [InputArticleLend!]!, dueDate: DateTime!, phisicalStateId: Int!, professorId: Int!): Lend!
   createPhisicalState(description: String, name: String!): PhisicalState!
   createProfessor(lastname: String!, name: String!, personalRegister: String!, phone: String): Professor!
   createUser(description: String, lastname: String!, name: String!, password: String!, phone: String, role: String!, username: String!): User!
-  deleteArticle(id: Int!): String!
-  deleteInstitution(id: Int!): String!
-  deleteLend(id: Int!): String!
-  deletePhisicalState(id: Int!): String!
-  deleteProfessor(id: Int!): String!
-  deleteUser(id: Int!): String!
+  deleteArticle(id: Int!): Article!
+  deleteInstitution(id: Int!): Institution!
+  deleteLend(id: Int!): Lend!
+  deletePhisicalState(id: Int!): PhisicalState!
+  deleteProfessor(id: Int!): Professor!
+  deleteUser(id: Int!): User!
   updateArticle(description: String, id: Int!, name: String, phisicalStateId: Int, serial: String): Article!
   updateInstitution(id: Int!, name: String): Institution!
   updatePassword(newPassword: String!, oldPassword: String!, userId: Int!): String!

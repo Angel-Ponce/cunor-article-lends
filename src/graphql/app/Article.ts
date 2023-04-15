@@ -1,7 +1,6 @@
 import { extendType, intArg, nonNull, objectType, stringArg } from "nexus";
 import { Institution } from "./Institution";
-import { authenticate, exclude, modelPage, paginate } from "../../helpers";
-import { GraphQLError } from "graphql";
+import { authenticate, modelPage, paginate } from "../../helpers";
 import { PhisicalState } from "./PhisicalState";
 
 export const Article = objectType({
@@ -55,10 +54,8 @@ const article = extendType({
       resolve: (_parent, args, ctx) => {
         authenticate(ctx);
 
-        return ctx.prisma.article.findUniqueOrThrow({
-          where: {
-            id: args.id,
-          },
+        return ctx.prisma.article.findFirstOrThrow({
+          where: { id: args.id, deletedAt: null },
         });
       },
     });
@@ -86,6 +83,9 @@ const articles = extendType({
           rows: await ctx.prisma.article.findMany({
             skip: pags.skip,
             take: pags.take,
+            where: {
+              deletedAt: null,
+            },
           }),
           length: pags.length,
           pages: pags.pages,
@@ -135,9 +135,10 @@ const updateArticle = extendType({
       resolve: async (_parent, args, ctx) => {
         authenticate(ctx);
 
-        const article = await ctx.prisma.article.findUniqueOrThrow({
+        const article = await ctx.prisma.article.findFirstOrThrow({
           where: {
             id: args.id,
+            deletedAt: null,
           },
         });
 
@@ -161,20 +162,21 @@ const deleteArticle = extendType({
   type: "Mutation",
   definition: (t) => {
     t.field("deleteArticle", {
-      type: nonNull("String"),
+      type: nonNull(Article),
       args: {
         id: nonNull(intArg()),
       },
       resolve: async (_parent, args, ctx) => {
         authenticate(ctx);
 
-        await ctx.prisma.article.delete({
+        return await ctx.prisma.article.update({
           where: {
             id: args.id,
           },
+          data: {
+            deletedAt: new Date(),
+          },
         });
-
-        return "Deleted successfully";
       },
     });
   },

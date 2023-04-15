@@ -42,9 +42,10 @@ const user = extendType({
       resolve: (_parent, args, ctx) => {
         authenticate(ctx);
 
-        return ctx.prisma.user.findUniqueOrThrow({
+        return ctx.prisma.user.findFirstOrThrow({
           where: {
             id: args.id,
+            deletedAt: null,
           },
         });
       },
@@ -73,6 +74,7 @@ const users = extendType({
           rows: await ctx.prisma.user.findMany({
             skip: pags.skip,
             take: pags.take,
+            where: { deletedAt: null },
           }),
           length: pags.length,
           pages: pags.pages,
@@ -128,9 +130,10 @@ const updateUser = extendType({
       resolve: async (_parent, args, ctx) => {
         authenticate(ctx);
 
-        const user = await ctx.prisma.user.findUniqueOrThrow({
+        const user = await ctx.prisma.user.findFirstOrThrow({
           where: {
             id: args.id,
+            deletedAt: null,
           },
         });
 
@@ -156,20 +159,21 @@ const deleteUser = extendType({
   type: "Mutation",
   definition: (t) => {
     t.field("deleteUser", {
-      type: nonNull("String"),
+      type: nonNull(User),
       args: {
         id: nonNull(intArg()),
       },
       resolve: async (_parent, args, ctx) => {
         authenticate(ctx);
 
-        await ctx.prisma.user.delete({
+        return await ctx.prisma.user.update({
           where: {
             id: args.id,
           },
+          data: {
+            deletedAt: new Date(),
+          },
         });
-
-        return "Deleted successfully";
       },
     });
   },
@@ -188,9 +192,10 @@ const updatePassword = extendType({
       resolve: async (_parent, args, ctx) => {
         authenticate(ctx);
 
-        const user = await ctx.prisma.user.findUniqueOrThrow({
+        const user = await ctx.prisma.user.findFirstOrThrow({
           where: {
             id: args.userId,
+            deletedAt: null,
           },
         });
 
@@ -238,9 +243,10 @@ const login = extendType({
         password: nonNull(stringArg()),
       },
       resolve: async (_parent, args, ctx) => {
-        const user = await ctx.prisma.user.findUnique({
+        const user = await ctx.prisma.user.findFirstOrThrow({
           where: {
             username: args.username,
+            deletedAt: null,
           },
         });
 

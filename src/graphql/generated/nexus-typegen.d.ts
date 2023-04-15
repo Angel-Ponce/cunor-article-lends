@@ -179,12 +179,12 @@ export interface NexusGenFieldTypes {
     createPhisicalState: NexusGenRootTypes['PhisicalState']; // PhisicalState!
     createProfessor: NexusGenRootTypes['Professor']; // Professor!
     createUser: NexusGenRootTypes['User']; // User!
-    deleteArticle: string; // String!
-    deleteInstitution: string; // String!
-    deleteLend: string; // String!
-    deletePhisicalState: string; // String!
-    deleteProfessor: string; // String!
-    deleteUser: string; // String!
+    deleteArticle: NexusGenRootTypes['Article']; // Article!
+    deleteInstitution: NexusGenRootTypes['Institution']; // Institution!
+    deleteLend: NexusGenRootTypes['Lend']; // Lend!
+    deletePhisicalState: NexusGenRootTypes['PhisicalState']; // PhisicalState!
+    deleteProfessor: NexusGenRootTypes['Professor']; // Professor!
+    deleteUser: NexusGenRootTypes['User']; // User!
     updateArticle: NexusGenRootTypes['Article']; // Article!
     updateInstitution: NexusGenRootTypes['Institution']; // Institution!
     updatePassword: string; // String!
@@ -298,12 +298,12 @@ export interface NexusGenFieldTypeNames {
     createPhisicalState: 'PhisicalState'
     createProfessor: 'Professor'
     createUser: 'User'
-    deleteArticle: 'String'
-    deleteInstitution: 'String'
-    deleteLend: 'String'
-    deletePhisicalState: 'String'
-    deleteProfessor: 'String'
-    deleteUser: 'String'
+    deleteArticle: 'Article'
+    deleteInstitution: 'Institution'
+    deleteLend: 'Lend'
+    deletePhisicalState: 'PhisicalState'
+    deleteProfessor: 'Professor'
+    deleteUser: 'User'
     updateArticle: 'Article'
     updateInstitution: 'Institution'
     updatePassword: 'String'
@@ -371,7 +371,6 @@ export interface NexusGenFieldTypeNames {
 export interface NexusGenArgTypes {
   Mutation: {
     completeLend: { // args
-      articles: NexusGenInputs['InputArticleLend'][]; // [InputArticleLend!]!
       id: number; // Int!
       phisicalStateId: number; // Int!
     }
@@ -385,6 +384,7 @@ export interface NexusGenArgTypes {
       name: string; // String!
     }
     createLend: { // args
+      articles: NexusGenInputs['InputArticleLend'][]; // [InputArticleLend!]!
       dueDate: NexusGenScalars['DateTime']; // DateTime!
       phisicalStateId: number; // Int!
       professorId: number; // Int!

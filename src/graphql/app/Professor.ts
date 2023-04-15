@@ -39,9 +39,10 @@ const professor = extendType({
       resolve: (_parent, args, ctx) => {
         authenticate(ctx);
 
-        return ctx.prisma.professor.findUniqueOrThrow({
+        return ctx.prisma.professor.findFirstOrThrow({
           where: {
             id: args.id,
+            deletedAt: null,
           },
         });
       },
@@ -70,6 +71,7 @@ const professors = extendType({
           rows: await ctx.prisma.professor.findMany({
             skip: pags.skip,
             take: pags.take,
+            where: { deletedAt: null },
           }),
           length: pags.length,
           pages: pags.pages,
@@ -119,9 +121,10 @@ const updateProfessor = extendType({
       resolve: async (_parent, args, ctx) => {
         authenticate(ctx);
 
-        const professor = await ctx.prisma.professor.findUniqueOrThrow({
+        const professor = await ctx.prisma.professor.findFirstOrThrow({
           where: {
             id: args.id,
+            deletedAt: null,
           },
         });
 
@@ -146,20 +149,21 @@ const deleteProfessor = extendType({
   type: "Mutation",
   definition: (t) => {
     t.field("deleteProfessor", {
-      type: nonNull("String"),
+      type: nonNull(Professor),
       args: {
         id: nonNull(intArg()),
       },
       resolve: async (_parent, args, ctx) => {
         authenticate(ctx);
 
-        await ctx.prisma.professor.delete({
+        return await ctx.prisma.professor.update({
           where: {
             id: args.id,
           },
+          data: {
+            deletedAt: new Date(),
+          },
         });
-
-        return "Deleted successfully";
       },
     });
   },

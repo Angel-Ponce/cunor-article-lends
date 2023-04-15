@@ -15,6 +15,7 @@ model Institution {
     articles       Article[]
     professors     Professor[]
     lends          Lend[]
+    deletedAt      DateTime?       @default(dbgenerated("null"))
 }
 
 model PhisicalState {
@@ -24,6 +25,7 @@ model PhisicalState {
     institution   Institution @relation(fields: [institutionId], references: [id])
     institutionId Int
     articles      Article[]
+    deletedAt     DateTime?   @default(dbgenerated("null"))
 }
 
 model User {
@@ -38,6 +40,7 @@ model User {
     institution   Institution @relation(fields: [institutionId], references: [id])
     institutionId Int
     lends         Lend[]
+    deletedAt     DateTime?   @default(dbgenerated("null"))
 }
 
 model Article {
@@ -50,6 +53,7 @@ model Article {
     institution     Institution   @relation(fields: [institutionId], references: [id])
     institutionId   Int
     lends           ArticleLend[]
+    deletedAt       DateTime?     @default(dbgenerated("null"))
 }
 
 model Professor {
@@ -61,6 +65,7 @@ model Professor {
     institution      Institution @relation(fields: [institutionId], references: [id])
     institutionId    Int
     lends            Lend[]
+    deletedAt        DateTime?   @default(dbgenerated("null"))
 }
 
 model Lend {
@@ -78,6 +83,7 @@ model Lend {
     institution            Institution   @relation(fields: [institutionId], references: [id])
     institutionId          Int
     articles               ArticleLend[]
+    deletedAt              DateTime?     @default(dbgenerated("null"))
 }
 
 model ArticleLend {

@@ -35,9 +35,10 @@ const phisicalState = extendType({
       resolve: (_parent, args, ctx) => {
         authenticate(ctx);
 
-        return ctx.prisma.phisicalState.findUniqueOrThrow({
+        return ctx.prisma.phisicalState.findFirstOrThrow({
           where: {
             id: args.id,
+            deletedAt: null,
           },
         });
       },
@@ -66,6 +67,7 @@ const phisicalStates = extendType({
           rows: await ctx.prisma.phisicalState.findMany({
             skip: pags.skip,
             take: pags.take,
+            where: { deletedAt: null },
           }),
           length: pags.length,
           pages: pags.pages,
@@ -112,9 +114,10 @@ const updatePhisicalState = extendType({
       resolve: async (_parent, args, ctx) => {
         authenticate(ctx);
 
-        const phisicalState = await ctx.prisma.phisicalState.findUniqueOrThrow({
+        const phisicalState = await ctx.prisma.phisicalState.findFirstOrThrow({
           where: {
             id: args.id,
+            deletedAt: null,
           },
         });
 
@@ -136,20 +139,21 @@ const deletePhisicalState = extendType({
   type: "Mutation",
   definition: (t) => {
     t.field("deletePhisicalState", {
-      type: nonNull("String"),
+      type: nonNull(PhisicalState),
       args: {
         id: nonNull(intArg()),
       },
       resolve: async (_parent, args, ctx) => {
         authenticate(ctx);
 
-        await ctx.prisma.phisicalState.delete({
+        return await ctx.prisma.phisicalState.update({
           where: {
             id: args.id,
           },
+          data: {
+            deletedAt: new Date(),
+          },
         });
-
-        return "Deleted successfully";
       },
     });
   },
