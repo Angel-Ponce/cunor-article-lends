@@ -54,7 +54,6 @@ export interface NexusGenObjects {
     id: number; // Int!
     lastname: string; // String!
     name: string; // String!
-    password: string; // String!
     phone?: string | null; // String
     role: string; // String!
     username: string; // String!
@@ -94,6 +93,7 @@ export interface NexusGenFieldTypes {
     deletePhisicalState: string; // String!
     deleteUser: string; // String!
     updateInstitution: NexusGenRootTypes['Institution']; // Institution!
+    updatePassword: string; // String!
     updatePhisicalState: NexusGenRootTypes['PhisicalState']; // PhisicalState!
     updateUser: NexusGenRootTypes['User']; // User!
   }
@@ -111,6 +111,8 @@ export interface NexusGenFieldTypes {
   Query: { // field return type
     institution: NexusGenRootTypes['Institution']; // Institution!
     institutions: NexusGenRootTypes['InstitutionPage']; // InstitutionPage!
+    login: string | null; // String
+    me: NexusGenRootTypes['User'] | null; // User
     phisicalState: NexusGenRootTypes['PhisicalState']; // PhisicalState!
     phisicalStates: NexusGenRootTypes['PhisicalStatePage']; // PhisicalStatePage!
     user: NexusGenRootTypes['User']; // User!
@@ -122,7 +124,6 @@ export interface NexusGenFieldTypes {
     institution: NexusGenRootTypes['Institution']; // Institution!
     lastname: string; // String!
     name: string; // String!
-    password: string; // String!
     phone: string | null; // String
     role: string; // String!
     username: string; // String!
@@ -152,6 +153,7 @@ export interface NexusGenFieldTypeNames {
     deletePhisicalState: 'String'
     deleteUser: 'String'
     updateInstitution: 'Institution'
+    updatePassword: 'String'
     updatePhisicalState: 'PhisicalState'
     updateUser: 'User'
   }
@@ -169,6 +171,8 @@ export interface NexusGenFieldTypeNames {
   Query: { // field return type name
     institution: 'Institution'
     institutions: 'InstitutionPage'
+    login: 'String'
+    me: 'User'
     phisicalState: 'PhisicalState'
     phisicalStates: 'PhisicalStatePage'
     user: 'User'
@@ -180,7 +184,6 @@ export interface NexusGenFieldTypeNames {
     institution: 'Institution'
     lastname: 'String'
     name: 'String'
-    password: 'String'
     phone: 'String'
     role: 'String'
     username: 'String'
@@ -223,6 +226,11 @@ export interface NexusGenArgTypes {
       id: number; // Int!
       name?: string | null; // String
     }
+    updatePassword: { // args
+      newPassword: string; // String!
+      oldPassword: string; // String!
+      userId: number; // Int!
+    }
     updatePhisicalState: { // args
       description?: string | null; // String
       id: number; // Int!
@@ -233,7 +241,6 @@ export interface NexusGenArgTypes {
       id: number; // Int!
       lastname?: string | null; // String
       name?: string | null; // String
-      password?: string | null; // String
       phone?: string | null; // String
       role?: string | null; // String
       username?: string | null; // String
@@ -246,6 +253,10 @@ export interface NexusGenArgTypes {
     institutions: { // args
       limit: number; // Int!
       page: number; // Int!
+    }
+    login: { // args
+      password: string; // String!
+      username: string; // String!
     }
     phisicalState: { // args
       id: number; // Int!

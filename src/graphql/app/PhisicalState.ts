@@ -110,6 +110,8 @@ const updatePhisicalState = extendType({
         description: stringArg(),
       },
       resolve: async (_parent, args, ctx) => {
+        authenticate(ctx);
+
         const phisicalState = await ctx.prisma.phisicalState.findUniqueOrThrow({
           where: {
             id: args.id,

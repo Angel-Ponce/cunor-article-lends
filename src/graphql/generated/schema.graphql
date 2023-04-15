@@ -21,8 +21,9 @@ type Mutation {
   deletePhisicalState(id: Int!): String!
   deleteUser(id: Int!): String!
   updateInstitution(id: Int!, name: String): Institution!
+  updatePassword(newPassword: String!, oldPassword: String!, userId: Int!): String!
   updatePhisicalState(description: String, id: Int!, name: String): PhisicalState!
-  updateUser(description: String, id: Int!, lastname: String, name: String, password: String, phone: String, role: String, username: String): User!
+  updateUser(description: String, id: Int!, lastname: String, name: String, phone: String, role: String, username: String): User!
 }
 
 type PhisicalState {
@@ -41,6 +42,8 @@ type PhisicalStatePage {
 type Query {
   institution(id: Int!): Institution!
   institutions(limit: Int! = 10, page: Int! = 1): InstitutionPage!
+  login(password: String!, username: String!): String
+  me: User
   phisicalState(id: Int!): PhisicalState!
   phisicalStates(limit: Int! = 10, page: Int! = 1): PhisicalStatePage!
   user(id: Int!): User!
@@ -53,7 +56,6 @@ type User {
   institution: Institution!
   lastname: String!
   name: String!
-  password: String!
   phone: String
   role: String!
   username: String!

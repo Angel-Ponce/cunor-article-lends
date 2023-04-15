@@ -1,6 +1,9 @@
+import jwt from "jwt-simple";
 import { extendType, intArg, nonNull, objectType, stringArg } from "nexus";
 import { Institution } from "./Institution";
-import { authenticate, modelPage, paginate } from "../../helpers";
+import { authenticate, exclude, modelPage, paginate } from "../../helpers";
+import bcrypt from "bcrypt";
+import { GraphQLError } from "graphql";
 
 const User = objectType({
   name: "User",
@@ -11,7 +14,6 @@ const User = objectType({
     t.string("phone");
     t.string("description");
     t.nonNull.string("username");
-    t.nonNull.string("password");
     t.nonNull.string("role");
     t.field("institution", {
       type: nonNull(Institution),
@@ -100,6 +102,7 @@ const createUser = extendType({
         return ctx.prisma.user.create({
           data: {
             ...args,
+            password: bcrypt.hashSync(args.password, 10),
             institutionId: ctx.user?.institutionId || 0,
           },
         });
@@ -120,10 +123,11 @@ const updateUser = extendType({
         phone: stringArg(),
         description: stringArg(),
         username: stringArg(),
-        password: stringArg(),
         role: stringArg(),
       },
       resolve: async (_parent, args, ctx) => {
+        authenticate(ctx);
+
         const user = await ctx.prisma.user.findUniqueOrThrow({
           where: {
             id: args.id,
@@ -140,7 +144,6 @@ const updateUser = extendType({
             phone: args.phone || user.phone,
             description: args.description || user.description,
             username: args.username || user.username,
-            password: args.password || user.password,
             role: args.role || user.role,
           },
         });
@@ -172,6 +175,99 @@ const deleteUser = extendType({
   },
 });
 
-const types = [User, user, users, createUser, updateUser, deleteUser];
+const updatePassword = extendType({
+  type: "Mutation",
+  definition: (t) => {
+    t.field("updatePassword", {
+      type: nonNull("String"),
+      args: {
+        userId: nonNull(intArg()),
+        oldPassword: nonNull(stringArg()),
+        newPassword: nonNull(stringArg()),
+      },
+      resolve: async (_parent, args, ctx) => {
+        authenticate(ctx);
+
+        const user = await ctx.prisma.user.findUniqueOrThrow({
+          where: {
+            id: args.userId,
+          },
+        });
+
+        const matchOldPassword = bcrypt.compareSync(
+          args.oldPassword,
+          user.password
+        );
+
+        if (!matchOldPassword) throw new GraphQLError("Old password invalid");
+
+        await ctx.prisma.user.update({
+          where: {
+            id: args.userId,
+          },
+          data: {
+            password: bcrypt.hashSync(args.newPassword, 10),
+          },
+        });
+
+        return "Password revoked successfully";
+      },
+    });
+  },
+});
+
+const me = extendType({
+  type: "Query",
+  definition: (t) => {
+    t.field("me", {
+      type: User,
+      resolve: (_parent, _args, ctx) => {
+        return ctx.user || null;
+      },
+    });
+  },
+});
+
+const login = extendType({
+  type: "Query",
+  definition: (t) => {
+    t.field("login", {
+      type: "String",
+      args: {
+        username: nonNull(stringArg()),
+        password: nonNull(stringArg()),
+      },
+      resolve: async (_parent, args, ctx) => {
+        const user = await ctx.prisma.user.findUnique({
+          where: {
+            username: args.username,
+          },
+        });
+
+        if (!user) throw new GraphQLError("invalid username");
+
+        if (!bcrypt.compareSync(args.password, user.password))
+          throw new GraphQLError("invalid password");
+
+        return jwt.encode(
+          exclude(user, ["password"]),
+          process.env.JWT_SECRET || ""
+        );
+      },
+    });
+  },
+});
+
+const types = [
+  User,
+  user,
+  users,
+  createUser,
+  updateUser,
+  deleteUser,
+  updatePassword,
+  me,
+  login,
+];
 
 export default types;
