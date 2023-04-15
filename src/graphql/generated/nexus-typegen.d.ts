@@ -59,6 +59,11 @@ export interface NexusGenObjects {
     role: string; // String!
     username: string; // String!
   }
+  UserPage: { // root type
+    length: number; // Int!
+    pages: number; // Int!
+    rows: NexusGenRootTypes['User'][]; // [User!]!
+  }
 }
 
 export interface NexusGenInterfaces {
@@ -84,10 +89,13 @@ export interface NexusGenFieldTypes {
   Mutation: { // field return type
     createInstitution: NexusGenRootTypes['Institution']; // Institution!
     createPhisicalState: NexusGenRootTypes['PhisicalState']; // PhisicalState!
+    createUser: NexusGenRootTypes['User']; // User!
     deleteInstitution: string; // String!
     deletePhisicalState: string; // String!
+    deleteUser: string; // String!
     updateInstitution: NexusGenRootTypes['Institution']; // Institution!
     updatePhisicalState: NexusGenRootTypes['PhisicalState']; // PhisicalState!
+    updateUser: NexusGenRootTypes['User']; // User!
   }
   PhisicalState: { // field return type
     description: string | null; // String
@@ -105,6 +113,8 @@ export interface NexusGenFieldTypes {
     institutions: NexusGenRootTypes['InstitutionPage']; // InstitutionPage!
     phisicalState: NexusGenRootTypes['PhisicalState']; // PhisicalState!
     phisicalStates: NexusGenRootTypes['PhisicalStatePage']; // PhisicalStatePage!
+    user: NexusGenRootTypes['User']; // User!
+    users: NexusGenRootTypes['UserPage']; // UserPage!
   }
   User: { // field return type
     description: string | null; // String
@@ -116,6 +126,11 @@ export interface NexusGenFieldTypes {
     phone: string | null; // String
     role: string; // String!
     username: string; // String!
+  }
+  UserPage: { // field return type
+    length: number; // Int!
+    pages: number; // Int!
+    rows: NexusGenRootTypes['User'][]; // [User!]!
   }
 }
 
@@ -132,10 +147,13 @@ export interface NexusGenFieldTypeNames {
   Mutation: { // field return type name
     createInstitution: 'Institution'
     createPhisicalState: 'PhisicalState'
+    createUser: 'User'
     deleteInstitution: 'String'
     deletePhisicalState: 'String'
+    deleteUser: 'String'
     updateInstitution: 'Institution'
     updatePhisicalState: 'PhisicalState'
+    updateUser: 'User'
   }
   PhisicalState: { // field return type name
     description: 'String'
@@ -153,6 +171,8 @@ export interface NexusGenFieldTypeNames {
     institutions: 'InstitutionPage'
     phisicalState: 'PhisicalState'
     phisicalStates: 'PhisicalStatePage'
+    user: 'User'
+    users: 'UserPage'
   }
   User: { // field return type name
     description: 'String'
@@ -165,6 +185,11 @@ export interface NexusGenFieldTypeNames {
     role: 'String'
     username: 'String'
   }
+  UserPage: { // field return type name
+    length: 'Int'
+    pages: 'Int'
+    rows: 'User'
+  }
 }
 
 export interface NexusGenArgTypes {
@@ -176,10 +201,22 @@ export interface NexusGenArgTypes {
       description?: string | null; // String
       name: string; // String!
     }
+    createUser: { // args
+      description?: string | null; // String
+      lastname: string; // String!
+      name: string; // String!
+      password: string; // String!
+      phone?: string | null; // String
+      role: string; // String!
+      username: string; // String!
+    }
     deleteInstitution: { // args
       id: number; // Int!
     }
     deletePhisicalState: { // args
+      id: number; // Int!
+    }
+    deleteUser: { // args
       id: number; // Int!
     }
     updateInstitution: { // args
@@ -190,6 +227,16 @@ export interface NexusGenArgTypes {
       description?: string | null; // String
       id: number; // Int!
       name?: string | null; // String
+    }
+    updateUser: { // args
+      description?: string | null; // String
+      id: number; // Int!
+      lastname?: string | null; // String
+      name?: string | null; // String
+      password?: string | null; // String
+      phone?: string | null; // String
+      role?: string | null; // String
+      username?: string | null; // String
     }
   }
   Query: {
@@ -204,6 +251,13 @@ export interface NexusGenArgTypes {
       id: number; // Int!
     }
     phisicalStates: { // args
+      limit: number; // Int!
+      page: number; // Int!
+    }
+    user: { // args
+      id: number; // Int!
+    }
+    users: { // args
       limit: number; // Int!
       page: number; // Int!
     }

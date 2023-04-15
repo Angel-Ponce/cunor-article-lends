@@ -16,10 +16,13 @@ type InstitutionPage {
 type Mutation {
   createInstitution(name: String!): Institution!
   createPhisicalState(description: String, name: String!): PhisicalState!
+  createUser(description: String, lastname: String!, name: String!, password: String!, phone: String, role: String!, username: String!): User!
   deleteInstitution(id: Int!): String!
   deletePhisicalState(id: Int!): String!
+  deleteUser(id: Int!): String!
   updateInstitution(id: Int!, name: String): Institution!
   updatePhisicalState(description: String, id: Int!, name: String): PhisicalState!
+  updateUser(description: String, id: Int!, lastname: String, name: String, password: String, phone: String, role: String, username: String): User!
 }
 
 type PhisicalState {
@@ -40,6 +43,8 @@ type Query {
   institutions(limit: Int! = 10, page: Int! = 1): InstitutionPage!
   phisicalState(id: Int!): PhisicalState!
   phisicalStates(limit: Int! = 10, page: Int! = 1): PhisicalStatePage!
+  user(id: Int!): User!
+  users(limit: Int! = 10, page: Int! = 1): UserPage!
 }
 
 type User {
@@ -52,4 +57,10 @@ type User {
   phone: String
   role: String!
   username: String!
+}
+
+type UserPage {
+  length: Int!
+  pages: Int!
+  rows: [User!]!
 }

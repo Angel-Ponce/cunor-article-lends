@@ -29,135 +29,149 @@ const User = objectType({
   },
 });
 
-// const phisicalState = extendType({
-//   type: "Query",
-//   definition: (t) => {
-//     t.field("phisicalState", {
-//       type: nonNull(PhisicalState),
-//       args: {
-//         id: nonNull(intArg()),
-//       },
-//       resolve: (_parent, args, ctx) => {
-//         authenticate(ctx);
+const user = extendType({
+  type: "Query",
+  definition: (t) => {
+    t.field("user", {
+      type: nonNull(User),
+      args: {
+        id: nonNull(intArg()),
+      },
+      resolve: (_parent, args, ctx) => {
+        authenticate(ctx);
 
-//         return ctx.prisma.phisicalState.findUniqueOrThrow({
-//           where: {
-//             id: args.id,
-//           },
-//         });
-//       },
-//     });
-//   },
-// });
+        return ctx.prisma.user.findUniqueOrThrow({
+          where: {
+            id: args.id,
+          },
+        });
+      },
+    });
+  },
+});
 
-// const PhisicalStatePage = modelPage(PhisicalState, "PhisicalStatePage");
+const UserPage = modelPage(User, "UserPage");
 
-// const phisicalStates = extendType({
-//   type: "Query",
-//   definition: (t) => {
-//     t.field("phisicalStates", {
-//       type: nonNull(PhisicalStatePage),
-//       args: {
-//         limit: nonNull(intArg({ default: 10 })),
-//         page: nonNull(intArg({ default: 1 })),
-//       },
-//       resolve: async (_parent, args, ctx) => {
-//         authenticate(ctx);
+const users = extendType({
+  type: "Query",
+  definition: (t) => {
+    t.field("users", {
+      type: nonNull(UserPage),
+      args: {
+        limit: nonNull(intArg({ default: 10 })),
+        page: nonNull(intArg({ default: 1 })),
+      },
+      resolve: async (_parent, args, ctx) => {
+        authenticate(ctx);
 
-//         const totalRows = await ctx.prisma.phisicalState.count();
-//         const pags = paginate(args.limit, args.page, totalRows);
+        const totalRows = await ctx.prisma.user.count();
+        const pags = paginate(args.limit, args.page, totalRows);
 
-//         return {
-//           rows: await ctx.prisma.phisicalState.findMany({
-//             skip: pags.skip,
-//             take: pags.take,
-//           }),
-//           length: pags.length,
-//           pages: pags.pages,
-//         };
-//       },
-//     });
-//   },
-// });
+        return {
+          rows: await ctx.prisma.user.findMany({
+            skip: pags.skip,
+            take: pags.take,
+          }),
+          length: pags.length,
+          pages: pags.pages,
+        };
+      },
+    });
+  },
+});
 
-// const createPhisicalState = extendType({
-//   type: "Mutation",
-//   definition: (t) => {
-//     t.field("createPhisicalState", {
-//       type: nonNull(PhisicalState),
-//       args: {
-//         name: nonNull(stringArg()),
-//         description: stringArg(),
-//       },
-//       resolve: (_parent, args, ctx) => {
-//         authenticate(ctx);
+const createUser = extendType({
+  type: "Mutation",
+  definition: (t) => {
+    t.field("createUser", {
+      type: nonNull(User),
+      args: {
+        name: nonNull(stringArg()),
+        lastname: nonNull(stringArg()),
+        phone: stringArg(),
+        description: stringArg(),
+        username: nonNull(stringArg()),
+        password: nonNull(stringArg()),
+        role: nonNull(stringArg()),
+      },
+      resolve: (_parent, args, ctx) => {
+        authenticate(ctx);
 
-//         return ctx.prisma.phisicalState.create({
-//           data: {
-//             name: args.name,
-//             description: args.description,
-//             institutionId: ctx.user?.institutionId || 0,
-//           },
-//         });
-//       },
-//     });
-//   },
-// });
+        return ctx.prisma.user.create({
+          data: {
+            ...args,
+            institutionId: ctx.user?.institutionId || 0,
+          },
+        });
+      },
+    });
+  },
+});
 
-// const updatePhisicalState = extendType({
-//   type: "Mutation",
-//   definition: (t) => {
-//     t.field("updatePhisicalState", {
-//       type: nonNull(PhisicalState),
-//       args: {
-//         id: nonNull(intArg()),
-//         name: stringArg(),
-//         description: stringArg(),
-//       },
-//       resolve: async (_parent, args, ctx) => {
-//         const phisicalState = await ctx.prisma.phisicalState.findUniqueOrThrow({
-//           where: {
-//             id: args.id,
-//           },
-//         });
+const updateUser = extendType({
+  type: "Mutation",
+  definition: (t) => {
+    t.field("updateUser", {
+      type: nonNull(User),
+      args: {
+        id: nonNull(intArg()),
+        name: stringArg(),
+        lastname: stringArg(),
+        phone: stringArg(),
+        description: stringArg(),
+        username: stringArg(),
+        password: stringArg(),
+        role: stringArg(),
+      },
+      resolve: async (_parent, args, ctx) => {
+        const user = await ctx.prisma.user.findUniqueOrThrow({
+          where: {
+            id: args.id,
+          },
+        });
 
-//         return await ctx.prisma.phisicalState.update({
-//           where: {
-//             id: args.id,
-//           },
-//           data: {
-//             name: args.name || phisicalState.name,
-//             description: args.description || phisicalState.description,
-//           },
-//         });
-//       },
-//     });
-//   },
-// });
+        return await ctx.prisma.user.update({
+          where: {
+            id: args.id,
+          },
+          data: {
+            name: args.name || user.name,
+            lastname: args.lastname || user.lastname,
+            phone: args.phone || user.phone,
+            description: args.description || user.description,
+            username: args.username || user.username,
+            password: args.password || user.password,
+            role: args.role || user.role,
+          },
+        });
+      },
+    });
+  },
+});
 
-// const deletePhisicalState = extendType({
-//   type: "Mutation",
-//   definition: (t) => {
-//     t.field("deletePhisicalState", {
-//       type: nonNull("String"),
-//       args: {
-//         id: nonNull(intArg()),
-//       },
-//       resolve: async (_parent, args, ctx) => {
-//         authenticate(ctx);
+const deleteUser = extendType({
+  type: "Mutation",
+  definition: (t) => {
+    t.field("deleteUser", {
+      type: nonNull("String"),
+      args: {
+        id: nonNull(intArg()),
+      },
+      resolve: async (_parent, args, ctx) => {
+        authenticate(ctx);
 
-//         await ctx.prisma.phisicalState.delete({
-//           where: {
-//             id: args.id,
-//           },
-//         });
+        await ctx.prisma.user.delete({
+          where: {
+            id: args.id,
+          },
+        });
 
-//         return "Deleted successfully";
-//       },
-//     });
-//   },
-// });
+        return "Deleted successfully";
+      },
+    });
+  },
+});
 
-const types = [User];
+const types = [User, user, users, createUser, updateUser, deleteUser];
 
 export default types;
