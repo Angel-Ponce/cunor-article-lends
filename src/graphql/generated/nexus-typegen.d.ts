@@ -71,6 +71,11 @@ export interface NexusGenObjects {
     id: number; // Int!
     realDueDate?: NexusGenScalars['DateTime'] | null; // DateTime
   }
+  LendPage: { // root type
+    length: number; // Int!
+    pages: number; // Int!
+    rows: NexusGenRootTypes['Lend'][]; // [Lend!]!
+  }
   Mutation: {};
   PhisicalState: { // root type
     description?: string | null; // String
@@ -150,20 +155,28 @@ export interface NexusGenFieldTypes {
     dueDate: NexusGenScalars['DateTime']; // DateTime!
     finalPhisicalState: NexusGenRootTypes['PhisicalState'] | null; // PhisicalState
     id: number; // Int!
-    initialPhisicalState: NexusGenRootTypes['PhisicalState'] | null; // PhisicalState
+    initialPhisicalState: NexusGenRootTypes['PhisicalState']; // PhisicalState!
     institution: NexusGenRootTypes['Institution']; // Institution!
     professor: NexusGenRootTypes['Professor']; // Professor!
     realDueDate: NexusGenScalars['DateTime'] | null; // DateTime
     user: NexusGenRootTypes['User']; // User!
   }
+  LendPage: { // field return type
+    length: number; // Int!
+    pages: number; // Int!
+    rows: NexusGenRootTypes['Lend'][]; // [Lend!]!
+  }
   Mutation: { // field return type
+    completeLend: NexusGenRootTypes['Lend']; // Lend!
     createArticle: NexusGenRootTypes['Article']; // Article!
     createInstitution: NexusGenRootTypes['Institution']; // Institution!
+    createLend: NexusGenRootTypes['Lend']; // Lend!
     createPhisicalState: NexusGenRootTypes['PhisicalState']; // PhisicalState!
     createProfessor: NexusGenRootTypes['Professor']; // Professor!
     createUser: NexusGenRootTypes['User']; // User!
     deleteArticle: string; // String!
     deleteInstitution: string; // String!
+    deleteLend: string; // String!
     deletePhisicalState: string; // String!
     deleteProfessor: string; // String!
     deleteUser: string; // String!
@@ -203,6 +216,8 @@ export interface NexusGenFieldTypes {
     articles: NexusGenRootTypes['ArticlePage']; // ArticlePage!
     institution: NexusGenRootTypes['Institution']; // Institution!
     institutions: NexusGenRootTypes['InstitutionPage']; // InstitutionPage!
+    lend: NexusGenRootTypes['Lend']; // Lend!
+    lends: NexusGenRootTypes['LendPage']; // LendPage!
     login: string | null; // String
     me: NexusGenRootTypes['User'] | null; // User
     phisicalState: NexusGenRootTypes['PhisicalState']; // PhisicalState!
@@ -264,14 +279,22 @@ export interface NexusGenFieldTypeNames {
     realDueDate: 'DateTime'
     user: 'User'
   }
+  LendPage: { // field return type name
+    length: 'Int'
+    pages: 'Int'
+    rows: 'Lend'
+  }
   Mutation: { // field return type name
+    completeLend: 'Lend'
     createArticle: 'Article'
     createInstitution: 'Institution'
+    createLend: 'Lend'
     createPhisicalState: 'PhisicalState'
     createProfessor: 'Professor'
     createUser: 'User'
     deleteArticle: 'String'
     deleteInstitution: 'String'
+    deleteLend: 'String'
     deletePhisicalState: 'String'
     deleteProfessor: 'String'
     deleteUser: 'String'
@@ -311,6 +334,8 @@ export interface NexusGenFieldTypeNames {
     articles: 'ArticlePage'
     institution: 'Institution'
     institutions: 'InstitutionPage'
+    lend: 'Lend'
+    lends: 'LendPage'
     login: 'String'
     me: 'User'
     phisicalState: 'PhisicalState'
@@ -339,6 +364,10 @@ export interface NexusGenFieldTypeNames {
 
 export interface NexusGenArgTypes {
   Mutation: {
+    completeLend: { // args
+      id: number; // Int!
+      phisicalStateId: number; // Int!
+    }
     createArticle: { // args
       description?: string | null; // String
       name: string; // String!
@@ -347,6 +376,11 @@ export interface NexusGenArgTypes {
     }
     createInstitution: { // args
       name: string; // String!
+    }
+    createLend: { // args
+      dueDate: NexusGenScalars['DateTime']; // DateTime!
+      phisicalStateId: number; // Int!
+      professorId: number; // Int!
     }
     createPhisicalState: { // args
       description?: string | null; // String
@@ -371,6 +405,9 @@ export interface NexusGenArgTypes {
       id: number; // Int!
     }
     deleteInstitution: { // args
+      id: number; // Int!
+    }
+    deleteLend: { // args
       id: number; // Int!
     }
     deletePhisicalState: { // args
@@ -432,6 +469,13 @@ export interface NexusGenArgTypes {
       id: number; // Int!
     }
     institutions: { // args
+      limit: number; // Int!
+      page: number; // Int!
+    }
+    lend: { // args
+      id: number; // Int!
+    }
+    lends: { // args
       limit: number; // Int!
       page: number; // Int!
     }

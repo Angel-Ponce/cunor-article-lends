@@ -37,21 +37,30 @@ type Lend {
   dueDate: DateTime!
   finalPhisicalState: PhisicalState
   id: Int!
-  initialPhisicalState: PhisicalState
+  initialPhisicalState: PhisicalState!
   institution: Institution!
   professor: Professor!
   realDueDate: DateTime
   user: User!
 }
 
+type LendPage {
+  length: Int!
+  pages: Int!
+  rows: [Lend!]!
+}
+
 type Mutation {
+  completeLend(id: Int!, phisicalStateId: Int!): Lend!
   createArticle(description: String, name: String!, phisicalStateId: Int!, serial: String): Article!
   createInstitution(name: String!): Institution!
+  createLend(dueDate: DateTime!, phisicalStateId: Int!, professorId: Int!): Lend!
   createPhisicalState(description: String, name: String!): PhisicalState!
   createProfessor(lastname: String!, name: String!, personalRegister: String!, phone: String): Professor!
   createUser(description: String, lastname: String!, name: String!, password: String!, phone: String, role: String!, username: String!): User!
   deleteArticle(id: Int!): String!
   deleteInstitution(id: Int!): String!
+  deleteLend(id: Int!): String!
   deletePhisicalState(id: Int!): String!
   deleteProfessor(id: Int!): String!
   deleteUser(id: Int!): String!
@@ -96,6 +105,8 @@ type Query {
   articles(limit: Int! = 10, page: Int! = 1): ArticlePage!
   institution(id: Int!): Institution!
   institutions(limit: Int! = 10, page: Int! = 1): InstitutionPage!
+  lend(id: Int!): Lend!
+  lends(limit: Int! = 10, page: Int! = 1): LendPage!
   login(password: String!, username: String!): String
   me: User
   phisicalState(id: Int!): PhisicalState!

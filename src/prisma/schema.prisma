@@ -69,12 +69,12 @@ model Lend {
     userId                 Int
     professor              Professor     @relation(fields: [professorId], references: [id])
     professorId            Int
-    createdAt              DateTime
-    completed              Boolean
+    createdAt              DateTime      @default(now())
+    completed              Boolean       @default(false)
     dueDate                DateTime
-    realDueDate            DateTime?
+    realDueDate            DateTime?     @default(dbgenerated("null"))
     initialPhisicalStateId Int
-    finalPhisicalStateId   Int?
+    finalPhisicalStateId   Int?          @default(dbgenerated("null"))
     institution            Institution   @relation(fields: [institutionId], references: [id])
     institutionId          Int
     articles               ArticleLend[]
