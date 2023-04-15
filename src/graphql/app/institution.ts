@@ -116,18 +116,20 @@ const deleteInstitution = extendType({
   type: "Mutation",
   definition: (t) => {
     t.field("deleteInstitution", {
-      type: nonNull(Institution),
+      type: nonNull("String"),
       args: {
         id: nonNull(intArg()),
       },
-      resolve: (_parent, args, ctx) => {
+      resolve: async (_parent, args, ctx) => {
         authenticate(ctx);
 
-        return ctx.prisma.institution.delete({
+        await ctx.prisma.institution.delete({
           where: {
             id: args.id,
           },
         });
+
+        return "Deleted successfully";
       },
     });
   },

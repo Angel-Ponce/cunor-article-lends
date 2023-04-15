@@ -130,13 +130,36 @@ const updatePhisicalState = extendType({
   },
 });
 
+const deletePhisicalState = extendType({
+  type: "Mutation",
+  definition: (t) => {
+    t.field("deletePhisicalState", {
+      type: nonNull("String"),
+      args: {
+        id: nonNull(intArg()),
+      },
+      resolve: async (_parent, args, ctx) => {
+        authenticate(ctx);
+
+        await ctx.prisma.phisicalState.delete({
+          where: {
+            id: args.id,
+          },
+        });
+
+        return "Deleted successfully";
+      },
+    });
+  },
+});
+
 const types = [
   PhisicalState,
   phisicalState,
   phisicalStates,
   createPhisicalState,
   updatePhisicalState,
-  //   deleteInstitution,
+  deletePhisicalState,
 ];
 
 export default types;

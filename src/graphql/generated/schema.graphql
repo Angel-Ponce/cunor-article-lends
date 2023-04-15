@@ -16,7 +16,8 @@ type InstitutionPage {
 type Mutation {
   createInstitution(name: String!): Institution!
   createPhisicalState(description: String, name: String!): PhisicalState!
-  deleteInstitution(id: Int!): Institution!
+  deleteInstitution(id: Int!): String!
+  deletePhisicalState(id: Int!): String!
   updateInstitution(id: Int!, name: String): Institution!
   updatePhisicalState(description: String, id: Int!, name: String): PhisicalState!
 }

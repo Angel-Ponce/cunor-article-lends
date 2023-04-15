@@ -74,7 +74,8 @@ export interface NexusGenFieldTypes {
   Mutation: { // field return type
     createInstitution: NexusGenRootTypes['Institution']; // Institution!
     createPhisicalState: NexusGenRootTypes['PhisicalState']; // PhisicalState!
-    deleteInstitution: NexusGenRootTypes['Institution']; // Institution!
+    deleteInstitution: string; // String!
+    deletePhisicalState: string; // String!
     updateInstitution: NexusGenRootTypes['Institution']; // Institution!
     updatePhisicalState: NexusGenRootTypes['PhisicalState']; // PhisicalState!
   }
@@ -110,7 +111,8 @@ export interface NexusGenFieldTypeNames {
   Mutation: { // field return type name
     createInstitution: 'Institution'
     createPhisicalState: 'PhisicalState'
-    deleteInstitution: 'Institution'
+    deleteInstitution: 'String'
+    deletePhisicalState: 'String'
     updateInstitution: 'Institution'
     updatePhisicalState: 'PhisicalState'
   }
@@ -143,6 +145,9 @@ export interface NexusGenArgTypes {
       name: string; // String!
     }
     deleteInstitution: { // args
+      id: number; // Int!
+    }
+    deletePhisicalState: { // args
       id: number; // Int!
     }
     updateInstitution: { // args
