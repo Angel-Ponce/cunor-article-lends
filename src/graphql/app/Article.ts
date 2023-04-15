@@ -10,7 +10,7 @@ export const Article = objectType({
     t.nonNull.string("name");
     t.string("description");
     t.field("phisicalState", {
-      type: nonNull(PhisicalState),
+      type: nonNull("PhisicalState"),
       resolve: async (parent, _args, ctx) => {
         const article = await ctx.prisma.article.findUniqueOrThrow({
           where: {
@@ -26,7 +26,7 @@ export const Article = objectType({
     });
     t.string("serial");
     t.field("institution", {
-      type: nonNull(Institution),
+      type: nonNull("Institution"),
       resolve: async (parent, _args, ctx) => {
         const article = await ctx.prisma.article.findUniqueOrThrow({
           where: {
@@ -55,7 +55,11 @@ const article = extendType({
         authenticate(ctx);
 
         return ctx.prisma.article.findFirstOrThrow({
-          where: { id: args.id, deletedAt: null },
+          where: {
+            id: args.id,
+            deletedAt: null,
+            institutionId: ctx.user?.institutionId || 0,
+          },
         });
       },
     });
@@ -85,6 +89,7 @@ const articles = extendType({
             take: pags.take,
             where: {
               deletedAt: null,
+              institutionId: ctx.user?.institutionId || 0,
             },
           }),
           length: pags.length,
@@ -139,6 +144,7 @@ const updateArticle = extendType({
           where: {
             id: args.id,
             deletedAt: null,
+            institutionId: ctx.user?.institutionId || 0,
           },
         });
 

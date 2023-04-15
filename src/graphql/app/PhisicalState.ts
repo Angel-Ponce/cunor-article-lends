@@ -39,6 +39,7 @@ const phisicalState = extendType({
           where: {
             id: args.id,
             deletedAt: null,
+            institutionId: ctx.user?.institutionId || 0,
           },
         });
       },
@@ -67,7 +68,10 @@ const phisicalStates = extendType({
           rows: await ctx.prisma.phisicalState.findMany({
             skip: pags.skip,
             take: pags.take,
-            where: { deletedAt: null },
+            where: {
+              deletedAt: null,
+              institutionId: ctx.user?.institutionId || 0,
+            },
           }),
           length: pags.length,
           pages: pags.pages,
@@ -118,6 +122,7 @@ const updatePhisicalState = extendType({
           where: {
             id: args.id,
             deletedAt: null,
+            institutionId: ctx.user?.institutionId || 0,
           },
         });
 
