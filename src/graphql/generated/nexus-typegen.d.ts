@@ -32,6 +32,11 @@ export interface NexusGenObjects {
     id: number; // Int!
     name: string; // String!
   }
+  InstitutionPage: { // root type
+    length: number; // Int!
+    pages: number; // Int!
+    rows: NexusGenRootTypes['Institution'][]; // [Institution!]!
+  }
   Mutation: {};
   PhisicalState: { // root type
     description?: string | null; // String
@@ -56,6 +61,11 @@ export interface NexusGenFieldTypes {
     id: number; // Int!
     name: string; // String!
   }
+  InstitutionPage: { // field return type
+    length: number; // Int!
+    pages: number; // Int!
+    rows: NexusGenRootTypes['Institution'][]; // [Institution!]!
+  }
   Mutation: { // field return type
     createInstitution: NexusGenRootTypes['Institution']; // Institution!
     createPhisicalState: NexusGenRootTypes['PhisicalState']; // PhisicalState!
@@ -70,6 +80,7 @@ export interface NexusGenFieldTypes {
   }
   Query: { // field return type
     institution: NexusGenRootTypes['Institution']; // Institution!
+    institutions: NexusGenRootTypes['InstitutionPage']; // InstitutionPage!
     phisicalState: NexusGenRootTypes['PhisicalState']; // PhisicalState!
   }
 }
@@ -78,6 +89,11 @@ export interface NexusGenFieldTypeNames {
   Institution: { // field return type name
     id: 'Int'
     name: 'String'
+  }
+  InstitutionPage: { // field return type name
+    length: 'Int'
+    pages: 'Int'
+    rows: 'Institution'
   }
   Mutation: { // field return type name
     createInstitution: 'Institution'
@@ -93,6 +109,7 @@ export interface NexusGenFieldTypeNames {
   }
   Query: { // field return type name
     institution: 'Institution'
+    institutions: 'InstitutionPage'
     phisicalState: 'PhisicalState'
   }
 }
@@ -117,6 +134,10 @@ export interface NexusGenArgTypes {
   Query: {
     institution: { // args
       id: number; // Int!
+    }
+    institutions: { // args
+      limit: number; // Int!
+      page: number; // Int!
     }
     phisicalState: { // args
       id: number; // Int!

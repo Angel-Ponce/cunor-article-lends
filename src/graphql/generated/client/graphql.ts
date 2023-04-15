@@ -20,6 +20,13 @@ export type Institution = {
   name: Scalars['String'];
 };
 
+export type InstitutionPage = {
+  __typename?: 'InstitutionPage';
+  length: Scalars['Int'];
+  pages: Scalars['Int'];
+  rows: Array<Institution>;
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   createInstitution: Institution;
@@ -61,12 +68,19 @@ export type PhisicalState = {
 export type Query = {
   __typename?: 'Query';
   institution: Institution;
+  institutions: InstitutionPage;
   phisicalState: PhisicalState;
 };
 
 
 export type QueryInstitutionArgs = {
   id: Scalars['Int'];
+};
+
+
+export type QueryInstitutionsArgs = {
+  limit?: InputMaybe<Scalars['Int']>;
+  page?: InputMaybe<Scalars['Int']>;
 };
 
 

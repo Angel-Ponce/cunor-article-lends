@@ -7,6 +7,12 @@ type Institution {
   name: String!
 }
 
+type InstitutionPage {
+  length: Int!
+  pages: Int!
+  rows: [Institution!]!
+}
+
 type Mutation {
   createInstitution(name: String!): Institution!
   createPhisicalState(description: String, name: String!): PhisicalState!
@@ -23,5 +29,6 @@ type PhisicalState {
 
 type Query {
   institution(id: Int!): Institution!
+  institutions(limit: Int! = 10, page: Int! = 1): InstitutionPage!
   phisicalState(id: Int!): PhisicalState!
 }

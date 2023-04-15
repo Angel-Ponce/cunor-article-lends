@@ -30,6 +30,48 @@ const institution = extendType({
   },
 });
 
+const InstitutionPage = objectType({
+  name: "InstitutionPage",
+  definition: (t) => {
+    t.nonNull.list.field("rows", {
+      type: nonNull(Institution),
+    });
+    t.nonNull.int("pages");
+    t.nonNull.int("length");
+  },
+});
+
+const institutions = extendType({
+  type: "Query",
+  definition: (t) => {
+    t.field("institutions", {
+      type: nonNull(InstitutionPage),
+      args: {
+        limit: nonNull(intArg({ default: 10 })),
+        page: nonNull(intArg({ default: 1 })),
+      },
+      resolve: async (_parent, args, ctx) => {
+        authenticate(ctx);
+
+        const totalRows = await ctx.prisma.institution.count();
+        const limit = args.limit;
+        const page = args.page;
+        const offset = (page - 1) * limit;
+        const pages = Math.ceil(totalRows / limit);
+
+        return {
+          rows: await ctx.prisma.institution.findMany({
+            skip: offset,
+            take: limit,
+          }),
+          length: totalRows,
+          pages,
+        };
+      },
+    });
+  },
+});
+
 const createInstitution = extendType({
   type: "Mutation",
   definition: (t) => {
@@ -120,6 +162,7 @@ const deleteInstitution = extendType({
 const types = [
   Institution,
   institution,
+  institutions,
   createInstitution,
   updateInstitution,
   deleteInstitution,
