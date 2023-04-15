@@ -1,11 +1,10 @@
 import jwt from "jwt-simple";
 import { extendType, intArg, nonNull, objectType, stringArg } from "nexus";
-import { Institution } from "./Institution";
 import { authenticate, exclude, modelPage, paginate } from "../../helpers";
 import bcrypt from "bcrypt";
 import { GraphQLError } from "graphql";
 
-export const User = objectType({
+const User = objectType({
   name: "User",
   definition: (t) => {
     t.nonNull.int("id");
@@ -16,7 +15,7 @@ export const User = objectType({
     t.nonNull.string("username");
     t.nonNull.string("role");
     t.field("institution", {
-      type: nonNull(Institution),
+      type: nonNull("Institution"),
       resolve: async (parent, _args, ctx) => {
         const user = await ctx.prisma.user.findFirstOrThrow({
           where: {

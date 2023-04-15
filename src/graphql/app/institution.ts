@@ -1,7 +1,7 @@
 import { extendType, intArg, nonNull, objectType, stringArg } from "nexus";
 import { authenticate, modelPage, paginate } from "../../helpers";
 
-export const Institution = objectType({
+const Institution = objectType({
   name: "Institution",
   definition: (t) => {
     t.nonNull.int("id");

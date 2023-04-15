@@ -1,15 +1,14 @@
 import { extendType, intArg, nonNull, objectType, stringArg } from "nexus";
-import { Institution } from "./Institution";
 import { authenticate, modelPage, paginate } from "../../helpers";
 
-export const PhisicalState = objectType({
+const PhisicalState = objectType({
   name: "PhisicalState",
   definition: (t) => {
     t.nonNull.int("id");
     t.nonNull.string("name");
     t.string("description");
     t.field("institution", {
-      type: nonNull(Institution),
+      type: nonNull("Institution"),
       resolve: async (parent, _args, ctx) => {
         const phisicalState = await ctx.prisma.phisicalState.findFirstOrThrow({
           where: {

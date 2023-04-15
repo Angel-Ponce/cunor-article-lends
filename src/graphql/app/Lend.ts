@@ -7,16 +7,11 @@ import {
   objectType,
   scalarType,
 } from "nexus";
-import { Institution } from "./Institution";
 import { authenticate, modelPage, paginate } from "../../helpers";
 import { GraphQLError, Kind } from "graphql";
-import { PhisicalState } from "./PhisicalState";
-import { User } from "./User";
-import { Professor } from "./Professor";
 import { isValid } from "date-fns";
-import { Article } from "./Article";
 
-export const DateTime = scalarType({
+const DateTime = scalarType({
   name: "DateTime",
   asNexusMethod: "dateTime",
   description: "DateTime custom scalar type",
@@ -61,7 +56,7 @@ const Lend = objectType({
   definition: (t) => {
     t.nonNull.int("id");
     t.field("user", {
-      type: nonNull(User),
+      type: nonNull("User"),
       resolve: async (parent, _args, ctx) => {
         const lend = await ctx.prisma.lend.findUniqueOrThrow({
           where: {
@@ -76,7 +71,7 @@ const Lend = objectType({
       },
     });
     t.field("professor", {
-      type: nonNull(Professor),
+      type: nonNull("Professor"),
       resolve: async (parent, _args, ctx) => {
         const lend = await ctx.prisma.lend.findUniqueOrThrow({
           where: {
@@ -95,7 +90,7 @@ const Lend = objectType({
     t.nonNull.dateTime("dueDate");
     t.dateTime("realDueDate");
     t.field("initialPhisicalState", {
-      type: nonNull(PhisicalState),
+      type: nonNull("PhisicalState"),
       resolve: async (parent, _args, ctx) => {
         const lend = await ctx.prisma.lend.findUniqueOrThrow({
           where: {
@@ -116,7 +111,7 @@ const Lend = objectType({
       },
     });
     t.field("finalPhisicalState", {
-      type: PhisicalState,
+      type: "PhisicalState",
       resolve: async (parent, _args, ctx) => {
         const lend = await ctx.prisma.lend.findUniqueOrThrow({
           where: {
@@ -137,7 +132,7 @@ const Lend = objectType({
       },
     });
     t.field("institution", {
-      type: nonNull(Institution),
+      type: nonNull("Institution"),
       resolve: async (parent, _args, ctx) => {
         const lend = await ctx.prisma.lend.findUniqueOrThrow({
           where: {

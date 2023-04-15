@@ -1,8 +1,7 @@
 import { extendType, intArg, nonNull, objectType, stringArg } from "nexus";
-import { Institution } from "./Institution";
 import { authenticate, modelPage, paginate } from "../../helpers";
 
-export const Professor = objectType({
+const Professor = objectType({
   name: "Professor",
   definition: (t) => {
     t.nonNull.int("id");
@@ -11,7 +10,7 @@ export const Professor = objectType({
     t.string("phone");
     t.nonNull.string("personalRegister");
     t.field("institution", {
-      type: nonNull(Institution),
+      type: nonNull("Institution"),
       resolve: async (parent, _args, ctx) => {
         const professor = await ctx.prisma.professor.findUniqueOrThrow({
           where: {
