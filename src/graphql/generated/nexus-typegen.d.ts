@@ -59,6 +59,18 @@ export interface NexusGenObjects {
     pages: number; // Int!
     rows: NexusGenRootTypes['PhisicalState'][]; // [PhisicalState!]!
   }
+  Professor: { // root type
+    id: number; // Int!
+    lastname: string; // String!
+    name: string; // String!
+    personalRegister: string; // String!
+    phone?: string | null; // String
+  }
+  ProfessorPage: { // root type
+    length: number; // Int!
+    pages: number; // Int!
+    rows: NexusGenRootTypes['Professor'][]; // [Professor!]!
+  }
   Query: {};
   User: { // root type
     description?: string | null; // String
@@ -113,15 +125,18 @@ export interface NexusGenFieldTypes {
     createArticle: NexusGenRootTypes['Article']; // Article!
     createInstitution: NexusGenRootTypes['Institution']; // Institution!
     createPhisicalState: NexusGenRootTypes['PhisicalState']; // PhisicalState!
+    createProfessor: NexusGenRootTypes['Professor']; // Professor!
     createUser: NexusGenRootTypes['User']; // User!
     deleteArticle: string; // String!
     deleteInstitution: string; // String!
     deletePhisicalState: string; // String!
+    deleteProfessor: string; // String!
     deleteUser: string; // String!
     updateArticle: NexusGenRootTypes['Article']; // Article!
     updateInstitution: NexusGenRootTypes['Institution']; // Institution!
     updatePassword: string; // String!
     updatePhisicalState: NexusGenRootTypes['PhisicalState']; // PhisicalState!
+    updateProfessor: NexusGenRootTypes['Professor']; // Professor!
     updateUser: NexusGenRootTypes['User']; // User!
   }
   PhisicalState: { // field return type
@@ -135,6 +150,19 @@ export interface NexusGenFieldTypes {
     pages: number; // Int!
     rows: NexusGenRootTypes['PhisicalState'][]; // [PhisicalState!]!
   }
+  Professor: { // field return type
+    id: number; // Int!
+    institution: NexusGenRootTypes['Institution']; // Institution!
+    lastname: string; // String!
+    name: string; // String!
+    personalRegister: string; // String!
+    phone: string | null; // String
+  }
+  ProfessorPage: { // field return type
+    length: number; // Int!
+    pages: number; // Int!
+    rows: NexusGenRootTypes['Professor'][]; // [Professor!]!
+  }
   Query: { // field return type
     article: NexusGenRootTypes['Article']; // Article!
     articles: NexusGenRootTypes['ArticlePage']; // ArticlePage!
@@ -144,6 +172,8 @@ export interface NexusGenFieldTypes {
     me: NexusGenRootTypes['User'] | null; // User
     phisicalState: NexusGenRootTypes['PhisicalState']; // PhisicalState!
     phisicalStates: NexusGenRootTypes['PhisicalStatePage']; // PhisicalStatePage!
+    professor: NexusGenRootTypes['Professor']; // Professor!
+    professors: NexusGenRootTypes['ProfessorPage']; // ProfessorPage!
     user: NexusGenRootTypes['User']; // User!
     users: NexusGenRootTypes['UserPage']; // UserPage!
   }
@@ -191,15 +221,18 @@ export interface NexusGenFieldTypeNames {
     createArticle: 'Article'
     createInstitution: 'Institution'
     createPhisicalState: 'PhisicalState'
+    createProfessor: 'Professor'
     createUser: 'User'
     deleteArticle: 'String'
     deleteInstitution: 'String'
     deletePhisicalState: 'String'
+    deleteProfessor: 'String'
     deleteUser: 'String'
     updateArticle: 'Article'
     updateInstitution: 'Institution'
     updatePassword: 'String'
     updatePhisicalState: 'PhisicalState'
+    updateProfessor: 'Professor'
     updateUser: 'User'
   }
   PhisicalState: { // field return type name
@@ -213,6 +246,19 @@ export interface NexusGenFieldTypeNames {
     pages: 'Int'
     rows: 'PhisicalState'
   }
+  Professor: { // field return type name
+    id: 'Int'
+    institution: 'Institution'
+    lastname: 'String'
+    name: 'String'
+    personalRegister: 'String'
+    phone: 'String'
+  }
+  ProfessorPage: { // field return type name
+    length: 'Int'
+    pages: 'Int'
+    rows: 'Professor'
+  }
   Query: { // field return type name
     article: 'Article'
     articles: 'ArticlePage'
@@ -222,6 +268,8 @@ export interface NexusGenFieldTypeNames {
     me: 'User'
     phisicalState: 'PhisicalState'
     phisicalStates: 'PhisicalStatePage'
+    professor: 'Professor'
+    professors: 'ProfessorPage'
     user: 'User'
     users: 'UserPage'
   }
@@ -257,6 +305,12 @@ export interface NexusGenArgTypes {
       description?: string | null; // String
       name: string; // String!
     }
+    createProfessor: { // args
+      lastname: string; // String!
+      name: string; // String!
+      personalRegister: string; // String!
+      phone?: string | null; // String
+    }
     createUser: { // args
       description?: string | null; // String
       lastname: string; // String!
@@ -273,6 +327,9 @@ export interface NexusGenArgTypes {
       id: number; // Int!
     }
     deletePhisicalState: { // args
+      id: number; // Int!
+    }
+    deleteProfessor: { // args
       id: number; // Int!
     }
     deleteUser: { // args
@@ -298,6 +355,13 @@ export interface NexusGenArgTypes {
       description?: string | null; // String
       id: number; // Int!
       name?: string | null; // String
+    }
+    updateProfessor: { // args
+      id: number; // Int!
+      lastname?: string | null; // String
+      name?: string | null; // String
+      personalRegister?: string | null; // String
+      phone?: string | null; // String
     }
     updateUser: { // args
       description?: string | null; // String
@@ -332,6 +396,13 @@ export interface NexusGenArgTypes {
       id: number; // Int!
     }
     phisicalStates: { // args
+      limit: number; // Int!
+      page: number; // Int!
+    }
+    professor: { // args
+      id: number; // Int!
+    }
+    professors: { // args
       limit: number; // Int!
       page: number; // Int!
     }

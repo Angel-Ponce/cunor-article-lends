@@ -32,15 +32,18 @@ type Mutation {
   createArticle(description: String, name: String!, phisicalStateId: Int!, serial: String): Article!
   createInstitution(name: String!): Institution!
   createPhisicalState(description: String, name: String!): PhisicalState!
+  createProfessor(lastname: String!, name: String!, personalRegister: String!, phone: String): Professor!
   createUser(description: String, lastname: String!, name: String!, password: String!, phone: String, role: String!, username: String!): User!
   deleteArticle(id: Int!): String!
   deleteInstitution(id: Int!): String!
   deletePhisicalState(id: Int!): String!
+  deleteProfessor(id: Int!): String!
   deleteUser(id: Int!): String!
   updateArticle(description: String, id: Int!, name: String, phisicalStateId: Int, serial: String): Article!
   updateInstitution(id: Int!, name: String): Institution!
   updatePassword(newPassword: String!, oldPassword: String!, userId: Int!): String!
   updatePhisicalState(description: String, id: Int!, name: String): PhisicalState!
+  updateProfessor(id: Int!, lastname: String, name: String, personalRegister: String, phone: String): Professor!
   updateUser(description: String, id: Int!, lastname: String, name: String, phone: String, role: String, username: String): User!
 }
 
@@ -57,6 +60,21 @@ type PhisicalStatePage {
   rows: [PhisicalState!]!
 }
 
+type Professor {
+  id: Int!
+  institution: Institution!
+  lastname: String!
+  name: String!
+  personalRegister: String!
+  phone: String
+}
+
+type ProfessorPage {
+  length: Int!
+  pages: Int!
+  rows: [Professor!]!
+}
+
 type Query {
   article(id: Int!): Article!
   articles(limit: Int! = 10, page: Int! = 1): ArticlePage!
@@ -66,6 +84,8 @@ type Query {
   me: User
   phisicalState(id: Int!): PhisicalState!
   phisicalStates(limit: Int! = 10, page: Int! = 1): PhisicalStatePage!
+  professor(id: Int!): Professor!
+  professors(limit: Int! = 10, page: Int! = 1): ProfessorPage!
   user(id: Int!): User!
   users(limit: Int! = 10, page: Int! = 1): UserPage!
 }
