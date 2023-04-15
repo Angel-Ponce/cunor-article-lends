@@ -1,4 +1,5 @@
 import { extendType, intArg, nonNull, objectType, stringArg } from "nexus";
+import { authenticate } from "../../helpers";
 
 export const Institution = objectType({
   name: "Institution",
@@ -17,6 +18,8 @@ const institution = extendType({
         id: nonNull(intArg()),
       },
       resolve: (_parent, args, ctx) => {
+        authenticate(ctx);
+
         return ctx.prisma.institution.findUniqueOrThrow({
           where: {
             id: args.id,
@@ -36,6 +39,8 @@ const createInstitution = extendType({
         name: nonNull(stringArg()),
       },
       resolve: (_parent, args, ctx) => {
+        authenticate(ctx);
+
         return ctx.prisma.institution.create({
           data: {
             name: args.name,
@@ -56,6 +61,8 @@ const updateInstitution = extendType({
         name: stringArg(),
       },
       resolve: async (_parent, args, ctx) => {
+        authenticate(ctx);
+
         const institution = await ctx.prisma.institution.findUniqueOrThrow({
           where: {
             id: args.id,
@@ -90,6 +97,8 @@ const deleteInstitution = extendType({
         id: nonNull(intArg()),
       },
       resolve: async (_parent, args, ctx) => {
+        authenticate(ctx);
+
         const institution = await ctx.prisma.institution.findUniqueOrThrow({
           where: {
             id: args.id,
