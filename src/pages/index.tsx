@@ -3,7 +3,6 @@ import { Inter } from "@next/font/google";
 import { NextPage } from "next/types";
 import { useQuery } from "@apollo/client";
 import { graphql } from "../graphql/generated/client";
-import { useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/router";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -21,11 +20,7 @@ const PhisicalStates = graphql(`
 const Home: NextPage = () => {
   const { loading, error, data } = useQuery(PhisicalStates);
 
-  const { data: session } = useSession();
-
   const router = useRouter();
-
-  console.log("Session", session);
 
   return (
     <>
@@ -50,29 +45,6 @@ const Home: NextPage = () => {
             <div>{JSON.stringify(data?.phisicalStates)}</div>
           )}
         </div>
-
-        {session ? (
-          <div>
-            <p>Welcome {session.user?.name}</p>
-            <button
-              onClick={() => {
-                signOut();
-              }}
-            >
-              Log out
-            </button>
-          </div>
-        ) : (
-          <div>
-            <button
-              onClick={() => {
-                router.push("/api/auth/signin");
-              }}
-            >
-              Sign in
-            </button>
-          </div>
-        )}
       </div>
     </>
   );
