@@ -7,8 +7,85 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
+model Institution {
+    id             Int             @id @default(autoincrement())
+    name           String          @unique
+    phisicalStates PhisicalState[]
+    users          User[]
+    articles       Article[]
+    professors     Professor[]
+    lends          Lend[]
+}
+
 model PhisicalState {
-    id          Int     @id @default(autoincrement())
-    name        String
-    description String?
+    id            Int         @id @default(autoincrement())
+    name          String
+    description   String?
+    institution   Institution @relation(fields: [institutionId], references: [id])
+    institutionId Int
+    articles      Article[]
+}
+
+model User {
+    id            Int         @id @default(autoincrement())
+    name          String
+    lastname      String
+    phone         String?
+    description   String?
+    username      String      @unique
+    password      String
+    role          String
+    institution   Institution @relation(fields: [institutionId], references: [id])
+    institutionId Int
+    lends         Lend[]
+}
+
+model Article {
+    id              Int           @id @default(autoincrement())
+    name            String
+    description     String?
+    phisicalState   PhisicalState @relation(fields: [phisicalStateId], references: [id])
+    phisicalStateId Int
+    serial          String?
+    institution     Institution   @relation(fields: [institutionId], references: [id])
+    institutionId   Int
+    lends           ArticleLend[]
+}
+
+model Professor {
+    id               Int         @id @default(autoincrement())
+    name             String
+    lastname         String
+    phone            String?
+    personalRegister String      @unique
+    institution      Institution @relation(fields: [institutionId], references: [id])
+    institutionId    Int
+    lends            Lend[]
+}
+
+model Lend {
+    id                     Int           @id @default(autoincrement())
+    user                   User          @relation(fields: [userId], references: [id])
+    userId                 Int
+    professor              Professor     @relation(fields: [professorId], references: [id])
+    professorId            Int
+    createdAt              DateTime
+    completed              Boolean
+    dueDate                DateTime
+    realDueDate            DateTime
+    initialPhisicalStateId Int
+    finalPhisicalStateId   Int
+    institution            Institution   @relation(fields: [institutionId], references: [id])
+    institutionId          Int
+    articles               ArticleLend[]
+}
+
+model ArticleLend {
+    lend      Lend    @relation(fields: [lendId], references: [id])
+    lendId    Int
+    article   Article @relation(fields: [articleId], references: [id])
+    articleId Int
+    count     Int
+
+    @@id([lendId, articleId])
 }
