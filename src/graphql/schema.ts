@@ -1,39 +1,46 @@
-import { makeSchema, objectType, extendType, nonNull, stringArg } from "nexus";
+import {
+  makeSchema,
+  objectType,
+  extendType,
+  nonNull,
+  stringArg,
+  nullable,
+} from "nexus";
 import { join } from "path";
 
-const Book = objectType({
-  name: "Book",
-  definition(t) {
-    t.id("id"), t.string("name");
+const PhisicalState = objectType({
+  name: "PhisicalState",
+  definition: (t) => {
+    t.int("id"), t.string("name"), t.nullable.string("description");
   },
 });
 
-const Books = extendType({
+const PhisicalStates = extendType({
   type: "Query",
-  definition(t) {
-    t.list.field("books", {
-      type: Book,
+  definition: (t) => {
+    t.list.field("phisicalStates", {
+      type: PhisicalState,
       resolve: (_parent, _args, ctx) => {
-        return ctx.prisma.book.findMany();
+        return ctx.prisma.phisicalState.findMany();
       },
     });
   },
 });
 
-const CreateBook = extendType({
+const CreatePhisicalState = extendType({
   type: "Mutation",
-  definition(t) {
-    t.nonNull.field("createBook", {
-      type: Book,
+  definition: (t) => {
+    t.nonNull.field("createPhisicalState", {
+      type: PhisicalState,
       args: {
         name: nonNull(stringArg()),
+        description: nullable(stringArg()),
       },
       resolve: (_parent, args, ctx) => {
-        const { name } = args;
-
-        return ctx.prisma.book.create({
+        return ctx.prisma.phisicalState.create({
           data: {
-            name,
+            name: args.name,
+            description: args.description,
           },
         });
       },
@@ -42,7 +49,7 @@ const CreateBook = extendType({
 });
 
 const schema = makeSchema({
-  types: [Book, Books, CreateBook],
+  types: [PhisicalState, PhisicalStates, CreatePhisicalState],
   contextType: {
     module: join(process.cwd(), "src/graphql/context.ts"),
     export: "Context",

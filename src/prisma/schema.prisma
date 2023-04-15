@@ -7,7 +7,8 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
-model Book {
-    id   String @id @default(cuid())
-    name String
+model PhisicalState {
+    id          Int     @id @default(autoincrement())
+    name        String
+    description String?
 }

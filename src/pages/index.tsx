@@ -8,17 +8,18 @@ import { useRouter } from "next/router";
 
 const inter = Inter({ subsets: ["latin"] });
 
-const GetBooksDocument = graphql(`
-  query GetBooks {
-    books {
+const PhisicalStates = graphql(`
+  query PhisicalStates {
+    phisicalStates {
       id
       name
+      description
     }
   }
 `);
 
 const Home: NextPage = () => {
-  const { loading, error, data } = useQuery(GetBooksDocument);
+  const { loading, error, data } = useQuery(PhisicalStates);
 
   const { data: session } = useSession();
 
@@ -41,9 +42,12 @@ const Home: NextPage = () => {
           {loading ? (
             <p>Loading...</p>
           ) : error ? (
-            <p>Something went wrong.</p>
+            <>
+              <p>Something went wrong.</p>
+              <p>{JSON.stringify(error)}</p>
+            </>
           ) : (
-            <div>{JSON.stringify(data?.books)}</div>
+            <div>{JSON.stringify(data?.phisicalStates)}</div>
           )}
         </div>
 

@@ -9,9 +9,8 @@
     "start": "next start",
     "lint": "next lint",
     "format": "prettier --write .",
-    "prisma:migrate": "dotenv -e .env.migrations -- prisma migrate dev",
-    "prisma:generate": "prisma generate --data-proxy",
-    "prisma:studio": "dotenv -e .env.migrations -- prisma studio",
+    "prisma:migrate": "prisma migrate dev",
+    "prisma:generate": "prisma generate",
     "generate": "graphql-codegen --watch"
   },
   "dependencies": {
