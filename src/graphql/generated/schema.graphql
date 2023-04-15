@@ -2,6 +2,21 @@
 ### Do not make changes to this file directly
 
 
+type Article {
+  description: String
+  id: Int!
+  institution: Institution!
+  name: String!
+  phisicalState: PhisicalState!
+  serial: String
+}
+
+type ArticlePage {
+  length: Int!
+  pages: Int!
+  rows: [Article!]!
+}
+
 type Institution {
   id: Int!
   name: String!
@@ -14,12 +29,15 @@ type InstitutionPage {
 }
 
 type Mutation {
+  createArticle(description: String, name: String!, phisicalStateId: Int!, serial: String): Article!
   createInstitution(name: String!): Institution!
   createPhisicalState(description: String, name: String!): PhisicalState!
   createUser(description: String, lastname: String!, name: String!, password: String!, phone: String, role: String!, username: String!): User!
+  deleteArticle(id: Int!): String!
   deleteInstitution(id: Int!): String!
   deletePhisicalState(id: Int!): String!
   deleteUser(id: Int!): String!
+  updateArticle(description: String, id: Int!, name: String, phisicalStateId: Int, serial: String): Article!
   updateInstitution(id: Int!, name: String): Institution!
   updatePassword(newPassword: String!, oldPassword: String!, userId: Int!): String!
   updatePhisicalState(description: String, id: Int!, name: String): PhisicalState!
@@ -40,6 +58,8 @@ type PhisicalStatePage {
 }
 
 type Query {
+  article(id: Int!): Article!
+  articles(limit: Int! = 10, page: Int! = 1): ArticlePage!
   institution(id: Int!): Institution!
   institutions(limit: Int! = 10, page: Int! = 1): InstitutionPage!
   login(password: String!, username: String!): String

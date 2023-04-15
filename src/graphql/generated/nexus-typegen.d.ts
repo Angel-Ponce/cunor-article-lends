@@ -28,6 +28,17 @@ export interface NexusGenScalars {
 }
 
 export interface NexusGenObjects {
+  Article: { // root type
+    description?: string | null; // String
+    id: number; // Int!
+    name: string; // String!
+    serial?: string | null; // String
+  }
+  ArticlePage: { // root type
+    length: number; // Int!
+    pages: number; // Int!
+    rows: NexusGenRootTypes['Article'][]; // [Article!]!
+  }
   Institution: { // root type
     id: number; // Int!
     name: string; // String!
@@ -76,6 +87,19 @@ export type NexusGenRootTypes = NexusGenObjects
 export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
 
 export interface NexusGenFieldTypes {
+  Article: { // field return type
+    description: string | null; // String
+    id: number; // Int!
+    institution: NexusGenRootTypes['Institution']; // Institution!
+    name: string; // String!
+    phisicalState: NexusGenRootTypes['PhisicalState']; // PhisicalState!
+    serial: string | null; // String
+  }
+  ArticlePage: { // field return type
+    length: number; // Int!
+    pages: number; // Int!
+    rows: NexusGenRootTypes['Article'][]; // [Article!]!
+  }
   Institution: { // field return type
     id: number; // Int!
     name: string; // String!
@@ -86,12 +110,15 @@ export interface NexusGenFieldTypes {
     rows: NexusGenRootTypes['Institution'][]; // [Institution!]!
   }
   Mutation: { // field return type
+    createArticle: NexusGenRootTypes['Article']; // Article!
     createInstitution: NexusGenRootTypes['Institution']; // Institution!
     createPhisicalState: NexusGenRootTypes['PhisicalState']; // PhisicalState!
     createUser: NexusGenRootTypes['User']; // User!
+    deleteArticle: string; // String!
     deleteInstitution: string; // String!
     deletePhisicalState: string; // String!
     deleteUser: string; // String!
+    updateArticle: NexusGenRootTypes['Article']; // Article!
     updateInstitution: NexusGenRootTypes['Institution']; // Institution!
     updatePassword: string; // String!
     updatePhisicalState: NexusGenRootTypes['PhisicalState']; // PhisicalState!
@@ -109,6 +136,8 @@ export interface NexusGenFieldTypes {
     rows: NexusGenRootTypes['PhisicalState'][]; // [PhisicalState!]!
   }
   Query: { // field return type
+    article: NexusGenRootTypes['Article']; // Article!
+    articles: NexusGenRootTypes['ArticlePage']; // ArticlePage!
     institution: NexusGenRootTypes['Institution']; // Institution!
     institutions: NexusGenRootTypes['InstitutionPage']; // InstitutionPage!
     login: string | null; // String
@@ -136,6 +165,19 @@ export interface NexusGenFieldTypes {
 }
 
 export interface NexusGenFieldTypeNames {
+  Article: { // field return type name
+    description: 'String'
+    id: 'Int'
+    institution: 'Institution'
+    name: 'String'
+    phisicalState: 'PhisicalState'
+    serial: 'String'
+  }
+  ArticlePage: { // field return type name
+    length: 'Int'
+    pages: 'Int'
+    rows: 'Article'
+  }
   Institution: { // field return type name
     id: 'Int'
     name: 'String'
@@ -146,12 +188,15 @@ export interface NexusGenFieldTypeNames {
     rows: 'Institution'
   }
   Mutation: { // field return type name
+    createArticle: 'Article'
     createInstitution: 'Institution'
     createPhisicalState: 'PhisicalState'
     createUser: 'User'
+    deleteArticle: 'String'
     deleteInstitution: 'String'
     deletePhisicalState: 'String'
     deleteUser: 'String'
+    updateArticle: 'Article'
     updateInstitution: 'Institution'
     updatePassword: 'String'
     updatePhisicalState: 'PhisicalState'
@@ -169,6 +214,8 @@ export interface NexusGenFieldTypeNames {
     rows: 'PhisicalState'
   }
   Query: { // field return type name
+    article: 'Article'
+    articles: 'ArticlePage'
     institution: 'Institution'
     institutions: 'InstitutionPage'
     login: 'String'
@@ -197,6 +244,12 @@ export interface NexusGenFieldTypeNames {
 
 export interface NexusGenArgTypes {
   Mutation: {
+    createArticle: { // args
+      description?: string | null; // String
+      name: string; // String!
+      phisicalStateId: number; // Int!
+      serial?: string | null; // String
+    }
     createInstitution: { // args
       name: string; // String!
     }
@@ -213,6 +266,9 @@ export interface NexusGenArgTypes {
       role: string; // String!
       username: string; // String!
     }
+    deleteArticle: { // args
+      id: number; // Int!
+    }
     deleteInstitution: { // args
       id: number; // Int!
     }
@@ -221,6 +277,13 @@ export interface NexusGenArgTypes {
     }
     deleteUser: { // args
       id: number; // Int!
+    }
+    updateArticle: { // args
+      description?: string | null; // String
+      id: number; // Int!
+      name?: string | null; // String
+      phisicalStateId?: number | null; // Int
+      serial?: string | null; // String
     }
     updateInstitution: { // args
       id: number; // Int!
@@ -247,6 +310,13 @@ export interface NexusGenArgTypes {
     }
   }
   Query: {
+    article: { // args
+      id: number; // Int!
+    }
+    articles: { // args
+      limit: number; // Int!
+      page: number; // Int!
+    }
     institution: { // args
       id: number; // Int!
     }

@@ -1,41 +1,61 @@
 import { extendType, intArg, nonNull, objectType, stringArg } from "nexus";
 import { Institution } from "./Institution";
-import { authenticate, modelPage, paginate } from "../../helpers";
+import { authenticate, exclude, modelPage, paginate } from "../../helpers";
+import { GraphQLError } from "graphql";
+import { PhisicalState } from "./PhisicalState";
 
-export const PhisicalState = objectType({
-  name: "PhisicalState",
+const Article = objectType({
+  name: "Article",
   definition: (t) => {
     t.nonNull.int("id");
     t.nonNull.string("name");
     t.string("description");
-    t.field("institution", {
-      type: nonNull(Institution),
+    t.field("phisicalState", {
+      type: nonNull(PhisicalState),
       resolve: async (parent, _args, ctx) => {
-        const phisicalState = await ctx.prisma.phisicalState.findFirstOrThrow({
+        const article = await ctx.prisma.article.findUniqueOrThrow({
           where: {
             id: parent.id,
           },
-          select: { institution: true },
+          select: {
+            phisicalState: true,
+          },
         });
 
-        return phisicalState.institution;
+        return article.phisicalState;
+      },
+    });
+    t.string("serial");
+    t.field("institution", {
+      type: nonNull(Institution),
+      resolve: async (parent, _args, ctx) => {
+        const article = await ctx.prisma.article.findUniqueOrThrow({
+          where: {
+            id: parent.id,
+          },
+          select: {
+            institution: true,
+          },
+        });
+
+        return article.institution;
       },
     });
   },
 });
 
-const phisicalState = extendType({
+const article = extendType({
   type: "Query",
   definition: (t) => {
-    t.field("phisicalState", {
-      type: nonNull(PhisicalState),
+    t.field("article", {
+      type: nonNull(Article),
       args: {
         id: nonNull(intArg()),
       },
       resolve: (_parent, args, ctx) => {
         authenticate(ctx);
 
-        return ctx.prisma.phisicalState.findUniqueOrThrow({
+        return ctx.prisma.article.findUniqueOrThrow({
           where: {
             id: args.id,
           },
@@ -45,13 +65,13 @@ const phisicalState = extendType({
   },
 });
 
-const PhisicalStatePage = modelPage(PhisicalState, "PhisicalStatePage");
+const ArticlePage = modelPage(Article, "ArticlePage");
 
-const phisicalStates = extendType({
+const articles = extendType({
   type: "Query",
   definition: (t) => {
-    t.field("phisicalStates", {
-      type: nonNull(PhisicalStatePage),
+    t.field("articles", {
+      type: nonNull(ArticlePage),
       args: {
         limit: nonNull(intArg({ default: 10 })),
         page: nonNull(intArg({ default: 1 })),
@@ -59,11 +79,11 @@ const phisicalStates = extendType({
       resolve: async (_parent, args, ctx) => {
         authenticate(ctx);
 
-        const totalRows = await ctx.prisma.phisicalState.count();
+        const totalRows = await ctx.prisma.article.count();
         const pags = paginate(args.limit, args.page, totalRows);
 
         return {
-          rows: await ctx.prisma.phisicalState.findMany({
+          rows: await ctx.prisma.article.findMany({
             skip: pags.skip,
             take: pags.take,
           }),
@@ -75,22 +95,23 @@ const phisicalStates = extendType({
   },
 });
 
-const createPhisicalState = extendType({
+const createArticle = extendType({
   type: "Mutation",
   definition: (t) => {
-    t.field("createPhisicalState", {
-      type: nonNull(PhisicalState),
+    t.field("createArticle", {
+      type: nonNull(Article),
       args: {
         name: nonNull(stringArg()),
         description: stringArg(),
+        phisicalStateId: nonNull(intArg()),
+        serial: stringArg(),
       },
       resolve: (_parent, args, ctx) => {
         authenticate(ctx);
 
-        return ctx.prisma.phisicalState.create({
+        return ctx.prisma.article.create({
           data: {
-            name: args.name,
-            description: args.description,
+            ...args,
             institutionId: ctx.user?.institutionId || 0,
           },
         });
@@ -99,32 +120,36 @@ const createPhisicalState = extendType({
   },
 });
 
-const updatePhisicalState = extendType({
+const updateArticle = extendType({
   type: "Mutation",
   definition: (t) => {
-    t.field("updatePhisicalState", {
-      type: nonNull(PhisicalState),
+    t.field("updateArticle", {
+      type: nonNull(Article),
       args: {
         id: nonNull(intArg()),
         name: stringArg(),
         description: stringArg(),
+        phisicalStateId: intArg(),
+        serial: stringArg(),
       },
       resolve: async (_parent, args, ctx) => {
         authenticate(ctx);
 
-        const phisicalState = await ctx.prisma.phisicalState.findUniqueOrThrow({
+        const article = await ctx.prisma.article.findUniqueOrThrow({
           where: {
             id: args.id,
           },
         });
 
-        return await ctx.prisma.phisicalState.update({
+        return await ctx.prisma.article.update({
           where: {
             id: args.id,
           },
           data: {
-            name: args.name || phisicalState.name,
-            description: args.description || phisicalState.description,
+            name: args.name || article.name,
+            description: args.description || article.description,
+            phisicalStateId: args.phisicalStateId || article.phisicalStateId,
+            serial: args.serial || article.serial,
           },
         });
       },
@@ -132,10 +157,10 @@ const updatePhisicalState = extendType({
   },
 });
 
-const deletePhisicalState = extendType({
+const deleteArticle = extendType({
   type: "Mutation",
   definition: (t) => {
-    t.field("deletePhisicalState", {
+    t.field("deleteArticle", {
       type: nonNull("String"),
       args: {
         id: nonNull(intArg()),
@@ -143,7 +168,7 @@ const deletePhisicalState = extendType({
       resolve: async (_parent, args, ctx) => {
         authenticate(ctx);
 
-        await ctx.prisma.phisicalState.delete({
+        await ctx.prisma.article.delete({
           where: {
             id: args.id,
           },
@@ -156,12 +181,12 @@ const deletePhisicalState = extendType({
 });
 
 const types = [
-  PhisicalState,
-  phisicalState,
-  phisicalStates,
-  createPhisicalState,
-  updatePhisicalState,
-  deletePhisicalState,
+  Article,
+  article,
+  articles,
+  createArticle,
+  updateArticle,
+  deleteArticle,
 ];
 
 export default types;
