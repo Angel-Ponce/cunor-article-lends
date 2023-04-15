@@ -28,12 +28,11 @@ export interface NexusGenScalars {
 }
 
 export interface NexusGenObjects {
-  Mutation: {};
-  PhisicalState: { // root type
-    description?: string | null; // String
-    id?: number | null; // Int
-    name?: string | null; // String
+  Institution: { // root type
+    id: number; // Int!
+    name: string; // String!
   }
+  Mutation: {};
   Query: {};
 }
 
@@ -48,38 +47,51 @@ export type NexusGenRootTypes = NexusGenObjects
 export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
 
 export interface NexusGenFieldTypes {
-  Mutation: { // field return type
-    createPhisicalState: NexusGenRootTypes['PhisicalState']; // PhisicalState!
+  Institution: { // field return type
+    id: number; // Int!
+    name: string; // String!
   }
-  PhisicalState: { // field return type
-    description: string | null; // String
-    id: number | null; // Int
-    name: string | null; // String
+  Mutation: { // field return type
+    createInstitution: NexusGenRootTypes['Institution']; // Institution!
+    deleteInstitution: NexusGenRootTypes['Institution']; // Institution!
+    updateInstitution: NexusGenRootTypes['Institution']; // Institution!
   }
   Query: { // field return type
-    phisicalStates: Array<NexusGenRootTypes['PhisicalState'] | null> | null; // [PhisicalState]
+    institution: NexusGenRootTypes['Institution']; // Institution!
   }
 }
 
 export interface NexusGenFieldTypeNames {
-  Mutation: { // field return type name
-    createPhisicalState: 'PhisicalState'
-  }
-  PhisicalState: { // field return type name
-    description: 'String'
+  Institution: { // field return type name
     id: 'Int'
     name: 'String'
   }
+  Mutation: { // field return type name
+    createInstitution: 'Institution'
+    deleteInstitution: 'Institution'
+    updateInstitution: 'Institution'
+  }
   Query: { // field return type name
-    phisicalStates: 'PhisicalState'
+    institution: 'Institution'
   }
 }
 
 export interface NexusGenArgTypes {
   Mutation: {
-    createPhisicalState: { // args
-      description?: string | null; // String
+    createInstitution: { // args
       name: string; // String!
+    }
+    deleteInstitution: { // args
+      id: number; // Int!
+    }
+    updateInstitution: { // args
+      id: number; // Int!
+      name?: string | null; // String
+    }
+  }
+  Query: {
+    institution: { // args
+      id: number; // Int!
     }
   }
 }

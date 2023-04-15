@@ -2,16 +2,17 @@
 ### Do not make changes to this file directly
 
 
-type Mutation {
-  createPhisicalState(description: String, name: String!): PhisicalState!
+type Institution {
+  id: Int!
+  name: String!
 }
 
-type PhisicalState {
-  description: String
-  id: Int
-  name: String
+type Mutation {
+  createInstitution(name: String!): Institution!
+  deleteInstitution(id: Int!): Institution!
+  updateInstitution(id: Int!, name: String): Institution!
 }
 
 type Query {
-  phisicalStates: [PhisicalState]
+  institution(id: Int!): Institution!
 }

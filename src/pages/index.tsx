@@ -2,38 +2,24 @@ import { NextPage } from "next/types";
 import { useQuery } from "@apollo/client";
 import { graphql } from "../graphql/generated/client";
 
-const PhisicalStates = graphql(`
-  query PhisicalStates {
-    phisicalStates {
+const query = graphql(`
+  query institution {
+    institution(id: 1) {
       id
       name
-      description
     }
   }
 `);
 
 const Home: NextPage = () => {
-  const { loading, error, data } = useQuery(PhisicalStates);
+  const { data, error, loading } = useQuery(query);
 
   return (
-    <>
-      <div>
-        <p className="text-blue-800 text-2xl font-medium">Quantum Stack</p>
-
-        <div>
-          {loading ? (
-            <p>Loading...</p>
-          ) : error ? (
-            <>
-              <p>Something went wrong.</p>
-              <p>{JSON.stringify(error)}</p>
-            </>
-          ) : (
-            <div>{JSON.stringify(data?.phisicalStates)}</div>
-          )}
-        </div>
-      </div>
-    </>
+    <div>
+      <p className="text-blue-800 text-2xl font-medium">Quantum</p>
+      <p>{JSON.stringify(error)}</p>
+      <p>{JSON.stringify(data)}</p>
+    </div>
   );
 };
 
