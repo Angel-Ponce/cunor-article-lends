@@ -1,5 +1,5 @@
 import { extendType, intArg, nonNull, objectType, stringArg } from "nexus";
-import { authenticate } from "../../helpers";
+import { authenticate, modelPage, paginate } from "../../helpers";
 
 export const Institution = objectType({
   name: "Institution",
@@ -30,16 +30,7 @@ const institution = extendType({
   },
 });
 
-const InstitutionPage = objectType({
-  name: "InstitutionPage",
-  definition: (t) => {
-    t.nonNull.list.field("rows", {
-      type: nonNull(Institution),
-    });
-    t.nonNull.int("pages");
-    t.nonNull.int("length");
-  },
-});
+const InstitutionPage = modelPage(Institution, "InstitutionPage");
 
 const institutions = extendType({
   type: "Query",
@@ -54,18 +45,16 @@ const institutions = extendType({
         authenticate(ctx);
 
         const totalRows = await ctx.prisma.institution.count();
-        const limit = args.limit;
-        const page = args.page;
-        const offset = (page - 1) * limit;
-        const pages = Math.ceil(totalRows / limit);
+
+        const pags = paginate(args.limit, args.page, totalRows);
 
         return {
           rows: await ctx.prisma.institution.findMany({
-            skip: offset,
-            take: limit,
+            skip: pags.skip,
+            take: pags.take,
           }),
-          length: totalRows,
-          pages,
+          length: pags.length,
+          pages: pags.pages,
         };
       },
     });

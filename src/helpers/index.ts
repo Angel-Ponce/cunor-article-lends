@@ -1,3 +1,5 @@
 import { authenticate } from "./authenticate";
+import { modelPage } from "./modelPage";
+import { paginate } from "./paginate";
 
-export { authenticate };
+export { authenticate, modelPage, paginate };
