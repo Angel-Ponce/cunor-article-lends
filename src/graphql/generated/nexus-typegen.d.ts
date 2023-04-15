@@ -29,6 +29,10 @@ declare global {
 }
 
 export interface NexusGenInputs {
+  InputArticleLend: { // input type
+    articleId: number; // Int!
+    count: number; // Int!
+  }
 }
 
 export interface NexusGenEnums {
@@ -367,6 +371,7 @@ export interface NexusGenFieldTypeNames {
 export interface NexusGenArgTypes {
   Mutation: {
     completeLend: { // args
+      articles: NexusGenInputs['InputArticleLend'][]; // [InputArticleLend!]!
       id: number; // Int!
       phisicalStateId: number; // Int!
     }
@@ -517,7 +522,7 @@ export interface NexusGenTypeInterfaces {
 
 export type NexusGenObjectNames = keyof NexusGenObjects;
 
-export type NexusGenInputNames = never;
+export type NexusGenInputNames = keyof NexusGenInputs;
 
 export type NexusGenEnumNames = never;
 

@@ -20,6 +20,11 @@ type ArticlePage {
 """DateTime custom scalar type"""
 scalar DateTime
 
+input InputArticleLend {
+  articleId: Int!
+  count: Int!
+}
+
 type Institution {
   id: Int!
   name: String!
@@ -52,7 +57,7 @@ type LendPage {
 }
 
 type Mutation {
-  completeLend(id: Int!, phisicalStateId: Int!): Lend!
+  completeLend(articles: [InputArticleLend!]!, id: Int!, phisicalStateId: Int!): Lend!
   createArticle(description: String, name: String!, phisicalStateId: Int!, serial: String): Article!
   createInstitution(name: String!): Institution!
   createLend(dueDate: DateTime!, phisicalStateId: Int!, professorId: Int!): Lend!

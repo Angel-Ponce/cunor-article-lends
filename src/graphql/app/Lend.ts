@@ -1,6 +1,8 @@
 import {
   extendType,
+  inputObjectType,
   intArg,
+  list,
   nonNull,
   objectType,
   scalarType,
@@ -238,6 +240,14 @@ const createLend = extendType({
   },
 });
 
+const InputArticleLend = inputObjectType({
+  name: "InputArticleLend",
+  definition: (t) => {
+    t.nonNull.int("articleId");
+    t.nonNull.int("count");
+  },
+});
+
 const completeLend = extendType({
   type: "Mutation",
   definition: (t) => {
@@ -246,6 +256,7 @@ const completeLend = extendType({
       args: {
         id: nonNull(intArg()),
         phisicalStateId: nonNull(intArg()),
+        articles: nonNull(list(nonNull(InputArticleLend))),
       },
       resolve: async (_parent, args, ctx) => {
         authenticate(ctx);
@@ -258,6 +269,12 @@ const completeLend = extendType({
             completed: true,
             realDueDate: new Date(),
             finalPhisicalStateId: args.phisicalStateId,
+            articles: {
+              create: args.articles.map((a) => ({
+                articleId: a.articleId,
+                count: a.count,
+              })),
+            },
           },
         });
       },
