@@ -1,9 +1,9 @@
 const paginate = (limit: number, page: number, totalRows: number) => {
   return {
-    skip: (page - 1) * limit,
-    take: limit,
+    skip: limit > 0 ? (page - 1) * limit : 0,
+    take: limit > 0 ? limit : totalRows,
     length: totalRows,
-    pages: Math.ceil(totalRows / limit),
+    pages: limit > 0 ? Math.ceil(totalRows / limit) : 1,
   };
 };
 
