@@ -60,7 +60,12 @@ const phisicalStates = extendType({
       resolve: async (_parent, args, ctx) => {
         authenticate(ctx);
 
-        const totalRows = await ctx.prisma.phisicalState.count();
+        const totalRows = await ctx.prisma.phisicalState.count({
+          where: {
+            deletedAt: null,
+            institutionId: ctx.user?.institutionId || 0,
+          },
+        });
         const pags = paginate(args.limit, args.page, totalRows);
 
         return {

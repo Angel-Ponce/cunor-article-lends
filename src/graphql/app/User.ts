@@ -110,7 +110,12 @@ const users = extendType({
       resolve: async (_parent, args, ctx) => {
         authenticate(ctx);
 
-        const totalRows = await ctx.prisma.user.count();
+        const totalRows = await ctx.prisma.user.count({
+          where: {
+            deletedAt: null,
+            institutionId: ctx.user?.institutionId || 0,
+          },
+        });
         const pags = paginate(args.limit, args.page, totalRows);
 
         return {
