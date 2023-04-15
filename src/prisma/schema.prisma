@@ -69,29 +69,29 @@ model Professor {
 }
 
 model Lend {
-    id                     Int           @id @default(autoincrement())
-    user                   User          @relation(fields: [userId], references: [id])
-    userId                 Int
-    professor              Professor     @relation(fields: [professorId], references: [id])
-    professorId            Int
-    createdAt              DateTime      @default(now())
-    completed              Boolean       @default(false)
-    dueDate                DateTime
-    realDueDate            DateTime?     @default(dbgenerated("null"))
-    initialPhisicalStateId Int
-    finalPhisicalStateId   Int?          @default(dbgenerated("null"))
-    institution            Institution   @relation(fields: [institutionId], references: [id])
-    institutionId          Int
-    articles               ArticleLend[]
-    deletedAt              DateTime?     @default(dbgenerated("null"))
+    id            Int           @id @default(autoincrement())
+    user          User          @relation(fields: [userId], references: [id])
+    userId        Int
+    professor     Professor     @relation(fields: [professorId], references: [id])
+    professorId   Int
+    createdAt     DateTime      @default(now())
+    completed     Boolean       @default(false)
+    dueDate       DateTime
+    realDueDate   DateTime?     @default(dbgenerated("null"))
+    institution   Institution   @relation(fields: [institutionId], references: [id])
+    institutionId Int
+    articles      ArticleLend[]
+    deletedAt     DateTime?     @default(dbgenerated("null"))
 }
 
 model ArticleLend {
-    lend      Lend    @relation(fields: [lendId], references: [id])
-    lendId    Int
-    article   Article @relation(fields: [articleId], references: [id])
-    articleId Int
-    count     Int
+    lend                   Lend    @relation(fields: [lendId], references: [id])
+    lendId                 Int
+    initialPhisicalStateId Int
+    finalPhisicalStateId   Int?    @default(dbgenerated("null"))
+    article                Article @relation(fields: [articleId], references: [id])
+    articleId              Int
+    count                  Int
 
     @@id([lendId, articleId])
 }

@@ -14,6 +14,9 @@ type Article {
 type ArticleLend {
   article: Article!
   count: Int!
+  finalPhisicalState: PhisicalState
+  initialPhisicalState: PhisicalState!
+  lend: Lend!
 }
 
 type ArticlePage {
@@ -28,6 +31,12 @@ scalar DateTime
 input InputArticleLend {
   articleId: Int!
   count: Int!
+  phisicalStateId: Int!
+}
+
+input InputArticleLendCompleted {
+  articleId: Int!
+  phisicalStateId: Int!
 }
 
 type Institution {
@@ -52,9 +61,7 @@ type Lend {
   completed: Boolean!
   createdAt: DateTime!
   dueDate: DateTime!
-  finalPhisicalState: PhisicalState
   id: Int!
-  initialPhisicalState: PhisicalState!
   institution: Institution!
   professor: Professor!
   realDueDate: DateTime
@@ -68,7 +75,7 @@ type LendPage {
 }
 
 type Mutation {
-  completeLend(id: Int!, phisicalStateId: Int!): Lend!
+  completeLend(articlesStates: [InputArticleLendCompleted!]!, id: Int!): Lend!
   createArticle(description: String, name: String!, phisicalStateId: Int!, serial: String): Article!
   createInstitution(name: String!): Institution!
   createLend(articles: [InputArticleLend!]!, dueDate: DateTime!, phisicalStateId: Int!, professorId: Int!): Lend!

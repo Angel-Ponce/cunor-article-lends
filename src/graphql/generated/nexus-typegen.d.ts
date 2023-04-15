@@ -32,6 +32,11 @@ export interface NexusGenInputs {
   InputArticleLend: { // input type
     articleId: number; // Int!
     count: number; // Int!
+    phisicalStateId: number; // Int!
+  }
+  InputArticleLendCompleted: { // input type
+    articleId: number; // Int!
+    phisicalStateId: number; // Int!
   }
 }
 
@@ -57,6 +62,7 @@ export interface NexusGenObjects {
   ArticleLend: { // root type
     article: NexusGenRootTypes['Article']; // Article!
     count: number; // Int!
+    lend: NexusGenRootTypes['Lend']; // Lend!
   }
   ArticlePage: { // root type
     length: number; // Int!
@@ -146,6 +152,9 @@ export interface NexusGenFieldTypes {
   ArticleLend: { // field return type
     article: NexusGenRootTypes['Article']; // Article!
     count: number; // Int!
+    finalPhisicalState: NexusGenRootTypes['PhisicalState'] | null; // PhisicalState
+    initialPhisicalState: NexusGenRootTypes['PhisicalState']; // PhisicalState!
+    lend: NexusGenRootTypes['Lend']; // Lend!
   }
   ArticlePage: { // field return type
     length: number; // Int!
@@ -172,9 +181,7 @@ export interface NexusGenFieldTypes {
     completed: boolean; // Boolean!
     createdAt: NexusGenScalars['DateTime']; // DateTime!
     dueDate: NexusGenScalars['DateTime']; // DateTime!
-    finalPhisicalState: NexusGenRootTypes['PhisicalState'] | null; // PhisicalState
     id: number; // Int!
-    initialPhisicalState: NexusGenRootTypes['PhisicalState']; // PhisicalState!
     institution: NexusGenRootTypes['Institution']; // Institution!
     professor: NexusGenRootTypes['Professor']; // Professor!
     realDueDate: NexusGenScalars['DateTime'] | null; // DateTime
@@ -281,6 +288,9 @@ export interface NexusGenFieldTypeNames {
   ArticleLend: { // field return type name
     article: 'Article'
     count: 'Int'
+    finalPhisicalState: 'PhisicalState'
+    initialPhisicalState: 'PhisicalState'
+    lend: 'Lend'
   }
   ArticlePage: { // field return type name
     length: 'Int'
@@ -307,9 +317,7 @@ export interface NexusGenFieldTypeNames {
     completed: 'Boolean'
     createdAt: 'DateTime'
     dueDate: 'DateTime'
-    finalPhisicalState: 'PhisicalState'
     id: 'Int'
-    initialPhisicalState: 'PhisicalState'
     institution: 'Institution'
     professor: 'Professor'
     realDueDate: 'DateTime'
@@ -407,8 +415,8 @@ export interface NexusGenFieldTypeNames {
 export interface NexusGenArgTypes {
   Mutation: {
     completeLend: { // args
+      articlesStates: NexusGenInputs['InputArticleLendCompleted'][]; // [InputArticleLendCompleted!]!
       id: number; // Int!
-      phisicalStateId: number; // Int!
     }
     createArticle: { // args
       description?: string | null; // String

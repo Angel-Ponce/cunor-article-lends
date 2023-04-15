@@ -49,6 +49,61 @@ const ArticleLend = objectType({
       type: "Article",
     });
     t.nonNull.int("count");
+    t.field("lend", {
+      type: nonNull(Lend),
+    });
+    t.field("initialPhisicalState", {
+      type: nonNull("PhisicalState"),
+      resolve: async (parent, _args, ctx) => {
+        const lend = await ctx.prisma.lend.findUniqueOrThrow({
+          where: {
+            id: parent.lend.id,
+          },
+          select: {
+            articles: {
+              where: {
+                articleId: parent.article.id,
+              },
+              take: 1,
+            },
+          },
+        });
+
+        const phisicalState = await ctx.prisma.phisicalState.findUniqueOrThrow({
+          where: {
+            id: lend.articles[0].initialPhisicalStateId,
+          },
+        });
+
+        return phisicalState;
+      },
+    });
+    t.field("finalPhisicalState", {
+      type: "PhisicalState",
+      resolve: async (parent, _args, ctx) => {
+        const lend = await ctx.prisma.lend.findUniqueOrThrow({
+          where: {
+            id: parent.lend.id,
+          },
+          select: {
+            articles: {
+              where: {
+                articleId: parent.article.id,
+              },
+              take: 1,
+            },
+          },
+        });
+
+        const phisicalState = await ctx.prisma.phisicalState.findFirstOrThrow({
+          where: {
+            id: lend.articles[0].finalPhisicalStateId || 0,
+          },
+        });
+
+        return phisicalState;
+      },
+    });
   },
 });
 
@@ -90,48 +145,6 @@ const Lend = objectType({
     t.nonNull.boolean("completed");
     t.nonNull.dateTime("dueDate");
     t.dateTime("realDueDate");
-    t.field("initialPhisicalState", {
-      type: nonNull("PhisicalState"),
-      resolve: async (parent, _args, ctx) => {
-        const lend = await ctx.prisma.lend.findUniqueOrThrow({
-          where: {
-            id: parent.id,
-          },
-          select: {
-            initialPhisicalStateId: true,
-          },
-        });
-
-        const phisicalState = await ctx.prisma.phisicalState.findUniqueOrThrow({
-          where: {
-            id: lend.initialPhisicalStateId,
-          },
-        });
-
-        return phisicalState;
-      },
-    });
-    t.field("finalPhisicalState", {
-      type: "PhisicalState",
-      resolve: async (parent, _args, ctx) => {
-        const lend = await ctx.prisma.lend.findUniqueOrThrow({
-          where: {
-            id: parent.id,
-          },
-          select: {
-            finalPhisicalStateId: true,
-          },
-        });
-
-        const phisicalState = await ctx.prisma.phisicalState.findUnique({
-          where: {
-            id: lend.finalPhisicalStateId || 0,
-          },
-        });
-
-        return phisicalState;
-      },
-    });
     t.field("institution", {
       type: nonNull("Institution"),
       resolve: async (parent, _args, ctx) => {
@@ -157,6 +170,7 @@ const Lend = objectType({
               select: {
                 article: true,
                 count: true,
+                lend: true,
               },
             },
           },
@@ -165,6 +179,7 @@ const Lend = objectType({
         return lend.articles.map((a) => ({
           article: a.article,
           count: a.count,
+          lend: a.lend,
         }));
       },
     });
@@ -238,6 +253,7 @@ const InputArticleLend = inputObjectType({
   definition: (t) => {
     t.nonNull.int("articleId");
     t.nonNull.int("count");
+    t.nonNull.int("phisicalStateId");
   },
 });
 
@@ -260,18 +276,26 @@ const createLend = extendType({
             userId: ctx.user?.id || 0,
             professorId: args.professorId,
             dueDate: args.dueDate,
-            initialPhisicalStateId: args.phisicalStateId,
             institutionId: ctx.user?.institutionId || 0,
             articles: {
               create: args.articles.map((a) => ({
                 articleId: a.articleId,
                 count: a.count,
+                initialPhisicalStateId: a.phisicalStateId,
               })),
             },
           },
         });
       },
     });
+  },
+});
+
+const InputArticleLendCompleted = inputObjectType({
+  name: "InputArticleLendCompleted",
+  definition: (t) => {
+    t.nonNull.int("articleId");
+    t.nonNull.int("phisicalStateId");
   },
 });
 
@@ -282,7 +306,7 @@ const completeLend = extendType({
       type: nonNull(Lend),
       args: {
         id: nonNull(intArg()),
-        phisicalStateId: nonNull(intArg()),
+        articlesStates: nonNull(list(nonNull(InputArticleLendCompleted))),
       },
       resolve: async (_parent, args, ctx) => {
         authenticate(ctx);
@@ -294,7 +318,19 @@ const completeLend = extendType({
           data: {
             completed: true,
             realDueDate: new Date(),
-            finalPhisicalStateId: args.phisicalStateId,
+            articles: {
+              update: args.articlesStates.map((as) => ({
+                data: {
+                  finalPhisicalStateId: as.phisicalStateId,
+                },
+                where: {
+                  lendId_articleId: {
+                    lendId: args.id,
+                    articleId: as.articleId,
+                  },
+                },
+              })),
+            },
           },
         });
       },
