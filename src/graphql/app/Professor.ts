@@ -25,6 +25,49 @@ export const Professor = objectType({
         return professor.institution;
       },
     });
+    t.field("countActiveLends", {
+      type: nonNull("Int"),
+      resolve: (parent, _args, ctx) => {
+        return ctx.prisma.lend.count({
+          where: {
+            professorId: parent.id,
+            deletedAt: null,
+            completed: false,
+          },
+        });
+      },
+    });
+    t.field("countCompletedLends", {
+      type: nonNull("Int"),
+      resolve: (parent, _args, ctx) => {
+        return ctx.prisma.lend.count({
+          where: {
+            professorId: parent.id,
+            deletedAt: null,
+            completed: true,
+          },
+        });
+      },
+    });
+    t.nonNull.list.field("lends", {
+      type: nonNull("Lend"),
+      resolve: async (parent, _args, ctx) => {
+        const professor = await ctx.prisma.professor.findFirstOrThrow({
+          where: {
+            id: parent.id,
+          },
+          select: {
+            lends: {
+              where: {
+                deletedAt: null,
+              },
+            },
+          },
+        });
+
+        return professor.lends;
+      },
+    });
   },
 });
 

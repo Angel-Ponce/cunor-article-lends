@@ -54,6 +54,10 @@ export interface NexusGenObjects {
     name: string; // String!
     serial?: string | null; // String
   }
+  ArticleLend: { // root type
+    article: NexusGenRootTypes['Article']; // Article!
+    count: number; // Int!
+  }
   ArticlePage: { // root type
     length: number; // Int!
     pages: number; // Int!
@@ -139,6 +143,10 @@ export interface NexusGenFieldTypes {
     phisicalState: NexusGenRootTypes['PhisicalState']; // PhisicalState!
     serial: string | null; // String
   }
+  ArticleLend: { // field return type
+    article: NexusGenRootTypes['Article']; // Article!
+    count: number; // Int!
+  }
   ArticlePage: { // field return type
     length: number; // Int!
     pages: number; // Int!
@@ -160,7 +168,7 @@ export interface NexusGenFieldTypes {
     rows: NexusGenRootTypes['Institution'][]; // [Institution!]!
   }
   Lend: { // field return type
-    articles: NexusGenRootTypes['Article'][]; // [Article!]!
+    articles: NexusGenRootTypes['ArticleLend'][]; // [ArticleLend!]!
     completed: boolean; // Boolean!
     createdAt: NexusGenScalars['DateTime']; // DateTime!
     dueDate: NexusGenScalars['DateTime']; // DateTime!
@@ -210,9 +218,12 @@ export interface NexusGenFieldTypes {
     rows: NexusGenRootTypes['PhisicalState'][]; // [PhisicalState!]!
   }
   Professor: { // field return type
+    countActiveLends: number; // Int!
+    countCompletedLends: number; // Int!
     id: number; // Int!
     institution: NexusGenRootTypes['Institution']; // Institution!
     lastname: string; // String!
+    lends: NexusGenRootTypes['Lend'][]; // [Lend!]!
     name: string; // String!
     personalRegister: string; // String!
     phone: string | null; // String
@@ -267,6 +278,10 @@ export interface NexusGenFieldTypeNames {
     phisicalState: 'PhisicalState'
     serial: 'String'
   }
+  ArticleLend: { // field return type name
+    article: 'Article'
+    count: 'Int'
+  }
   ArticlePage: { // field return type name
     length: 'Int'
     pages: 'Int'
@@ -288,7 +303,7 @@ export interface NexusGenFieldTypeNames {
     rows: 'Institution'
   }
   Lend: { // field return type name
-    articles: 'Article'
+    articles: 'ArticleLend'
     completed: 'Boolean'
     createdAt: 'DateTime'
     dueDate: 'DateTime'
@@ -338,9 +353,12 @@ export interface NexusGenFieldTypeNames {
     rows: 'PhisicalState'
   }
   Professor: { // field return type name
+    countActiveLends: 'Int'
+    countCompletedLends: 'Int'
     id: 'Int'
     institution: 'Institution'
     lastname: 'String'
+    lends: 'Lend'
     name: 'String'
     personalRegister: 'String'
     phone: 'String'

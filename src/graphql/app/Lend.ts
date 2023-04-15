@@ -46,6 +46,16 @@ export const DateTime = scalarType({
   },
 });
 
+const ArticleLend = objectType({
+  name: "ArticleLend",
+  definition: (t) => {
+    t.nonNull.field("article", {
+      type: "Article",
+    });
+    t.nonNull.int("count");
+  },
+});
+
 const Lend = objectType({
   name: "Lend",
   definition: (t) => {
@@ -142,7 +152,7 @@ const Lend = objectType({
       },
     });
     t.nonNull.list.field("articles", {
-      type: nonNull(Article),
+      type: nonNull(ArticleLend),
       resolve: async (parent, _args, ctx) => {
         const lend = await ctx.prisma.lend.findUniqueOrThrow({
           where: { id: parent.id },
@@ -150,12 +160,16 @@ const Lend = objectType({
             articles: {
               select: {
                 article: true,
+                count: true,
               },
             },
           },
         });
 
-        return lend.articles.map((a) => a.article);
+        return lend.articles.map((a) => ({
+          article: a.article,
+          count: a.count,
+        }));
       },
     });
   },

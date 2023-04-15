@@ -11,6 +11,11 @@ type Article {
   serial: String
 }
 
+type ArticleLend {
+  article: Article!
+  count: Int!
+}
+
 type ArticlePage {
   length: Int!
   pages: Int!
@@ -43,7 +48,7 @@ type InstitutionPage {
 }
 
 type Lend {
-  articles: [Article!]!
+  articles: [ArticleLend!]!
   completed: Boolean!
   createdAt: DateTime!
   dueDate: DateTime!
@@ -98,9 +103,12 @@ type PhisicalStatePage {
 }
 
 type Professor {
+  countActiveLends: Int!
+  countCompletedLends: Int!
   id: Int!
   institution: Institution!
   lastname: String!
+  lends: [Lend!]!
   name: String!
   personalRegister: String!
   phone: String
