@@ -6,6 +6,74 @@ export const Institution = objectType({
   definition: (t) => {
     t.nonNull.int("id");
     t.nonNull.string("name");
+    t.field("countUsers", {
+      type: nonNull("Int"),
+      resolve: (parent, _args, ctx) => {
+        return ctx.prisma.user.count({
+          where: {
+            institutionId: parent.id,
+            deletedAt: null,
+          },
+        });
+      },
+    });
+    t.field("countActiveLends", {
+      type: nonNull("Int"),
+      resolve: (parent, _args, ctx) => {
+        return ctx.prisma.lend.count({
+          where: {
+            institutionId: parent.id,
+            deletedAt: null,
+            completed: false,
+          },
+        });
+      },
+    });
+    t.field("countCompletedLends", {
+      type: nonNull("Int"),
+      resolve: (parent, _args, ctx) => {
+        return ctx.prisma.lend.count({
+          where: {
+            institutionId: parent.id,
+            deletedAt: null,
+            completed: true,
+          },
+        });
+      },
+    });
+    t.field("countProfessors", {
+      type: nonNull("Int"),
+      resolve: (parent, _args, ctx) => {
+        return ctx.prisma.professor.count({
+          where: {
+            institutionId: parent.id,
+            deletedAt: null,
+          },
+        });
+      },
+    });
+    t.field("countArticles", {
+      type: nonNull("Int"),
+      resolve: (parent, _args, ctx) => {
+        return ctx.prisma.article.count({
+          where: {
+            institutionId: parent.id,
+            deletedAt: null,
+          },
+        });
+      },
+    });
+    t.field("countPhisicalStates", {
+      type: nonNull("Int"),
+      resolve: (parent, _args, ctx) => {
+        return ctx.prisma.phisicalState.count({
+          where: {
+            institutionId: parent.id,
+            deletedAt: null,
+          },
+        });
+      },
+    });
   },
 });
 
