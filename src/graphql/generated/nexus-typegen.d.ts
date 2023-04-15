@@ -49,6 +49,16 @@ export interface NexusGenObjects {
     rows: NexusGenRootTypes['PhisicalState'][]; // [PhisicalState!]!
   }
   Query: {};
+  User: { // root type
+    description?: string | null; // String
+    id: number; // Int!
+    lastname: string; // String!
+    name: string; // String!
+    password: string; // String!
+    phone?: string | null; // String
+    role: string; // String!
+    username: string; // String!
+  }
 }
 
 export interface NexusGenInterfaces {
@@ -96,6 +106,17 @@ export interface NexusGenFieldTypes {
     phisicalState: NexusGenRootTypes['PhisicalState']; // PhisicalState!
     phisicalStates: NexusGenRootTypes['PhisicalStatePage']; // PhisicalStatePage!
   }
+  User: { // field return type
+    description: string | null; // String
+    id: number; // Int!
+    institution: NexusGenRootTypes['Institution']; // Institution!
+    lastname: string; // String!
+    name: string; // String!
+    password: string; // String!
+    phone: string | null; // String
+    role: string; // String!
+    username: string; // String!
+  }
 }
 
 export interface NexusGenFieldTypeNames {
@@ -132,6 +153,17 @@ export interface NexusGenFieldTypeNames {
     institutions: 'InstitutionPage'
     phisicalState: 'PhisicalState'
     phisicalStates: 'PhisicalStatePage'
+  }
+  User: { // field return type name
+    description: 'String'
+    id: 'Int'
+    institution: 'Institution'
+    lastname: 'String'
+    name: 'String'
+    password: 'String'
+    phone: 'String'
+    role: 'String'
+    username: 'String'
   }
 }
 

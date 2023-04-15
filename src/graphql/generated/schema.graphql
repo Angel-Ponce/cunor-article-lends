@@ -41,3 +41,15 @@ type Query {
   phisicalState(id: Int!): PhisicalState!
   phisicalStates(limit: Int! = 10, page: Int! = 1): PhisicalStatePage!
 }
+
+type User {
+  description: String
+  id: Int!
+  institution: Institution!
+  lastname: String!
+  name: String!
+  password: String!
+  phone: String
+  role: String!
+  username: String!
+}
