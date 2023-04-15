@@ -10,15 +10,15 @@ const PhisicalState = objectType({
     t.string("description");
     t.field("institution", {
       type: nonNull(Institution),
-      resolve: (parent, _args, ctx) => {
-        return ctx.prisma.phisicalState.findFirstOrThrow({
+      resolve: async (parent, _args, ctx) => {
+        const phisicalState = await ctx.prisma.phisicalState.findFirstOrThrow({
           where: {
             id: parent.id,
           },
-          include: {
-            institution: true,
-          },
+          select: { institution: true },
         });
+
+        return phisicalState.institution;
       },
     });
   },
@@ -36,6 +36,11 @@ const phisicalState = extendType({
         return ctx.prisma.phisicalState.findUniqueOrThrow({
           where: {
             id: args.id,
+          },
+          select: {
+            id: true,
+            name: true,
+            description: true,
           },
         });
       },
@@ -60,6 +65,11 @@ const createPhisicalState = extendType({
             name: args.name,
             description: args.description,
             institutionId: ctx.user.institutionId,
+          },
+          select: {
+            id: true,
+            name: true,
+            description: true,
           },
         });
       },
