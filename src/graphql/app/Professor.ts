@@ -1,10 +1,8 @@
 import { extendType, intArg, nonNull, objectType, stringArg } from "nexus";
 import { Institution } from "./Institution";
-import { authenticate, exclude, modelPage, paginate } from "../../helpers";
-import { GraphQLError } from "graphql";
-import { PhisicalState } from "./PhisicalState";
+import { authenticate, modelPage, paginate } from "../../helpers";
 
-const Professor = objectType({
+export const Professor = objectType({
   name: "Professor",
   definition: (t) => {
     t.nonNull.int("id");

@@ -5,7 +5,7 @@ import { authenticate, exclude, modelPage, paginate } from "../../helpers";
 import bcrypt from "bcrypt";
 import { GraphQLError } from "graphql";
 
-const User = objectType({
+export const User = objectType({
   name: "User",
   definition: (t) => {
     t.nonNull.int("id");

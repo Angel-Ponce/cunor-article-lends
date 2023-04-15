@@ -5,8 +5,23 @@
 
 
 import type { Context } from "./../context"
-
-
+import type { core } from "nexus"
+declare global {
+  interface NexusGenCustomInputMethods<TypeName extends string> {
+    /**
+     * DateTime custom scalar type
+     */
+    dateTime<FieldName extends string>(fieldName: FieldName, opts?: core.CommonInputFieldConfig<TypeName, FieldName>): void // "DateTime";
+  }
+}
+declare global {
+  interface NexusGenCustomOutputMethods<TypeName extends string> {
+    /**
+     * DateTime custom scalar type
+     */
+    dateTime<FieldName extends string>(fieldName: FieldName, ...opts: core.ScalarOutSpread<TypeName, FieldName>): void // "DateTime";
+  }
+}
 
 
 declare global {
@@ -25,6 +40,7 @@ export interface NexusGenScalars {
   Float: number
   Boolean: boolean
   ID: string
+  DateTime: any
 }
 
 export interface NexusGenObjects {
@@ -47,6 +63,13 @@ export interface NexusGenObjects {
     length: number; // Int!
     pages: number; // Int!
     rows: NexusGenRootTypes['Institution'][]; // [Institution!]!
+  }
+  Lend: { // root type
+    completed: boolean; // Boolean!
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
+    dueDate: NexusGenScalars['DateTime']; // DateTime!
+    id: number; // Int!
+    realDueDate?: NexusGenScalars['DateTime'] | null; // DateTime
   }
   Mutation: {};
   PhisicalState: { // root type
@@ -120,6 +143,18 @@ export interface NexusGenFieldTypes {
     length: number; // Int!
     pages: number; // Int!
     rows: NexusGenRootTypes['Institution'][]; // [Institution!]!
+  }
+  Lend: { // field return type
+    completed: boolean; // Boolean!
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
+    dueDate: NexusGenScalars['DateTime']; // DateTime!
+    finalPhisicalState: NexusGenRootTypes['PhisicalState'] | null; // PhisicalState
+    id: number; // Int!
+    initialPhisicalState: NexusGenRootTypes['PhisicalState'] | null; // PhisicalState
+    institution: NexusGenRootTypes['Institution']; // Institution!
+    professor: NexusGenRootTypes['Professor']; // Professor!
+    realDueDate: NexusGenScalars['DateTime'] | null; // DateTime
+    user: NexusGenRootTypes['User']; // User!
   }
   Mutation: { // field return type
     createArticle: NexusGenRootTypes['Article']; // Article!
@@ -216,6 +251,18 @@ export interface NexusGenFieldTypeNames {
     length: 'Int'
     pages: 'Int'
     rows: 'Institution'
+  }
+  Lend: { // field return type name
+    completed: 'Boolean'
+    createdAt: 'DateTime'
+    dueDate: 'DateTime'
+    finalPhisicalState: 'PhisicalState'
+    id: 'Int'
+    initialPhisicalState: 'PhisicalState'
+    institution: 'Institution'
+    professor: 'Professor'
+    realDueDate: 'DateTime'
+    user: 'User'
   }
   Mutation: { // field return type name
     createArticle: 'Article'

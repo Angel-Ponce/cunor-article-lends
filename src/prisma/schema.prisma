@@ -72,9 +72,9 @@ model Lend {
     createdAt              DateTime
     completed              Boolean
     dueDate                DateTime
-    realDueDate            DateTime
+    realDueDate            DateTime?
     initialPhisicalStateId Int
-    finalPhisicalStateId   Int
+    finalPhisicalStateId   Int?
     institution            Institution   @relation(fields: [institutionId], references: [id])
     institutionId          Int
     articles               ArticleLend[]

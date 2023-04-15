@@ -17,6 +17,9 @@ type ArticlePage {
   rows: [Article!]!
 }
 
+"""DateTime custom scalar type"""
+scalar DateTime
+
 type Institution {
   id: Int!
   name: String!
@@ -26,6 +29,19 @@ type InstitutionPage {
   length: Int!
   pages: Int!
   rows: [Institution!]!
+}
+
+type Lend {
+  completed: Boolean!
+  createdAt: DateTime!
+  dueDate: DateTime!
+  finalPhisicalState: PhisicalState
+  id: Int!
+  initialPhisicalState: PhisicalState
+  institution: Institution!
+  professor: Professor!
+  realDueDate: DateTime
+  user: User!
 }
 
 type Mutation {
