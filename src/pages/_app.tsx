@@ -2,6 +2,7 @@ import "../styles/globals.scss";
 import type { AppProps } from "next/app";
 
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
+import ProtectedLayout from "../components/templates/ProtectedLayout";
 
 const client = new ApolloClient({
   uri: "/api/graphql",
@@ -15,7 +16,9 @@ const client = new ApolloClient({
 const App = ({ Component, pageProps }: AppProps) => {
   return (
     <ApolloProvider client={client}>
-      <Component {...pageProps} />
+      <ProtectedLayout>
+        <Component {...pageProps} />
+      </ProtectedLayout>
     </ApolloProvider>
   );
 };
