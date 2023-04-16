@@ -5,6 +5,8 @@ import { graphql } from "../graphql/generated/client";
 import { useLazyQuery } from "@apollo/client";
 import store from "store2";
 import { useRouter } from "next/router";
+import { useAtom } from "jotai";
+import { user } from "../stores/auth";
 
 const { Title, Text } = Typography;
 
@@ -41,6 +43,7 @@ const Login = () => {
   const [login, { loading }] = useLazyQuery(queryLogin);
   const [me, { loading: meLoading }] = useLazyQuery(queryMe);
   const router = useRouter();
+  const [, setUser] = useAtom(user);
 
   const onSubmit = async (values: { username: string; password: string }) => {
     const { data, error } = await login({
@@ -69,6 +72,16 @@ const Login = () => {
 
     if (dataMe?.me) {
       store("user", dataMe.me);
+      setUser({
+        id: dataMe.me.id,
+        name: dataMe.me.name,
+        lastname: dataMe.me.lastname,
+        description: dataMe.me.description || null,
+        phone: dataMe.me.phone || null,
+        role: dataMe.me.role,
+        username: dataMe.me.username,
+        institutionId: dataMe.me.institution.id,
+      });
       router.push("/");
     }
   };
