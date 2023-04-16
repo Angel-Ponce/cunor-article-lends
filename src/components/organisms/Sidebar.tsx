@@ -11,6 +11,10 @@ const Sidebar: FC<{ collapsed: boolean }> = ({ collapsed }) => {
   const router = useRouter();
   const [selected, setSelected] = useState<string[]>([]);
 
+  const items = Object.keys(routes)
+    .filter((k) => routes[k].show)
+    .map((k) => getItem(routes[k].title, k, routes[k].icon));
+
   useEffect(() => {
     const items = Object.keys(routes);
 
@@ -23,10 +27,6 @@ const Sidebar: FC<{ collapsed: boolean }> = ({ collapsed }) => {
 
     setSelected(items.filter((i) => i != "/" && router.asPath.includes(i)));
   }, [router]);
-
-  const items = Object.keys(routes).map((k) =>
-    getItem(routes[k].title, k, routes[k].icon)
-  );
 
   return (
     <div className="w-full flex flex-col items-center">

@@ -10,26 +10,34 @@ import { app } from "../../stores/app";
 import { useRouter } from "next/router";
 import { useAtom } from "jotai";
 
-export const routes: Record<string, { title: string; icon: ReactNode }> = {
+export const routes: Record<
+  string,
+  { title: string; icon: ReactNode; show: boolean }
+> = {
   "/": {
     title: "Prestamos",
     icon: <AiOutlineDatabase />,
+    show: true,
   },
   "/articles": {
     title: "Artículos",
     icon: <AiOutlineCodeSandbox />,
+    show: true,
   },
   "/professors": {
     title: "Profesores",
     icon: <AiOutlineIdcard />,
+    show: true,
   },
   "/phisical-states": {
     title: "Estados físicos",
     icon: <AiOutlineFund />,
+    show: true,
   },
   "/users": {
     title: "Usuarios",
     icon: <AiOutlineUser />,
+    show: true,
   },
 };
 
@@ -49,6 +57,7 @@ const RoutesLayout: FC<{ children: ReactNode }> = ({ children }) => {
 
     // setApp({});
   }, [router, setApp]);
+
   return <>{children}</>;
 };
 
