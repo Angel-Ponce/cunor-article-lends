@@ -2,6 +2,7 @@ import { NextPage } from "next/types";
 import { useQuery } from "@apollo/client";
 import { graphql } from "../graphql/generated/client";
 import { useLogout } from "../hooks/useLogout";
+import AppLayout from "../components/templates/AppLayout";
 
 const query = graphql(`
   query institution {
@@ -17,10 +18,11 @@ const Home: NextPage = () => {
   const logout = useLogout();
 
   return (
-    <div>
+    <AppLayout>
       <p className="text-blue-800 text-2xl font-medium">Quantum</p>
       <button onClick={logout}>logout</button>
-    </div>
+      <div className="bg-red-100 w-full h-[2000px]"></div>
+    </AppLayout>
   );
 };
 
