@@ -2,15 +2,34 @@ import "../styles/globals.scss";
 import type { AppProps } from "next/app";
 
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
+import { setContext } from "@apollo/client/link/context";
+import { HttpLink } from "@apollo/client/link/http";
 import ProtectedLayout from "../components/templates/ProtectedLayout";
+import store from "store2";
+
+const tokenContext = setContext(() => {
+  const token = store("token");
+
+  if (token) {
+    return {
+      headers: {
+        authorization: token,
+      },
+    };
+  }
+
+  return {
+    headers: {},
+  };
+});
+
+const link = new HttpLink({
+  uri: "/api/graphql",
+});
 
 const client = new ApolloClient({
-  uri: "/api/graphql",
+  link: tokenContext.concat(link),
   cache: new InMemoryCache(),
-  headers: {
-    authorization:
-      "eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwibmFtZSI6IkFuZ2VsIiwibGFzdG5hbWUiOiJQb25jZSIsInBob25lIjoiMzEzOTY4NDAiLCJkZXNjcmlwdGlvbiI6bnVsbCwidXNlcm5hbWUiOiJhbmdlbC5wb25jZSIsInBhc3N3b3JkIjoiMTIzIiwicm9sZSI6ImFkbWluIiwiaW5zdGl0dXRpb25JZCI6MSwiYWxnIjoiSFMyNTYifQ.GFgd027wR21UapWqeo8-_NMc4j4ETWqpEH4zr0ndnB8",
-  },
 });
 
 const App = ({ Component, pageProps }: AppProps) => {
