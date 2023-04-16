@@ -55,7 +55,7 @@ const RoutesLayout: FC<{ children: ReactNode }> = ({ children }) => {
       return;
     }
 
-    // setApp({});
+    setApp({});
   }, [router, setApp]);
 
   return <>{children}</>;
