@@ -1,28 +1,12 @@
-import { NextPage } from "next/types";
-import { useQuery } from "@apollo/client";
-import { graphql } from "../graphql/generated/client";
-import { useLogout } from "../hooks/useLogout";
+import { NextPage } from "next";
 import AppLayout from "../components/templates/AppLayout";
 
-const query = graphql(`
-  query institution {
-    institution(id: 1) {
-      id
-      name
-    }
-  }
-`);
-
-const Home: NextPage = () => {
-  const { data, error, loading } = useQuery(query);
-  const logout = useLogout();
-
+const Lends: NextPage = () => {
   return (
     <AppLayout>
-      <p className="text-blue-800 text-2xl font-medium">Quantum</p>
-      <button onClick={logout}>logout</button>
+      <p className="text-blue-800 text-2xl font-medium">Lends</p>
     </AppLayout>
   );
 };
 
-export default Home;
+export default Lends;

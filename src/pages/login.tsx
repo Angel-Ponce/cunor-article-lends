@@ -74,7 +74,7 @@ const Login = () => {
   };
 
   return (
-    <div className="w-full h-screen flex items-center justify-center">
+    <div className="w-full h-screen flex items-center justify-center bg-[#F5F5F5]">
       <div className="relative w-full max-w-[450px] rounded-xl shadow-2xl bg-white p-8 flex gap-5 flex-col items-center">
         <Image alt="usac-logo" src={UsacLogo} className="w-32 h-auto"></Image>
         <div>

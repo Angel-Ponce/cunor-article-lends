@@ -15,11 +15,11 @@ const Sidebar: FC<{ collapsed: boolean }> = ({ collapsed }) => {
   const getItem = useMenu();
 
   const items = [
-    getItem("Prestamos", "lends", <AiOutlineDatabase />),
-    getItem("Artículos", "articles", <AiOutlineCodeSandbox />),
-    getItem("Profesores", "professors", <AiOutlineIdcard />),
-    getItem("Estados físicos", "phisical-states", <AiOutlineFund />),
-    getItem("Usuarios", "users", <AiOutlineUser />),
+    getItem("Prestamos", "/", <AiOutlineDatabase />),
+    getItem("Artículos", "/articles", <AiOutlineCodeSandbox />),
+    getItem("Profesores", "/professors", <AiOutlineIdcard />),
+    getItem("Estados físicos", "/phisical-states", <AiOutlineFund />),
+    getItem("Usuarios", "/users", <AiOutlineUser />),
   ];
 
   return (
