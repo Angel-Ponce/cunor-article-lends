@@ -2,7 +2,6 @@ import Image from "next/image";
 import { FC } from "react";
 import UsacLogo from "../../../public/usac-logo.png";
 import { Menu } from "antd";
-import type { MenuProps } from "antd";
 import {
   AiOutlineDatabase,
   AiOutlineCodeSandbox,
@@ -10,32 +9,19 @@ import {
   AiOutlineFund,
   AiOutlineUser,
 } from "react-icons/ai";
-
-type MenuItem = Required<MenuProps>["items"][number];
-
-const getItem = (
-  label: React.ReactNode,
-  key: React.Key,
-  icon?: React.ReactNode,
-  children?: MenuItem[]
-): MenuItem => {
-  return {
-    key,
-    icon,
-    children,
-    label,
-  } as MenuItem;
-};
-
-const items: MenuItem[] = [
-  getItem("Prestamos", "item-lends", <AiOutlineDatabase />),
-  getItem("Artículos", "item-articles", <AiOutlineCodeSandbox />),
-  getItem("Profesores", "item-professors", <AiOutlineIdcard />),
-  getItem("Estados físicos", "item-phisical-states", <AiOutlineFund />),
-  getItem("Usuarios", "item-users", <AiOutlineUser />),
-];
+import { useMenu } from "../../hooks/useMenu";
 
 const Sidebar: FC<{ collapsed: boolean }> = ({ collapsed }) => {
+  const getItem = useMenu();
+
+  const items = [
+    getItem("Prestamos", "lends", <AiOutlineDatabase />),
+    getItem("Artículos", "articles", <AiOutlineCodeSandbox />),
+    getItem("Profesores", "professors", <AiOutlineIdcard />),
+    getItem("Estados físicos", "phisical-states", <AiOutlineFund />),
+    getItem("Usuarios", "users", <AiOutlineUser />),
+  ];
+
   return (
     <div className="w-full flex flex-col items-center">
       <Image
@@ -45,12 +31,7 @@ const Sidebar: FC<{ collapsed: boolean }> = ({ collapsed }) => {
           collapsed ? "w-12" : "w-24"
         } h-auto transition-[width] mb-14`}
       />
-      <Menu
-        theme="dark"
-        defaultSelectedKeys={["item-lends"]}
-        items={items}
-        className="w-full max-w-full"
-      />
+      <Menu theme="dark" items={items} className="w-full max-w-full" />
     </div>
   );
 };
