@@ -6,6 +6,7 @@ import { setContext } from "@apollo/client/link/context";
 import { HttpLink } from "@apollo/client/link/http";
 import ProtectedLayout from "../components/templates/ProtectedLayout";
 import store from "store2";
+import { Provider } from "jotai";
 
 const tokenContext = setContext(() => {
   const token = store("token");
@@ -35,9 +36,11 @@ const client = new ApolloClient({
 const App = ({ Component, pageProps }: AppProps) => {
   return (
     <ApolloProvider client={client}>
-      <ProtectedLayout>
-        <Component {...pageProps} />
-      </ProtectedLayout>
+      <Provider>
+        <ProtectedLayout>
+          <Component {...pageProps} />
+        </ProtectedLayout>
+      </Provider>
     </ApolloProvider>
   );
 };

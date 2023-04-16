@@ -1,9 +1,11 @@
 import { Layout } from "antd";
-import { FC, ReactNode, useState } from "react";
+import { FC, ReactNode } from "react";
+import { useAtom } from "jotai";
+import { isCollapsed as isCollapsedAtom } from "../../stores/sidebar";
 import Sidebar from "../organisms/Sidebar";
 
 const AppLayout: FC<{ children: ReactNode }> = ({ children }) => {
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useAtom(isCollapsedAtom);
 
   return (
     <Layout hasSider>
@@ -17,6 +19,7 @@ const AppLayout: FC<{ children: ReactNode }> = ({ children }) => {
         }}
         width={200}
         collapsedWidth={80}
+        collapsed={isCollapsed}
         onCollapse={(c) => setIsCollapsed(c)}
       >
         <div className="w-full h-auto py-5 px-2 text-white flex flex-col">
