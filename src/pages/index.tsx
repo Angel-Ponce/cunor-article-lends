@@ -21,7 +21,6 @@ const Home: NextPage = () => {
     <AppLayout>
       <p className="text-blue-800 text-2xl font-medium">Quantum</p>
       <button onClick={logout}>logout</button>
-      <div className="bg-red-100 w-full h-[2000px]"></div>
     </AppLayout>
   );
 };

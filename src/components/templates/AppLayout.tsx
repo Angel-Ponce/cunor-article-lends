@@ -1,5 +1,6 @@
 import { Layout } from "antd";
 import { FC, ReactNode, useState } from "react";
+import Sidebar from "../organisms/Sidebar";
 
 const AppLayout: FC<{ children: ReactNode }> = ({ children }) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -18,12 +19,14 @@ const AppLayout: FC<{ children: ReactNode }> = ({ children }) => {
         collapsedWidth={80}
         onCollapse={(c) => setIsCollapsed(c)}
       >
-        <div className="w-full h-auto p-5">
-          <div className="text-white">Sidebar go here</div>
+        <div className="w-full h-auto py-5 px-2 text-white flex flex-col">
+          <Sidebar collapsed={isCollapsed} />
         </div>
       </Layout.Sider>
       <Layout.Content
-        className={`${isCollapsed ? "ml-[80px]" : "ml-[200px]"} px-6 py-8`}
+        className={`${
+          isCollapsed ? "ml-[80px]" : "ml-[200px]"
+        } px-6 py-8 min-h-screen`}
       >
         {children}
       </Layout.Content>
