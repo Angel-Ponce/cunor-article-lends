@@ -2,15 +2,9 @@ import Image from "next/image";
 import { FC, useEffect, useState } from "react";
 import UsacLogo from "../../../public/usac-logo.png";
 import { Menu } from "antd";
-import {
-  AiOutlineDatabase,
-  AiOutlineCodeSandbox,
-  AiOutlineIdcard,
-  AiOutlineFund,
-  AiOutlineUser,
-} from "react-icons/ai";
 import { useMenu } from "../../hooks/useMenu";
 import { useRouter } from "next/router";
+import { routes } from "../templates/RoutesLayout";
 
 const Sidebar: FC<{ collapsed: boolean }> = ({ collapsed }) => {
   const getItem = useMenu();
@@ -18,13 +12,7 @@ const Sidebar: FC<{ collapsed: boolean }> = ({ collapsed }) => {
   const [selected, setSelected] = useState<string[]>([]);
 
   useEffect(() => {
-    const items = [
-      "/",
-      "/articles",
-      "/professors",
-      "/phisical-states",
-      "/users",
-    ];
+    const items = Object.keys(routes);
 
     setSelected([]);
 
@@ -36,13 +24,9 @@ const Sidebar: FC<{ collapsed: boolean }> = ({ collapsed }) => {
     setSelected(items.filter((i) => i != "/" && router.asPath.includes(i)));
   }, [router]);
 
-  const items = [
-    getItem("Prestamos", "/", <AiOutlineDatabase />),
-    getItem("Artículos", "/articles", <AiOutlineCodeSandbox />),
-    getItem("Profesores", "/professors", <AiOutlineIdcard />),
-    getItem("Estados físicos", "/phisical-states", <AiOutlineFund />),
-    getItem("Usuarios", "/users", <AiOutlineUser />),
-  ];
+  const items = Object.keys(routes).map((k) =>
+    getItem(routes[k].title, k, routes[k].icon)
+  );
 
   return (
     <div className="w-full flex flex-col items-center">
