@@ -1,6 +1,7 @@
 import { NextPage } from "next/types";
 import { useQuery } from "@apollo/client";
 import { graphql } from "../graphql/generated/client";
+import { useLogout } from "../hooks/useLogout";
 
 const query = graphql(`
   query institution {
@@ -13,12 +14,12 @@ const query = graphql(`
 
 const Home: NextPage = () => {
   const { data, error, loading } = useQuery(query);
+  const logout = useLogout();
 
   return (
     <div>
       <p className="text-blue-800 text-2xl font-medium">Quantum</p>
-      <p>{JSON.stringify(error)}</p>
-      <p>{JSON.stringify(data)}</p>
+      <button onClick={logout}>logout</button>
     </div>
   );
 };
