@@ -103,7 +103,7 @@ const Lends: NextPage = () => {
                       : "text-green-500"
                   }
                 >
-                  {completed &&
+                  {!completed &&
                     formatDistanceToNow(parseISO(dueDate), {
                       addSuffix: true,
                       locale: es,
