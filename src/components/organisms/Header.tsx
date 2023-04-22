@@ -3,6 +3,7 @@ import { Avatar, Popover, Typography } from "antd";
 import { useAtom } from "jotai";
 import { user as userAtom } from "../../stores/auth";
 import UserOptions from "./UserOptions";
+import { AiOutlineCaretDown } from "react-icons/ai";
 
 const Header = () => {
   const [app] = useAtom(appAtom);
@@ -41,6 +42,7 @@ const Header = () => {
               {user?.role}
             </Typography.Text>
           </div>
+          <AiOutlineCaretDown className="text-gray-400" />
         </div>
       </Popover>
     </div>
