@@ -21,6 +21,7 @@ import {
 import { es } from "date-fns/locale";
 // import Delete from "./Delete";
 import Form from "./lends/Form";
+import Complete from "./lends/Complete";
 
 const Lends: NextPage = () => {
   const { data, loading, refetch } = useQuery(lendsQuery, {
@@ -149,20 +150,16 @@ const Lends: NextPage = () => {
             key: "actions",
             render: (_, p) => (
               <div className="flex items-center gap-2 text-lg">
-                {/* <Form
-                  editing
+                <Complete lend={p} onOk={() => refetch({ page: currentPage })}>
+                  <Button
+                    className="rounded-full"
+                    icon={<CheckOutlined className="text-green-500" />}
+                  />
+                </Complete>
+                {/* <Delete
                   phisicalState={p}
                   onOk={() => refetch({ page: currentPage })}
-                > */}
-                <Button
-                  className="rounded-full"
-                  icon={<CheckOutlined className="text-green-500" />}
-                />
-                {/* </Form>
-                <Delete
-                  phisicalState={p}
-                  onOk={() => refetch({ page: currentPage })}
-                > */}
+                >  */}
                 <Button
                   className="rounded-full"
                   icon={<DeleteTwoTone twoToneColor="red" />}
