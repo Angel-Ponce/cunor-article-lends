@@ -61,7 +61,7 @@ const Form: FC<{ children: ReactNode; onOk: () => void }> = ({
     onOk();
     setOpen(false);
     notification.success({
-      message: "Prestamos creado",
+      message: "Prestamo creado",
       description: `El prestamo se ha creado con éxito.`,
     });
   };
