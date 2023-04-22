@@ -20,7 +20,7 @@ import {
 } from "date-fns";
 import { es } from "date-fns/locale";
 // import Delete from "./Delete";
-// import Form from "./Form";
+import Form from "./lends/Form";
 
 const Lends: NextPage = () => {
   const { data, loading, refetch } = useQuery(lendsQuery, {
@@ -38,11 +38,11 @@ const Lends: NextPage = () => {
   return (
     <AppLayout>
       <div className="flex justify-end mb-5">
-        {/* <Form onOk={() => refetch({ page: currentPage })}> */}
-        <Button type="primary" icon={<PlusOutlined />}>
-          Nuevo
-        </Button>
-        {/* </Form> */}
+        <Form onOk={() => refetch({ page: currentPage })}>
+          <Button type="primary" icon={<PlusOutlined />}>
+            Nuevo
+          </Button>
+        </Form>
       </div>
       <Table
         scroll={{ y: 500 }}

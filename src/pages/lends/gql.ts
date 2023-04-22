@@ -38,4 +38,20 @@ const lendsQuery = graphql(`
   }
 `);
 
-export { lendsQuery };
+const createLendMutation = graphql(`
+  mutation createLend(
+    $professorId: Int!
+    $dueDate: DateTime!
+    $articles: [InputArticleLend!]!
+  ) {
+    createLend(
+      professorId: $professorId
+      dueDate: $dueDate
+      articles: $articles
+    ) {
+      id
+    }
+  }
+`);
+
+export { lendsQuery, createLendMutation };
