@@ -1,6 +1,6 @@
 import { NextPage } from "next";
 import AppLayout from "../../components/templates/AppLayout";
-import { Button, Pagination, Result, Table } from "antd";
+import { Avatar, Button, Pagination, Result, Table } from "antd";
 import { useQuery } from "@apollo/client";
 import { usersQuery } from "./gql";
 import { useEffect, useState } from "react";
@@ -55,9 +55,16 @@ const Users: NextPage = () => {
               {
                 title: "Nombre",
                 render: (_, { name, lastname }) => (
-                  <>
-                    {name} {lastname}
-                  </>
+                  <div className="flex items-center gap-2">
+                    <Avatar
+                      src={`https://api.dicebear.com/6.x/identicon/svg?seed=${name} ${lastname}`}
+                      alt={name}
+                      size={36}
+                    />
+                    <p>
+                      {name} {lastname}
+                    </p>
+                  </div>
                 ),
                 key: "fullname",
               },

@@ -36,7 +36,7 @@ const Header = () => {
         <div className="flex gap-3 items-center cursor-pointer select-none hover:bg-gray-200 px-7 py-1.5 rounded-full">
           <Avatar
             size={36}
-            src={`https://api.dicebear.com/6.x/identicon/svg?seed=${user?.name}${user?.lastname}`}
+            src={`https://api.dicebear.com/6.x/identicon/svg?seed=${user?.name} ${user?.lastname}`}
           />
           <div className="flex flex-col">
             <Typography.Text className="text-md font-medium !my-0">
