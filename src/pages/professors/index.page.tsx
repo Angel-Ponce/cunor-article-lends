@@ -8,7 +8,7 @@ import { DeleteTwoTone, EditTwoTone, PlusOutlined } from "@ant-design/icons";
 import Delete from "./Delete";
 import Form from "./Form";
 
-const PhisicalStates: NextPage = () => {
+const Professors: NextPage = () => {
   const { data, loading, refetch } = useQuery(professorsQuery, {
     variables: {
       page: 1,
@@ -94,4 +94,4 @@ const PhisicalStates: NextPage = () => {
   );
 };
 
-export default PhisicalStates;
+export default Professors;

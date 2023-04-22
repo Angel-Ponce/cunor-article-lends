@@ -14,7 +14,7 @@ import {
 import Delete from "./Delete";
 import Form from "./Form";
 
-const PhisicalStates: NextPage = () => {
+const Articles: NextPage = () => {
   const { data, loading, refetch } = useQuery(articlesQuery, {
     variables: {
       page: 1,
@@ -114,4 +114,4 @@ const PhisicalStates: NextPage = () => {
   );
 };
 
-export default PhisicalStates;
+export default Articles;
