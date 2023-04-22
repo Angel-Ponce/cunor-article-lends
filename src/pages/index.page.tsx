@@ -182,7 +182,7 @@ const Lends: NextPage = () => {
                   key={article.article.id}
                   className="relative flex flex-col items-center bg-white shadow-xl rounded-xl py-2 px-6"
                 >
-                  <div className="-top-2.5 -right-2.5 absolute rounded-full text-xs w-8 h-8 bg-blue-500 text-white font-semibold flex justify-center items-center">
+                  <div className="-top-2.5 -right-2.5 absolute rounded-full text-xs w-7 h-7 bg-blue-500 text-white font-medium flex justify-center items-center">
                     x{article.count}
                   </div>
                   <p>{article.article.name}</p>
