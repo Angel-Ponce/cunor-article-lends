@@ -18,7 +18,9 @@ const Form: FC<{ children: ReactNode; onOk: () => void }> = ({
   const [open, setOpen] = useState(false);
   const { data: professors, loading } = useQuery(allProfessorsQuery);
 
-  const handleSubmit = async () => {};
+  const handleSubmit = async (values: any) => {
+    console.log(values);
+  };
 
   return (
     <>
@@ -64,10 +66,16 @@ const Form: FC<{ children: ReactNode; onOk: () => void }> = ({
             </Select>
           </AntdForm.Item>
           <div className="flex gap-2 items-center">
-            <AntdForm.Item name="dueDate.date" label="Fecha de devolución">
+            <AntdForm.Item
+              name={["dueDate", "date"]}
+              label="Fecha de devolución"
+            >
               <DatePicker placeholder="Selecciona fecha"></DatePicker>
             </AntdForm.Item>
-            <AntdForm.Item name="dueDate.hour" label="Hora de devolución">
+            <AntdForm.Item
+              name={["dueDate", "hour"]}
+              label="Hora de devolución"
+            >
               <TimePicker placeholder="Selecciona hora"></TimePicker>
             </AntdForm.Item>
           </div>
