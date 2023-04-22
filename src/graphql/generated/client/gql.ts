@@ -17,6 +17,8 @@ const documents = {
     "\n  query me {\n    me {\n      id\n      name\n      lastname\n      phone\n      description\n      username\n      role\n      institution {\n        id\n        name\n      }\n      countActiveLends\n      countCompletedLends\n      lends {\n        id\n      }\n    }\n  }\n": types.MeDocument,
     "\n  query users($page: Int!) {\n    users(limit: 20, page: $page) {\n      rows {\n        id\n        name\n        username\n        role\n        phone\n        lastname\n        institution {\n          id\n          name\n        }\n        description\n        countCompletedLends\n        countActiveLends\n      }\n      length\n      pages\n    }\n  }\n": types.UsersDocument,
     "\n  mutation deleteUser($deleteUserId: Int!) {\n    deleteUser(id: $deleteUserId) {\n      id\n    }\n  }\n": types.DeleteUserDocument,
+    "\n  mutation createUser(\n    $name: String!\n    $lastname: String!\n    $username: String!\n    $password: String!\n    $role: String!\n    $phone: String\n    $description: String\n  ) {\n    createUser(\n      name: $name\n      lastname: $lastname\n      username: $username\n      password: $password\n      role: $role\n      phone: $phone\n      description: $description\n    ) {\n      id\n    }\n  }\n": types.CreateUserDocument,
+    "\n  mutation UpdateUser(\n    $updateUserId: Int!\n    $name: String\n    $lastname: String\n    $phone: String\n    $description: String\n    $username: String\n    $role: String\n  ) {\n    updateUser(\n      id: $updateUserId\n      name: $name\n      lastname: $lastname\n      phone: $phone\n      description: $description\n      username: $username\n      role: $role\n    ) {\n      id\n    }\n  }\n": types.UpdateUserDocument,
 };
 
 /**
@@ -35,6 +37,14 @@ export function graphql(source: "\n  query users($page: Int!) {\n    users(limit
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  mutation deleteUser($deleteUserId: Int!) {\n    deleteUser(id: $deleteUserId) {\n      id\n    }\n  }\n"): (typeof documents)["\n  mutation deleteUser($deleteUserId: Int!) {\n    deleteUser(id: $deleteUserId) {\n      id\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  mutation createUser(\n    $name: String!\n    $lastname: String!\n    $username: String!\n    $password: String!\n    $role: String!\n    $phone: String\n    $description: String\n  ) {\n    createUser(\n      name: $name\n      lastname: $lastname\n      username: $username\n      password: $password\n      role: $role\n      phone: $phone\n      description: $description\n    ) {\n      id\n    }\n  }\n"): (typeof documents)["\n  mutation createUser(\n    $name: String!\n    $lastname: String!\n    $username: String!\n    $password: String!\n    $role: String!\n    $phone: String\n    $description: String\n  ) {\n    createUser(\n      name: $name\n      lastname: $lastname\n      username: $username\n      password: $password\n      role: $role\n      phone: $phone\n      description: $description\n    ) {\n      id\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  mutation UpdateUser(\n    $updateUserId: Int!\n    $name: String\n    $lastname: String\n    $phone: String\n    $description: String\n    $username: String\n    $role: String\n  ) {\n    updateUser(\n      id: $updateUserId\n      name: $name\n      lastname: $lastname\n      phone: $phone\n      description: $description\n      username: $username\n      role: $role\n    ) {\n      id\n    }\n  }\n"): (typeof documents)["\n  mutation UpdateUser(\n    $updateUserId: Int!\n    $name: String\n    $lastname: String\n    $phone: String\n    $description: String\n    $username: String\n    $role: String\n  ) {\n    updateUser(\n      id: $updateUserId\n      name: $name\n      lastname: $lastname\n      phone: $phone\n      description: $description\n      username: $username\n      role: $role\n    ) {\n      id\n    }\n  }\n"];
 
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.

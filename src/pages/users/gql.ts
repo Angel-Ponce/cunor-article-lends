@@ -32,4 +32,52 @@ const deleteUserQuery = graphql(`
   }
 `);
 
-export { usersQuery, deleteUserQuery };
+const createUserMutation = graphql(`
+  mutation createUser(
+    $name: String!
+    $lastname: String!
+    $username: String!
+    $password: String!
+    $role: String!
+    $phone: String
+    $description: String
+  ) {
+    createUser(
+      name: $name
+      lastname: $lastname
+      username: $username
+      password: $password
+      role: $role
+      phone: $phone
+      description: $description
+    ) {
+      id
+    }
+  }
+`);
+
+const updateUserMutation = graphql(`
+  mutation UpdateUser(
+    $updateUserId: Int!
+    $name: String
+    $lastname: String
+    $phone: String
+    $description: String
+    $username: String
+    $role: String
+  ) {
+    updateUser(
+      id: $updateUserId
+      name: $name
+      lastname: $lastname
+      phone: $phone
+      description: $description
+      username: $username
+      role: $role
+    ) {
+      id
+    }
+  }
+`);
+
+export { usersQuery, deleteUserQuery, createUserMutation, updateUserMutation };

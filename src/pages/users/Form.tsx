@@ -1,6 +1,18 @@
 import { FC, ReactNode, useState } from "react";
-import { UsersQuery } from "../../graphql/generated/client/graphql";
-import { Drawer, Form as AntdForm, Input, Select, Button } from "antd";
+import {
+  CreateUserMutationVariables,
+  UsersQuery,
+} from "../../graphql/generated/client/graphql";
+import {
+  Drawer,
+  Form as AntdForm,
+  Input,
+  Select,
+  Button,
+  notification,
+} from "antd";
+import { useMutation } from "@apollo/client";
+import { createUserMutation, updateUserMutation } from "./gql";
 
 const Form: FC<{
   children: ReactNode;
@@ -9,8 +21,56 @@ const Form: FC<{
   onOk: () => void;
 }> = ({ children, editing = false, user, onOk }) => {
   const [open, setOpen] = useState(false);
+  const [createUser] = useMutation(createUserMutation);
+  const [updateUser] = useMutation(updateUserMutation);
 
-  const handleSubmit = async () => {};
+  const handleSubmit = async (values: CreateUserMutationVariables) => {
+    if (editing) {
+      const { errors } = await updateUser({
+        variables: {
+          updateUserId: user?.id || 0,
+          ...values,
+        },
+      });
+
+      if (errors) {
+        notification.error({
+          message: "Error!",
+          description:
+            "Parece que algo ha salido mal, intenta nuevamente más tarde",
+        });
+
+        return;
+      }
+
+      notification.success({
+        message: "Usuario actualizado",
+        description: `El usuario ${user?.name} ${user?.lastname} ha sido actualizado con éxito.`,
+      });
+      return;
+    }
+
+    const { errors } = await createUser({
+      variables: {
+        ...values,
+      },
+    });
+
+    if (errors) {
+      notification.error({
+        message: "Error!",
+        description:
+          "Parece que algo ha salido mal, intenta nuevamente más tarde",
+      });
+
+      return;
+    }
+
+    notification.success({
+      message: "Usuario actualizado",
+      description: `El usuario ${user?.name} ${user?.lastname} ha sido actualizado con éxito.`,
+    });
+  };
 
   return (
     <>
@@ -64,6 +124,12 @@ const Form: FC<{
                 { value: "user", label: "Usuario" },
               ]}
             ></Select>
+          </AntdForm.Item>
+          <AntdForm.Item name="phone" label="Teléfono">
+            <Input></Input>
+          </AntdForm.Item>
+          <AntdForm.Item name="description" label="Descripción">
+            <Input.TextArea></Input.TextArea>
           </AntdForm.Item>
           <AntdForm.Item className="flex justify-end">
             <Button htmlType="submit" type="primary">
