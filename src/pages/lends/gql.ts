@@ -65,4 +65,17 @@ const completeLendMutation = graphql(`
   }
 `);
 
-export { lendsQuery, createLendMutation, completeLendMutation };
+const deleteLendMutation = graphql(`
+  mutation deleteLend($deleteLendId: Int!) {
+    deleteLend(id: $deleteLendId) {
+      id
+    }
+  }
+`);
+
+export {
+  lendsQuery,
+  createLendMutation,
+  completeLendMutation,
+  deleteLendMutation,
+};
