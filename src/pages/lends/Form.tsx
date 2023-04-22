@@ -1,4 +1,4 @@
-import { useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import {
   Drawer,
   Form as AntdForm,
@@ -7,23 +7,63 @@ import {
   Avatar,
   DatePicker,
   TimePicker,
+  InputNumber,
+  Tooltip,
+  Divider,
+  notification,
 } from "antd";
 import { FC, ReactNode, useState } from "react";
 import { allProfessorsQuery } from "../professors/gql";
 import { allArticlesQuery } from "../articles/gql";
+import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
+import { createLendMutation } from "./gql";
 
 const Form: FC<{ children: ReactNode; onOk: () => void }> = ({
   children,
   onOk,
 }) => {
+  const [mutation, { loading }] = useMutation(createLendMutation);
   const [open, setOpen] = useState(false);
   const { data: professors, loading: professorsLoading } =
     useQuery(allProfessorsQuery);
   const { data: articles, loading: articlesLoading } =
     useQuery(allArticlesQuery);
+  const [formArticles, setFormArticles] = useState<
+    { article: number; count: number }[]
+  >([]);
 
-  const handleSubmit = async (values: any) => {
-    console.log(values);
+  const handleSubmit = async (values: {
+    professorId: number;
+    dueDate: Date;
+    articles: { count: number; article: number }[];
+  }) => {
+    const { errors } = await mutation({
+      variables: {
+        professorId: values.professorId,
+        dueDate: values.dueDate.toISOString(),
+        articles: values.articles.map((a) => ({
+          articleId: a.article,
+          count: a.count,
+        })),
+      },
+    });
+
+    if (errors) {
+      notification.error({
+        message: "Error!",
+        description:
+          "Parece que algo ha salido mal, intenta nuevamente más tarde",
+      });
+
+      return;
+    }
+
+    onOk();
+    setOpen(false);
+    notification.success({
+      message: "Prestamos creado",
+      description: `El prestamo se ha creado con éxito.`,
+    });
   };
 
   return (
@@ -38,15 +78,14 @@ const Form: FC<{ children: ReactNode; onOk: () => void }> = ({
         <AntdForm
           initialValues={{
             professorId: undefined,
-            dueDate: {
-              date: undefined,
-              hour: undefined,
-            },
-            articles: [],
+            dueDate: undefined,
+            articles: [{ count: undefined, article: undefined }],
           }}
           onFinish={handleSubmit}
           layout="vertical"
+          onValuesChange={(_, values) => setFormArticles(values.articles)}
         >
+          <Divider type="horizontal">Información del prestamo</Divider>
           <AntdForm.Item
             name="professorId"
             label="Profesor"
@@ -73,25 +112,84 @@ const Form: FC<{ children: ReactNode; onOk: () => void }> = ({
               ))}
             </Select>
           </AntdForm.Item>
-          <div className="flex gap-2 items-center">
-            <AntdForm.Item
-              name={["dueDate", "date"]}
-              label="Fecha de devolución"
-              rules={[{ required: true, message: "Este campo es obligatorio" }]}
-            >
-              <DatePicker placeholder="Selecciona fecha"></DatePicker>
-            </AntdForm.Item>
-            <AntdForm.Item
-              name={["dueDate", "hour"]}
-              label="Hora de devolución"
-              rules={[{ required: true, message: "Este campo es obligatorio" }]}
-            >
-              <TimePicker placeholder="Selecciona hora"></TimePicker>
-            </AntdForm.Item>
-          </div>
+          <AntdForm.Item
+            name="dueDate"
+            label="Fecha y hora de devolución"
+            rules={[{ required: true, message: "Este campo es obligatorio" }]}
+            className="flex-1"
+          >
+            <DatePicker
+              className="w-full"
+              placeholder="Selecciona fecha"
+              showTime={true}
+            />
+          </AntdForm.Item>
 
+          <Divider type="horizontal">Artículos para prestar</Divider>
+          <AntdForm.List name="articles">
+            {(fields, { add, remove }) => (
+              <div className="w-full flex flex-col gap-2">
+                {fields.map((field) => (
+                  <div className="w-full flex items-end gap-2" key={field.key}>
+                    <AntdForm.Item
+                      name={[field.name, "article"]}
+                      label="Artículo"
+                      className="flex-1"
+                      rules={[
+                        {
+                          required: true,
+                          message: "Este campo es obligatorio.",
+                        },
+                      ]}
+                    >
+                      <Select
+                        options={articles?.articles.rows.map((a) => ({
+                          value: a.id,
+                          label: a.name,
+                          disabled:
+                            !a.available ||
+                            formArticles.some((fa) => fa.article == a.id),
+                        }))}
+                        loading={articlesLoading}
+                      />
+                    </AntdForm.Item>
+                    <AntdForm.Item
+                      name={[field.name, "count"]}
+                      label="Cantidad"
+                      className="flex-1"
+                      rules={[
+                        {
+                          required: true,
+                          message: "Este campo es obligatorio.",
+                        },
+                      ]}
+                    >
+                      <InputNumber className="w-full"></InputNumber>
+                    </AntdForm.Item>
+                    {fields.length > 1 && (
+                      <AntdForm.Item className="w-fit">
+                        <Tooltip title="Remover articulo">
+                          <Button
+                            icon={<MinusCircleOutlined />}
+                            onClick={() => remove(field.name)}
+                          />
+                        </Tooltip>
+                      </AntdForm.Item>
+                    )}
+                  </div>
+                ))}
+                <Button
+                  type="link"
+                  icon={<PlusOutlined />}
+                  onClick={() => add({ article: undefined, count: undefined })}
+                >
+                  Agregar otro producto
+                </Button>
+              </div>
+            )}
+          </AntdForm.List>
           <AntdForm.Item className="flex justify-end">
-            <Button htmlType="submit" type="primary" loading={false}>
+            <Button htmlType="submit" type="primary" loading={loading}>
               Guardar
             </Button>
           </AntdForm.Item>
