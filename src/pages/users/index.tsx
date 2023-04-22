@@ -5,6 +5,9 @@ import { useQuery } from "@apollo/client";
 import { usersQuery } from "./gql";
 import { useEffect, useState } from "react";
 import { DeleteTwoTone, EditTwoTone, PlusOutlined } from "@ant-design/icons";
+import Delete from "./Delete";
+import { useAtom } from "jotai";
+import { user as userAtom } from "../../stores/auth";
 
 const Users: NextPage = () => {
   const { data, loading, refetch } = useQuery(usersQuery, {
@@ -14,6 +17,7 @@ const Users: NextPage = () => {
     fetchPolicy: "cache-and-network",
   });
   const [currentPage, setCurrentPage] = useState(1);
+  const [user] = useAtom(userAtom);
 
   useEffect(() => {
     refetch({ page: currentPage });
@@ -57,16 +61,20 @@ const Users: NextPage = () => {
           },
           {
             key: "actions",
-            render: (_, user) => (
+            render: (_, u) => (
               <div className="flex items-center gap-2 text-lg">
                 <Button
                   className="rounded-full"
                   icon={<EditTwoTone twoToneColor="orange" />}
                 />
-                <Button
-                  className="rounded-full"
-                  icon={<DeleteTwoTone twoToneColor="red" />}
-                />
+                {u.id != user?.id && (
+                  <Delete user={u} onOk={() => refetch()}>
+                    <Button
+                      className="rounded-full"
+                      icon={<DeleteTwoTone twoToneColor="red" />}
+                    />
+                  </Delete>
+                )}
               </div>
             ),
           },

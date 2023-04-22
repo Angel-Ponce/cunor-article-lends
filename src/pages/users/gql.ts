@@ -24,4 +24,12 @@ const usersQuery = graphql(`
   }
 `);
 
-export { usersQuery };
+const deleteUserQuery = graphql(`
+  mutation deleteUser($deleteUserId: Int!) {
+    deleteUser(id: $deleteUserId) {
+      id
+    }
+  }
+`);
+
+export { usersQuery, deleteUserQuery };
