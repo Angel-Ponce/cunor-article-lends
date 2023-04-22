@@ -27,6 +27,7 @@ const documents = {
     "\n  mutation deletePhisicalState($deletePhisicalStateId: Int!) {\n    deletePhisicalState(id: $deletePhisicalStateId) {\n      id\n    }\n  }\n": types.DeletePhisicalStateDocument,
     "\n  mutation createPhisicalState($name: String!, $description: String) {\n    createPhisicalState(name: $name, description: $description) {\n      id\n    }\n  }\n": types.CreatePhisicalStateDocument,
     "\n  mutation updatePhisicalState(\n    $updatePhisicalStateId: Int!\n    $name: String\n    $description: String\n  ) {\n    updatePhisicalState(\n      id: $updatePhisicalStateId\n      name: $name\n      description: $description\n    ) {\n      id\n    }\n  }\n": types.UpdatePhisicalStateDocument,
+    "\n  query allProfessors {\n    professors(limit: -1) {\n      rows {\n        id\n        name\n        lastname\n      }\n    }\n  }\n": types.AllProfessorsDocument,
     "\n  query professors($page: Int!) {\n    professors(limit: 20, page: $page) {\n      pages\n      length\n      rows {\n        id\n        name\n        lastname\n        personalRegister\n        phone\n      }\n    }\n  }\n": types.ProfessorsDocument,
     "\n  mutation deleteProfessor($deleteProfessorId: Int!) {\n    deleteProfessor(id: $deleteProfessorId) {\n      id\n    }\n  }\n": types.DeleteProfessorDocument,
     "\n  mutation createProfessor(\n    $name: String!\n    $lastname: String!\n    $personalRegister: String!\n    $phone: String\n  ) {\n    createProfessor(\n      name: $name\n      lastname: $lastname\n      personalRegister: $personalRegister\n      phone: $phone\n    ) {\n      id\n    }\n  }\n": types.CreateProfessorDocument,
@@ -93,6 +94,10 @@ export function graphql(source: "\n  mutation createPhisicalState($name: String!
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  mutation updatePhisicalState(\n    $updatePhisicalStateId: Int!\n    $name: String\n    $description: String\n  ) {\n    updatePhisicalState(\n      id: $updatePhisicalStateId\n      name: $name\n      description: $description\n    ) {\n      id\n    }\n  }\n"): (typeof documents)["\n  mutation updatePhisicalState(\n    $updatePhisicalStateId: Int!\n    $name: String\n    $description: String\n  ) {\n    updatePhisicalState(\n      id: $updatePhisicalStateId\n      name: $name\n      description: $description\n    ) {\n      id\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  query allProfessors {\n    professors(limit: -1) {\n      rows {\n        id\n        name\n        lastname\n      }\n    }\n  }\n"): (typeof documents)["\n  query allProfessors {\n    professors(limit: -1) {\n      rows {\n        id\n        name\n        lastname\n      }\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

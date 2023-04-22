@@ -1,11 +1,14 @@
-import { Drawer, Form as AntdForm, Button, Select } from "antd";
+import { useQuery } from "@apollo/client";
+import { Drawer, Form as AntdForm, Button, Select, Avatar } from "antd";
 import { FC, ReactNode, useState } from "react";
+import { allProfessorsQuery } from "../professors/gql";
 
 const Form: FC<{ children: ReactNode; onOk: () => void }> = ({
   children,
   onOk,
 }) => {
   const [open, setOpen] = useState(false);
+  const { data: professors, loading } = useQuery(allProfessorsQuery);
 
   const handleSubmit = async () => {};
 
@@ -28,7 +31,26 @@ const Form: FC<{ children: ReactNode; onOk: () => void }> = ({
           layout="vertical"
         >
           <AntdForm.Item name="professorId" label="Profesor">
-            <Select></Select>
+            <Select loading={loading}>
+              {professors?.professors.rows.map((p) => (
+                <Select.Option
+                  key={p.id}
+                  value={p.id}
+                  label={`${p.name} ${p.lastname}`}
+                >
+                  <div className="flex items-center gap-2">
+                    <Avatar
+                      src={`https://api.dicebear.com/6.x/identicon/svg?seed=${p.name} ${p.lastname}`}
+                      alt={p.name}
+                      size={24}
+                    />
+                    <p>
+                      {p.name} {p.lastname}
+                    </p>
+                  </div>
+                </Select.Option>
+              ))}
+            </Select>
           </AntdForm.Item>
           <AntdForm.Item className="flex justify-end">
             <Button htmlType="submit" type="primary" loading={false}>

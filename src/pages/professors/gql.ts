@@ -1,5 +1,17 @@
 import { graphql } from "../../graphql/generated/client";
 
+const allProfessorsQuery = graphql(`
+  query allProfessors {
+    professors(limit: -1) {
+      rows {
+        id
+        name
+        lastname
+      }
+    }
+  }
+`);
+
 const professorsQuery = graphql(`
   query professors($page: Int!) {
     professors(limit: 20, page: $page) {
@@ -67,4 +79,5 @@ export {
   deleteProfessorMutation,
   createProfessorMutation,
   updateProfessorMutation,
+  allProfessorsQuery,
 };
