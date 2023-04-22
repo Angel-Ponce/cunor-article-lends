@@ -118,7 +118,7 @@ const Form: FC<{
               label="Contraseña"
               rules={[{ required: true, message: "Este campo es requerido" }]}
             >
-              <Input type="password"></Input>
+              <Input.Password></Input.Password>
             </AntdForm.Item>
           )}
           <AntdForm.Item

@@ -2,6 +2,7 @@ import { Avatar, Button, Divider, Typography } from "antd";
 import { useAtom } from "jotai";
 import { user as userAtom } from "../../stores/auth";
 import { useLogout } from "../../hooks/useLogout";
+import ChangePassword from "./ChangePassword";
 
 const UserOptions = () => {
   const [user] = useAtom(userAtom);
@@ -21,9 +22,14 @@ const UserOptions = () => {
           {user?.role == "admin" ? "Administrador" : "Usuario"}
         </Typography.Text>
       </div>
-      <div className="w-full flex flex-col items-center">
+      <div className="w-full flex flex-col items-center gap-2">
         <Divider />
-        <Button onClick={logout}>Cerrar sesión</Button>
+        <ChangePassword>
+          <Button className="min-w-[160px]">Cambiar contraseña</Button>
+        </ChangePassword>
+        <Button className="min-w-[160px]" onClick={logout}>
+          Cerrar sesión
+        </Button>
       </div>
     </div>
   );

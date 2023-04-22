@@ -119,7 +119,7 @@ const Login = () => {
             name="password"
             rules={[{ required: true, message: "Este campo es requerido" }]}
           >
-            <Input type="password"></Input>
+            <Input.Password></Input.Password>
           </Form.Item>
           <Form.Item className="flex justify-end">
             <Button

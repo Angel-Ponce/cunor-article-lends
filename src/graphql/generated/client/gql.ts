@@ -13,6 +13,7 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  * Therefore it is highly recommended to use the babel-plugin for production.
  */
 const documents = {
+    "\n  mutation updatePassword(\n    $userId: Int!\n    $oldPassword: String!\n    $newPassword: String!\n  ) {\n    updatePassword(\n      userId: $userId\n      oldPassword: $oldPassword\n      newPassword: $newPassword\n    )\n  }\n": types.UpdatePasswordDocument,
     "\n  query login($username: String!, $password: String!) {\n    login(username: $username, password: $password)\n  }\n": types.LoginDocument,
     "\n  query me {\n    me {\n      id\n      name\n      lastname\n      phone\n      description\n      username\n      role\n      institution {\n        id\n        name\n      }\n      countActiveLends\n      countCompletedLends\n      lends {\n        id\n      }\n    }\n  }\n": types.MeDocument,
     "\n  query phisicalStates($page: Int!) {\n    phisicalStates(limit: 20, page: $page) {\n      rows {\n        id\n        name\n        description\n      }\n    }\n  }\n": types.PhisicalStatesDocument,
@@ -25,6 +26,10 @@ const documents = {
     "\n  mutation UpdateUser(\n    $updateUserId: Int!\n    $name: String\n    $lastname: String\n    $phone: String\n    $description: String\n    $username: String\n    $role: String\n  ) {\n    updateUser(\n      id: $updateUserId\n      name: $name\n      lastname: $lastname\n      phone: $phone\n      description: $description\n      username: $username\n      role: $role\n    ) {\n      id\n    }\n  }\n": types.UpdateUserDocument,
 };
 
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  mutation updatePassword(\n    $userId: Int!\n    $oldPassword: String!\n    $newPassword: String!\n  ) {\n    updatePassword(\n      userId: $userId\n      oldPassword: $oldPassword\n      newPassword: $newPassword\n    )\n  }\n"): (typeof documents)["\n  mutation updatePassword(\n    $userId: Int!\n    $oldPassword: String!\n    $newPassword: String!\n  ) {\n    updatePassword(\n      userId: $userId\n      oldPassword: $oldPassword\n      newPassword: $newPassword\n    )\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
