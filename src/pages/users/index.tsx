@@ -9,6 +9,7 @@ import Delete from "./Delete";
 import { useAtom } from "jotai";
 import { user as userAtom } from "../../stores/auth";
 import Form from "./Form";
+import { useRouter } from "next/router";
 
 const Users: NextPage = () => {
   const { data, loading, refetch } = useQuery(usersQuery, {
@@ -19,6 +20,7 @@ const Users: NextPage = () => {
   });
   const [currentPage, setCurrentPage] = useState(1);
   const [user] = useAtom(userAtom);
+  const router = useRouter();
 
   useEffect(() => {
     refetch({ page: currentPage });
@@ -31,7 +33,11 @@ const Users: NextPage = () => {
           status="403"
           title="403"
           subTitle="Lo sentimos, no estas autorizado para visualizar esta página."
-          extra={<Button type="primary">Volver a inicio</Button>}
+          extra={
+            <Button type="primary" onClick={() => router.push("/")}>
+              Volver a inicio
+            </Button>
+          }
         />
       ) : (
         <>
