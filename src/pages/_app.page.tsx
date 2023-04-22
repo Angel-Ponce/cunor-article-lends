@@ -32,6 +32,11 @@ const link = new HttpLink({
 const client = new ApolloClient({
   link: tokenContext.concat(link),
   cache: new InMemoryCache(),
+  defaultOptions: {
+    mutate: {
+      errorPolicy: "all",
+    },
+  },
 });
 
 const App = ({ Component, pageProps }: AppProps) => {
