@@ -151,13 +151,17 @@ const Lends: NextPage = () => {
             key: "actions",
             render: (_, p) => (
               <div className="flex items-center gap-2 text-lg">
-                <Complete lend={p} onOk={() => refetch({ page: currentPage })}>
-                  <Button
-                    className="rounded-full"
-                    icon={<CheckOutlined className="text-green-500" />}
-                  />
-                </Complete>
-
+                {!p.completed && (
+                  <Complete
+                    lend={p}
+                    onOk={() => refetch({ page: currentPage })}
+                  >
+                    <Button
+                      className="rounded-full"
+                      icon={<CheckOutlined className="text-green-500" />}
+                    />
+                  </Complete>
+                )}
                 <Delete lend={p} onOk={() => refetch({ page: currentPage })}>
                   <Button
                     className="rounded-full"
