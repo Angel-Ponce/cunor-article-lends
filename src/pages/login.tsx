@@ -51,6 +51,7 @@ const Login = () => {
         username: values.username,
         password: values.password,
       },
+      fetchPolicy: "no-cache",
     });
 
     if (error) {
@@ -68,7 +69,9 @@ const Login = () => {
 
     store("token", data?.login);
 
-    const { data: dataMe, error: errorMe } = await me();
+    const { data: dataMe, error: errorMe } = await me({
+      fetchPolicy: "no-cache",
+    });
 
     if (dataMe?.me) {
       store("user", dataMe.me);
