@@ -14,6 +14,7 @@ const articlesQuery = graphql(`
           name
         }
         serial
+        available
       }
     }
   }

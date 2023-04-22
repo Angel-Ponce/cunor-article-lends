@@ -1,10 +1,16 @@
 import { NextPage } from "next";
 import AppLayout from "../../components/templates/AppLayout";
-import { Button, Pagination, Table } from "antd";
+import { Button, Pagination, Table, Tag } from "antd";
 import { useQuery } from "@apollo/client";
 import { articlesQuery } from "./gql";
 import { useEffect, useState } from "react";
-import { DeleteTwoTone, EditTwoTone, PlusOutlined } from "@ant-design/icons";
+import {
+  CheckCircleOutlined,
+  DeleteTwoTone,
+  EditTwoTone,
+  PlusOutlined,
+  StopOutlined,
+} from "@ant-design/icons";
 import Delete from "./Delete";
 import Form from "./Form";
 
@@ -52,6 +58,18 @@ const PhisicalStates: NextPage = () => {
             title: "Serial",
             dataIndex: "serial",
             key: "serial",
+          },
+          {
+            title: "Disponibilidad",
+            key: "available",
+            render: (_, { available }) => (
+              <Tag
+                icon={available ? <CheckCircleOutlined /> : <StopOutlined />}
+                color={available ? "success" : "default"}
+              >
+                {available ? "disponible" : "ocupado"}
+              </Tag>
+            ),
           },
           {
             key: "actions",

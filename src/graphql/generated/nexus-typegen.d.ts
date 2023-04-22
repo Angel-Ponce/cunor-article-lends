@@ -142,6 +142,7 @@ export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
 
 export interface NexusGenFieldTypes {
   Article: { // field return type
+    available: boolean; // Boolean!
     description: string | null; // String
     id: number; // Int!
     institution: NexusGenRootTypes['Institution']; // Institution!
@@ -278,6 +279,7 @@ export interface NexusGenFieldTypes {
 
 export interface NexusGenFieldTypeNames {
   Article: { // field return type name
+    available: 'Boolean'
     description: 'String'
     id: 'Int'
     institution: 'Institution'

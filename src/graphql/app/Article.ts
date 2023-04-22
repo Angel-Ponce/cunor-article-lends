@@ -23,6 +23,25 @@ const Article = objectType({
       },
     });
     t.string("serial");
+    t.nonNull.boolean("available", {
+      resolve: async (parent, _args, ctx) => {
+        const count = await ctx.prisma.lend.count({
+          where: {
+            AND: {
+              completed: false,
+              deletedAt: null,
+              articles: {
+                some: {
+                  articleId: parent.id,
+                },
+              },
+            },
+          },
+        });
+
+        return count == 0;
+      },
+    });
     t.field("institution", {
       type: nonNull("Institution"),
       resolve: async (parent, _args, ctx) => {
