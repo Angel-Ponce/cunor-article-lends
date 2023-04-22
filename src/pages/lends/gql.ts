@@ -54,4 +54,15 @@ const createLendMutation = graphql(`
   }
 `);
 
-export { lendsQuery, createLendMutation };
+const completeLendMutation = graphql(`
+  mutation CompleteLend(
+    $completeLendId: Int!
+    $articlesStates: [InputArticleLendCompleted!]!
+  ) {
+    completeLend(id: $completeLendId, articlesStates: $articlesStates) {
+      id
+    }
+  }
+`);
+
+export { lendsQuery, createLendMutation, completeLendMutation };

@@ -21,6 +21,7 @@ const documents = {
     "\n  mutation updateArticle(\n    $updateArticleId: Int!\n    $name: String\n    $description: String\n    $phisicalStateId: Int\n    $serial: String\n  ) {\n    updateArticle(\n      id: $updateArticleId\n      name: $name\n      description: $description\n      phisicalStateId: $phisicalStateId\n      serial: $serial\n    ) {\n      id\n    }\n  }\n": types.UpdateArticleDocument,
     "\n  query lends($page: Int!) {\n    lends(limit: 20, page: $page) {\n      rows {\n        user {\n          id\n          name\n          lastname\n        }\n        realDueDate\n        professor {\n          id\n          name\n          lastname\n        }\n        id\n        dueDate\n        createdAt\n        completed\n        articles {\n          article {\n            id\n            name\n            phisicalState {\n              id\n              name\n            }\n            serial\n          }\n          count\n        }\n      }\n      pages\n      length\n    }\n  }\n": types.LendsDocument,
     "\n  mutation createLend(\n    $professorId: Int!\n    $dueDate: DateTime!\n    $articles: [InputArticleLend!]!\n  ) {\n    createLend(\n      professorId: $professorId\n      dueDate: $dueDate\n      articles: $articles\n    ) {\n      id\n    }\n  }\n": types.CreateLendDocument,
+    "\n  mutation CompleteLend(\n    $completeLendId: Int!\n    $articlesStates: [InputArticleLendCompleted!]!\n  ) {\n    completeLend(id: $completeLendId, articlesStates: $articlesStates) {\n      id\n    }\n  }\n": types.CompleteLendDocument,
     "\n  query login($username: String!, $password: String!) {\n    login(username: $username, password: $password)\n  }\n": types.LoginDocument,
     "\n  query me {\n    me {\n      id\n      name\n      lastname\n      phone\n      description\n      username\n      role\n      institution {\n        id\n        name\n      }\n      countActiveLends\n      countCompletedLends\n      lends {\n        id\n      }\n    }\n  }\n": types.MeDocument,
     "\n  query allPhisicalStates {\n    phisicalStates(limit: -1) {\n      rows {\n        value: id\n        label: name\n      }\n    }\n  }\n": types.AllPhisicalStatesDocument,
@@ -71,6 +72,10 @@ export function graphql(source: "\n  query lends($page: Int!) {\n    lends(limit
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  mutation createLend(\n    $professorId: Int!\n    $dueDate: DateTime!\n    $articles: [InputArticleLend!]!\n  ) {\n    createLend(\n      professorId: $professorId\n      dueDate: $dueDate\n      articles: $articles\n    ) {\n      id\n    }\n  }\n"): (typeof documents)["\n  mutation createLend(\n    $professorId: Int!\n    $dueDate: DateTime!\n    $articles: [InputArticleLend!]!\n  ) {\n    createLend(\n      professorId: $professorId\n      dueDate: $dueDate\n      articles: $articles\n    ) {\n      id\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  mutation CompleteLend(\n    $completeLendId: Int!\n    $articlesStates: [InputArticleLendCompleted!]!\n  ) {\n    completeLend(id: $completeLendId, articlesStates: $articlesStates) {\n      id\n    }\n  }\n"): (typeof documents)["\n  mutation CompleteLend(\n    $completeLendId: Int!\n    $articlesStates: [InputArticleLendCompleted!]!\n  ) {\n    completeLend(id: $completeLendId, articlesStates: $articlesStates) {\n      id\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

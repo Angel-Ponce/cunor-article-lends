@@ -173,7 +173,29 @@ const Lends: NextPage = () => {
           },
         ]}
         loading={loading}
-        dataSource={data?.lends.rows}
+        dataSource={data?.lends.rows.map((r) => ({ ...r, key: r.id }))}
+        expandable={{
+          expandedRowRender: (row) => (
+            <div className="w-full flex gap-5 items-center justify-start flex-wrap">
+              {row.articles.map((article) => (
+                <div
+                  className="flex gap-2 items-center"
+                  key={article.article.id}
+                >
+                  <div className="rounded-full text-xs w-8 h-8 bg-blue-500 text-white font-semibold flex justify-center items-center">
+                    x{article.count}
+                  </div>
+                  <div className="flex flex-col items-center bg-white shadow-xl rounded-xl py-2 w-32">
+                    <p>{article.article.name}</p>
+                    <p className="text-xs text-gray-400">
+                      serial: {article.article.serial}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ),
+        }}
       />
       <div className="flex justify-end">
         <Pagination
