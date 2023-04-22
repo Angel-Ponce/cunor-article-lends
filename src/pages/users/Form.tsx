@@ -21,8 +21,8 @@ const Form: FC<{
   onOk: () => void;
 }> = ({ children, editing = false, user, onOk }) => {
   const [open, setOpen] = useState(false);
-  const [createUser] = useMutation(createUserMutation);
-  const [updateUser] = useMutation(updateUserMutation);
+  const [createUser, { loading: creating }] = useMutation(createUserMutation);
+  const [updateUser, { loading: updating }] = useMutation(updateUserMutation);
 
   const handleSubmit = async (values: CreateUserMutationVariables) => {
     if (editing) {
@@ -43,10 +43,13 @@ const Form: FC<{
         return;
       }
 
+      onOk();
+      setOpen(false);
       notification.success({
         message: "Usuario actualizado",
         description: `El usuario ${user?.name} ${user?.lastname} ha sido actualizado con éxito.`,
       });
+
       return;
     }
 
@@ -66,6 +69,8 @@ const Form: FC<{
       return;
     }
 
+    onOk();
+    setOpen(false);
     notification.success({
       message: "Usuario actualizado",
       description: `El usuario ${user?.name} ${user?.lastname} ha sido actualizado con éxito.`,
@@ -79,6 +84,7 @@ const Form: FC<{
         open={open}
         onClose={() => setOpen(false)}
         title={`${editing ? "Editar" : "Crear"} usuario`}
+        destroyOnClose
       >
         <AntdForm
           layout="vertical"
@@ -106,13 +112,15 @@ const Form: FC<{
           >
             <Input></Input>
           </AntdForm.Item>
-          <AntdForm.Item
-            name="password"
-            label="Contraseña"
-            rules={[{ required: true, message: "Este campo es requerido" }]}
-          >
-            <Input type="password"></Input>
-          </AntdForm.Item>
+          {!editing && (
+            <AntdForm.Item
+              name="password"
+              label="Contraseña"
+              rules={[{ required: true, message: "Este campo es requerido" }]}
+            >
+              <Input type="password"></Input>
+            </AntdForm.Item>
+          )}
           <AntdForm.Item
             name="role"
             label="Rol"
@@ -132,7 +140,11 @@ const Form: FC<{
             <Input.TextArea></Input.TextArea>
           </AntdForm.Item>
           <AntdForm.Item className="flex justify-end">
-            <Button htmlType="submit" type="primary">
+            <Button
+              htmlType="submit"
+              type="primary"
+              loading={creating || updating}
+            >
               Guardar
             </Button>
           </AntdForm.Item>

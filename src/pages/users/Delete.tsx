@@ -29,11 +29,11 @@ const Delete: FC<{
       return;
     }
 
+    onOk();
     notification.success({
       message: "Usuario eliminado",
       description: `El usuario ${user.name} ${user.lastname} ha sido eliminado con éxito.`,
     });
-    onOk();
   };
 
   return (
