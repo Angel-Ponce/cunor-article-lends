@@ -1,6 +1,6 @@
 import { FC, ReactNode, useState } from "react";
 import { LendsQuery } from "../../graphql/generated/client/graphql";
-import { Button, Form, Input, Modal, Select, notification } from "antd";
+import { Button, Empty, Form, Input, Modal, Select, notification } from "antd";
 import { useMutation, useQuery } from "@apollo/client";
 import { allPhisicalStatesQuery } from "../phisical-states/gql";
 import { completeLendMutation } from "./gql";
@@ -90,6 +90,12 @@ const Complete: FC<{
                         }))}
                         bordered={false}
                         open={false}
+                        notFoundContent={
+                          <Empty
+                            image={Empty.PRESENTED_IMAGE_SIMPLE}
+                            description="Sin datos"
+                          />
+                        }
                       />
                     </Form.Item>
                     <Form.Item
@@ -106,6 +112,12 @@ const Complete: FC<{
                       <Select
                         loading={loadingPhisicalStates}
                         options={phisicalStates?.phisicalStates.rows}
+                        notFoundContent={
+                          <Empty
+                            image={Empty.PRESENTED_IMAGE_SIMPLE}
+                            description="Sin datos"
+                          />
+                        }
                       />
                     </Form.Item>
                   </div>

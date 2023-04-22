@@ -10,6 +10,7 @@ import {
   Tooltip,
   Divider,
   notification,
+  Empty,
 } from "antd";
 import { FC, ReactNode, useState } from "react";
 import { allProfessorsQuery } from "../professors/gql";
@@ -91,7 +92,15 @@ const Form: FC<{ children: ReactNode; onOk: () => void }> = ({
             label="Profesor"
             rules={[{ required: true, message: "Este campo es obligatorio" }]}
           >
-            <Select loading={professorsLoading}>
+            <Select
+              loading={professorsLoading}
+              notFoundContent={
+                <Empty
+                  image={Empty.PRESENTED_IMAGE_SIMPLE}
+                  description="Sin datos"
+                />
+              }
+            >
               {professors?.professors.rows.map((p) => (
                 <Select.Option
                   key={p.id}
@@ -152,6 +161,12 @@ const Form: FC<{ children: ReactNode; onOk: () => void }> = ({
                             formArticles.some((fa) => fa.article == a.id),
                         }))}
                         loading={articlesLoading}
+                        notFoundContent={
+                          <Empty
+                            image={Empty.PRESENTED_IMAGE_SIMPLE}
+                            description="Sin datos"
+                          />
+                        }
                       />
                     </AntdForm.Item>
                     <AntdForm.Item

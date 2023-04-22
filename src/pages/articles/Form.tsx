@@ -10,6 +10,7 @@ import {
   Button,
   notification,
   Select,
+  Empty,
 } from "antd";
 import { useMutation, useQuery } from "@apollo/client";
 import { createArticleMutation, updateArticleMutation } from "./gql";
@@ -113,6 +114,12 @@ const Form: FC<{
             <Select
               options={phisicalStates?.phisicalStates.rows}
               loading={loadingPhisicalStates}
+              notFoundContent={
+                <Empty
+                  image={Empty.PRESENTED_IMAGE_SIMPLE}
+                  description="Sin datos"
+                />
+              }
             />
           </AntdForm.Item>
           <AntdForm.Item name="description" label="Descripción">
