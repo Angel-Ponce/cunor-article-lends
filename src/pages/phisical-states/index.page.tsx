@@ -31,6 +31,7 @@ const PhisicalStates: NextPage = () => {
         </Form>
       </div>
       <Table
+        scroll={{ y: 500 }}
         pagination={false}
         columns={[
           {
