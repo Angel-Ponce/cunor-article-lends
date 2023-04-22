@@ -1,31 +1,32 @@
 import { FC, ReactNode, useState } from "react";
 import {
-  CreateProfessorMutationVariables,
-  ProfessorsQuery,
+  ArticlesQuery,
+  CreateArticleMutationVariables,
+  CreatePhisicalStateMutationVariables,
 } from "../../graphql/generated/client/graphql";
 import { Drawer, Form as AntdForm, Input, Button, notification } from "antd";
 import { useMutation } from "@apollo/client";
-import { createProfessorMutation, updateProfessorMutation } from "./gql";
+import { createArticleMutation, updateArticleMutation } from "./gql";
 
 const Form: FC<{
   children: ReactNode;
   editing?: boolean;
-  professor?: ProfessorsQuery["professors"]["rows"][number];
+  article?: ArticlesQuery["articles"]["rows"][number];
   onOk: () => void;
-}> = ({ children, editing = false, professor, onOk }) => {
+}> = ({ children, editing = false, article, onOk }) => {
   const [open, setOpen] = useState(false);
-  const [createProfessor, { loading: creating }] = useMutation(
-    createProfessorMutation
+  const [createArticle, { loading: creating }] = useMutation(
+    createArticleMutation
   );
-  const [updateProfessor, { loading: updating }] = useMutation(
-    updateProfessorMutation
+  const [updateArticle, { loading: updating }] = useMutation(
+    updateArticleMutation
   );
 
-  const handleSubmit = async (values: CreateProfessorMutationVariables) => {
+  const handleSubmit = async (values: CreateArticleMutationVariables) => {
     if (editing) {
-      const { errors } = await updateProfessor({
+      const { errors } = await updateArticle({
         variables: {
-          updateProfessorId: professor?.id || 0,
+          updateArticleId: article?.id || 0,
           ...values,
         },
       });
@@ -43,14 +44,14 @@ const Form: FC<{
       onOk();
       setOpen(false);
       notification.success({
-        message: "Profesor actualizado",
-        description: `El profesor ${values.name} ha sido actualizado con éxito.`,
+        message: "Artículo actualizado",
+        description: `El artículo ${values.name} ha sido actualizado con éxito.`,
       });
 
       return;
     }
 
-    const { errors } = await createProfessor({
+    const { errors } = await createArticle({
       variables: {
         ...values,
       },
@@ -69,8 +70,8 @@ const Form: FC<{
     onOk();
     setOpen(false);
     notification.success({
-      message: "Profesor creado",
-      description: `El profesor ${values.name} ha sido creado con éxito.`,
+      message: "Artículo creado",
+      description: `El artículo ${values.name} ha sido creado con éxito.`,
     });
   };
 
@@ -80,12 +81,12 @@ const Form: FC<{
       <Drawer
         open={open}
         onClose={() => setOpen(false)}
-        title={`${editing ? "Editar" : "Crear"} profesor`}
+        title={`${editing ? "Editar" : "Crear"} artículo`}
         destroyOnClose
       >
         <AntdForm
           layout="vertical"
-          initialValues={professor}
+          initialValues={article}
           onFinish={handleSubmit}
         >
           <AntdForm.Item
@@ -95,22 +96,8 @@ const Form: FC<{
           >
             <Input></Input>
           </AntdForm.Item>
-          <AntdForm.Item
-            name="lastname"
-            label="Apellido"
-            rules={[{ required: true, message: "Este campo es requerido" }]}
-          >
-            <Input></Input>
-          </AntdForm.Item>
-          <AntdForm.Item
-            name="personalRegister"
-            label="Registro personal"
-            rules={[{ required: true, message: "Este campo es requerido" }]}
-          >
-            <Input></Input>
-          </AntdForm.Item>
-          <AntdForm.Item name="phone" label="Teléfono">
-            <Input></Input>
+          <AntdForm.Item name="description" label="Descripción">
+            <Input.TextArea></Input.TextArea>
           </AntdForm.Item>
           <AntdForm.Item className="flex justify-end">
             <Button

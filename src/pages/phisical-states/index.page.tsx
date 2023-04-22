@@ -74,7 +74,11 @@ const PhisicalStates: NextPage = () => {
         dataSource={data?.phisicalStates.rows}
       />
       <div className="flex justify-end">
-        <Pagination total={0} pageSize={20} onChange={setCurrentPage} />
+        <Pagination
+          total={data?.phisicalStates.length || 0}
+          pageSize={20}
+          onChange={setCurrentPage}
+        />
       </div>
     </AppLayout>
   );

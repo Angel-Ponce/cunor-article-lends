@@ -110,7 +110,11 @@ const Users: NextPage = () => {
             dataSource={data?.users.rows}
           />
           <div className="flex justify-end">
-            <Pagination total={0} pageSize={20} onChange={setCurrentPage} />
+            <Pagination
+              total={data?.users.length || 0}
+              pageSize={20}
+              onChange={setCurrentPage}
+            />
           </div>
         </>
       )}

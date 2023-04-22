@@ -8,6 +8,8 @@ const phisicalStatesQuery = graphql(`
         name
         description
       }
+      pages
+      length
     }
   }
 `);
