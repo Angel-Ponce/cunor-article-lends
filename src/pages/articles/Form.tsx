@@ -2,11 +2,18 @@ import { FC, ReactNode, useState } from "react";
 import {
   ArticlesQuery,
   CreateArticleMutationVariables,
-  CreatePhisicalStateMutationVariables,
 } from "../../graphql/generated/client/graphql";
-import { Drawer, Form as AntdForm, Input, Button, notification } from "antd";
-import { useMutation } from "@apollo/client";
+import {
+  Drawer,
+  Form as AntdForm,
+  Input,
+  Button,
+  notification,
+  Select,
+} from "antd";
+import { useMutation, useQuery } from "@apollo/client";
 import { createArticleMutation, updateArticleMutation } from "./gql";
+import { allPhisicalStatesQuery } from "../phisical-states/gql";
 
 const Form: FC<{
   children: ReactNode;
@@ -20,6 +27,9 @@ const Form: FC<{
   );
   const [updateArticle, { loading: updating }] = useMutation(
     updateArticleMutation
+  );
+  const { data: phisicalStates, loading: loadingPhisicalStates } = useQuery(
+    allPhisicalStatesQuery
   );
 
   const handleSubmit = async (values: CreateArticleMutationVariables) => {
@@ -86,7 +96,10 @@ const Form: FC<{
       >
         <AntdForm
           layout="vertical"
-          initialValues={article}
+          initialValues={{
+            ...article,
+            phisicalStateId: article?.phisicalState.id,
+          }}
           onFinish={handleSubmit}
         >
           <AntdForm.Item
@@ -96,7 +109,16 @@ const Form: FC<{
           >
             <Input></Input>
           </AntdForm.Item>
+          <AntdForm.Item name="phisicalStateId" label="Estado físico">
+            <Select
+              options={phisicalStates?.phisicalStates.rows}
+              loading={loadingPhisicalStates}
+            />
+          </AntdForm.Item>
           <AntdForm.Item name="description" label="Descripción">
+            <Input.TextArea></Input.TextArea>
+          </AntdForm.Item>
+          <AntdForm.Item name="serial" label="Serial">
             <Input.TextArea></Input.TextArea>
           </AntdForm.Item>
           <AntdForm.Item className="flex justify-end">

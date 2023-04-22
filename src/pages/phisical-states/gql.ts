@@ -1,5 +1,16 @@
 import { graphql } from "../../graphql/generated/client";
 
+const allPhisicalStatesQuery = graphql(`
+  query allPhisicalStates {
+    phisicalStates(limit: -1) {
+      rows {
+        value: id
+        label: name
+      }
+    }
+  }
+`);
+
 const phisicalStatesQuery = graphql(`
   query phisicalStates($page: Int!) {
     phisicalStates(limit: 20, page: $page) {
@@ -51,4 +62,5 @@ export {
   deletePhisicalStateMutation,
   createPhisicalStateMutation,
   updatePhisicalStateMutation,
+  allPhisicalStatesQuery,
 };
