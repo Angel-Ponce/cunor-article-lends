@@ -52,7 +52,11 @@ const PhisicalStates: NextPage = () => {
           {
             title: "Estado físico",
             key: "phisicalState",
-            render: (_, { phisicalState }) => <>{phisicalState.name}</>,
+            render: (_, { phisicalState }) => (
+              <div className="px-4 py-1 rounded-full bg-gray-100 w-fit">
+                {phisicalState.name}
+              </div>
+            ),
           },
           {
             title: "Serial",
