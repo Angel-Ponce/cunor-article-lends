@@ -1,18 +1,18 @@
 import { InfoCircleTwoTone } from "@ant-design/icons";
 import { Popconfirm, notification } from "antd";
 import { FC, ReactNode } from "react";
-import { UsersQuery } from "../../graphql/generated/client/graphql";
+import { PhisicalStatesQuery } from "../../graphql/generated/client/graphql";
 import { useMutation } from "@apollo/client";
-import { deleteUserMutation } from "./gql";
+import { deletePhisicalStateMutation } from "./gql";
 
 const Delete: FC<{
   children: ReactNode;
-  user: UsersQuery["users"]["rows"][number];
+  phisicalState: PhisicalStatesQuery["phisicalStates"]["rows"][number];
   onOk: () => void;
-}> = ({ children, user, onOk }) => {
-  const [mutation] = useMutation(deleteUserMutation, {
+}> = ({ children, phisicalState, onOk }) => {
+  const [mutation] = useMutation(deletePhisicalStateMutation, {
     variables: {
-      deleteUserId: user.id,
+      deletePhisicalStateId: phisicalState.id,
     },
   });
 
@@ -31,15 +31,15 @@ const Delete: FC<{
 
     onOk();
     notification.success({
-      message: "Usuario eliminado",
-      description: `El usuario ${user.name} ${user.lastname} ha sido eliminado con éxito.`,
+      message: "Estado físico eliminado",
+      description: `El estado físico  ${phisicalState.name} ha sido eliminado con éxito.`,
     });
   };
 
   return (
     <Popconfirm
-      title="Eliminar usuario"
-      description="¿Está seguro de eliminar este usuario?"
+      title="Eliminar estado físico"
+      description="¿Está seguro de eliminar este estado físico?"
       icon={<InfoCircleTwoTone twoToneColor="red" />}
       cancelText="Cancelar"
       okText="Eliminar"

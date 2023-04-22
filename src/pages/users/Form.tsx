@@ -72,8 +72,8 @@ const Form: FC<{
     onOk();
     setOpen(false);
     notification.success({
-      message: "Usuario actualizado",
-      description: `El usuario ${values.name} ${values.lastname} ha sido actualizado con éxito.`,
+      message: "Usuario creado",
+      description: `El usuario ${values.name} ${values.lastname} ha sido creado con éxito.`,
     });
   };
 
