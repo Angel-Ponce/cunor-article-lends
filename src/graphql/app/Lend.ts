@@ -253,7 +253,6 @@ const InputArticleLend = inputObjectType({
   definition: (t) => {
     t.nonNull.int("articleId");
     t.nonNull.int("count");
-    t.nonNull.int("phisicalStateId");
   },
 });
 
@@ -267,8 +266,16 @@ const createLend = extendType({
         dueDate: nonNull(DateTime),
         articles: nonNull(list(nonNull(InputArticleLend))),
       },
-      resolve: (_parent, args, ctx) => {
+      resolve: async (_parent, args, ctx) => {
         authenticate(ctx);
+
+        const articles = await ctx.prisma.article.findMany({
+          where: {
+            id: {
+              in: args.articles.map((a) => a.articleId),
+            },
+          },
+        });
 
         return ctx.prisma.lend.create({
           data: {
@@ -277,9 +284,11 @@ const createLend = extendType({
             dueDate: args.dueDate,
             institutionId: ctx.user?.institutionId || 0,
             articles: {
-              create: args.articles.map((a) => ({
-                articleId: a.articleId,
-                count: a.count,
+              create: articles.map((a) => ({
+                articleId: a.id,
+                count:
+                  args.articles.find((arga) => arga.articleId == a.id)?.count ||
+                  0,
                 initialPhisicalStateId: a.phisicalStateId,
               })),
             },

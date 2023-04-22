@@ -1,5 +1,17 @@
 import { graphql } from "../../graphql/generated/client";
 
+const allArticlesQuery = graphql(`
+  query allArticles {
+    articles(limit: -1) {
+      rows {
+        id
+        name
+        available
+      }
+    }
+  }
+`);
+
 const articlesQuery = graphql(`
   query articles($page: Int!) {
     articles(limit: 20, page: $page) {
@@ -71,4 +83,5 @@ export {
   deleteArticleMutation,
   createArticleMutation,
   updateArticleMutation,
+  allArticlesQuery,
 };

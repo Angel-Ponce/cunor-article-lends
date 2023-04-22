@@ -32,7 +32,6 @@ export interface NexusGenInputs {
   InputArticleLend: { // input type
     articleId: number; // Int!
     count: number; // Int!
-    phisicalStateId: number; // Int!
   }
   InputArticleLendCompleted: { // input type
     articleId: number; // Int!

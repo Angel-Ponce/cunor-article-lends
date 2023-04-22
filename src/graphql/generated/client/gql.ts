@@ -14,6 +14,7 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  */
 const documents = {
     "\n  mutation updatePassword(\n    $userId: Int!\n    $oldPassword: String!\n    $newPassword: String!\n  ) {\n    updatePassword(\n      userId: $userId\n      oldPassword: $oldPassword\n      newPassword: $newPassword\n    )\n  }\n": types.UpdatePasswordDocument,
+    "\n  query allArticles {\n    articles(limit: -1) {\n      rows {\n        id\n        name\n        available\n      }\n    }\n  }\n": types.AllArticlesDocument,
     "\n  query articles($page: Int!) {\n    articles(limit: 20, page: $page) {\n      pages\n      length\n      rows {\n        id\n        name\n        description\n        phisicalState {\n          id\n          name\n        }\n        serial\n        available\n      }\n    }\n  }\n": types.ArticlesDocument,
     "\n  mutation deleteArticle($deleteArticleId: Int!) {\n    deleteArticle(id: $deleteArticleId) {\n      id\n    }\n  }\n": types.DeleteArticleDocument,
     "\n  mutation createArticle(\n    $name: String!\n    $phisicalStateId: Int!\n    $description: String\n    $serial: String\n  ) {\n    createArticle(\n      name: $name\n      phisicalStateId: $phisicalStateId\n      description: $description\n      serial: $serial\n    ) {\n      id\n    }\n  }\n": types.CreateArticleDocument,
@@ -42,6 +43,10 @@ const documents = {
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  mutation updatePassword(\n    $userId: Int!\n    $oldPassword: String!\n    $newPassword: String!\n  ) {\n    updatePassword(\n      userId: $userId\n      oldPassword: $oldPassword\n      newPassword: $newPassword\n    )\n  }\n"): (typeof documents)["\n  mutation updatePassword(\n    $userId: Int!\n    $oldPassword: String!\n    $newPassword: String!\n  ) {\n    updatePassword(\n      userId: $userId\n      oldPassword: $oldPassword\n      newPassword: $newPassword\n    )\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  query allArticles {\n    articles(limit: -1) {\n      rows {\n        id\n        name\n        available\n      }\n    }\n  }\n"): (typeof documents)["\n  query allArticles {\n    articles(limit: -1) {\n      rows {\n        id\n        name\n        available\n      }\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

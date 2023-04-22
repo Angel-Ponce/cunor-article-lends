@@ -32,7 +32,6 @@ scalar DateTime
 input InputArticleLend {
   articleId: Int!
   count: Int!
-  phisicalStateId: Int!
 }
 
 input InputArticleLendCompleted {

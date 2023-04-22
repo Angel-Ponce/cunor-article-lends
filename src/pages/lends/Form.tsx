@@ -10,13 +10,17 @@ import {
 } from "antd";
 import { FC, ReactNode, useState } from "react";
 import { allProfessorsQuery } from "../professors/gql";
+import { allArticlesQuery } from "../articles/gql";
 
 const Form: FC<{ children: ReactNode; onOk: () => void }> = ({
   children,
   onOk,
 }) => {
   const [open, setOpen] = useState(false);
-  const { data: professors, loading } = useQuery(allProfessorsQuery);
+  const { data: professors, loading: professorsLoading } =
+    useQuery(allProfessorsQuery);
+  const { data: articles, loading: articlesLoading } =
+    useQuery(allArticlesQuery);
 
   const handleSubmit = async (values: any) => {
     console.log(values);
@@ -43,8 +47,12 @@ const Form: FC<{ children: ReactNode; onOk: () => void }> = ({
           onFinish={handleSubmit}
           layout="vertical"
         >
-          <AntdForm.Item name="professorId" label="Profesor">
-            <Select loading={loading}>
+          <AntdForm.Item
+            name="professorId"
+            label="Profesor"
+            rules={[{ required: true, message: "Este campo es obligatorio" }]}
+          >
+            <Select loading={professorsLoading}>
               {professors?.professors.rows.map((p) => (
                 <Select.Option
                   key={p.id}
@@ -69,16 +77,19 @@ const Form: FC<{ children: ReactNode; onOk: () => void }> = ({
             <AntdForm.Item
               name={["dueDate", "date"]}
               label="Fecha de devolución"
+              rules={[{ required: true, message: "Este campo es obligatorio" }]}
             >
               <DatePicker placeholder="Selecciona fecha"></DatePicker>
             </AntdForm.Item>
             <AntdForm.Item
               name={["dueDate", "hour"]}
               label="Hora de devolución"
+              rules={[{ required: true, message: "Este campo es obligatorio" }]}
             >
               <TimePicker placeholder="Selecciona hora"></TimePicker>
             </AntdForm.Item>
           </div>
+
           <AntdForm.Item className="flex justify-end">
             <Button htmlType="submit" type="primary" loading={false}>
               Guardar
