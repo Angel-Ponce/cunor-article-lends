@@ -30,7 +30,10 @@ const Form: FC<{
     updateArticleMutation
   );
   const { data: phisicalStates, loading: loadingPhisicalStates } = useQuery(
-    allPhisicalStatesQuery
+    allPhisicalStatesQuery,
+    {
+      fetchPolicy: "no-cache",
+    }
   );
 
   const handleSubmit = async (values: CreateArticleMutationVariables) => {

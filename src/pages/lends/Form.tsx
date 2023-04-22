@@ -25,10 +25,14 @@ const Form: FC<{ children: ReactNode; onOk: () => void }> = ({
 }) => {
   const [mutation, { loading }] = useMutation(createLendMutation);
   const [open, setOpen] = useState(false);
-  const { data: professors, loading: professorsLoading } =
-    useQuery(allProfessorsQuery);
-  const { data: articles, loading: articlesLoading } =
-    useQuery(allArticlesQuery);
+  const { data: professors, loading: professorsLoading } = useQuery(
+    allProfessorsQuery,
+    { fetchPolicy: "no-cache" }
+  );
+  const { data: articles, loading: articlesLoading } = useQuery(
+    allArticlesQuery,
+    { fetchPolicy: "no-cache" }
+  );
   const [formArticles, setFormArticles] = useState<
     { article: number; count: number }[]
   >([]);

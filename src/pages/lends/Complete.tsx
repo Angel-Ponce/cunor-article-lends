@@ -12,7 +12,8 @@ const Complete: FC<{
 }> = ({ children, lend, onOk }) => {
   const [open, setOpen] = useState(false);
   const { data: phisicalStates, loading: loadingPhisicalStates } = useQuery(
-    allPhisicalStatesQuery
+    allPhisicalStatesQuery,
+    { fetchPolicy: "no-cache" }
   );
   const [mutation, { loading }] = useMutation(completeLendMutation);
 
