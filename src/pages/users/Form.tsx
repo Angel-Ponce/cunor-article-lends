@@ -47,7 +47,7 @@ const Form: FC<{
       setOpen(false);
       notification.success({
         message: "Usuario actualizado",
-        description: `El usuario ${user?.name} ${user?.lastname} ha sido actualizado con éxito.`,
+        description: `El usuario ${values.name} ${values.lastname} ha sido actualizado con éxito.`,
       });
 
       return;
@@ -73,7 +73,7 @@ const Form: FC<{
     setOpen(false);
     notification.success({
       message: "Usuario actualizado",
-      description: `El usuario ${user?.name} ${user?.lastname} ha sido actualizado con éxito.`,
+      description: `El usuario ${values.name} ${values.lastname} ha sido actualizado con éxito.`,
     });
   };
 
