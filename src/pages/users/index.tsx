@@ -27,9 +27,11 @@ const Users: NextPage = () => {
   return (
     <AppLayout>
       <div className="flex justify-end mb-5">
-        <Button type="primary" icon={<PlusOutlined />}>
-          Nuevo
-        </Button>
+        <Form onOk={() => refetch({ page: currentPage })}>
+          <Button type="primary" icon={<PlusOutlined />}>
+            Nuevo
+          </Button>
+        </Form>
       </div>
       <Table
         pagination={false}
