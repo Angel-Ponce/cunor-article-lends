@@ -1,6 +1,6 @@
 import { NextPage } from "next";
 import AppLayout from "../../components/templates/AppLayout";
-import { Avatar, Button, Pagination, Table } from "antd";
+import { Avatar, Button, Empty, Pagination, Table } from "antd";
 import { useQuery } from "@apollo/client";
 import { professorsQuery } from "./gql";
 import { useEffect, useState } from "react";
@@ -32,6 +32,13 @@ const Professors: NextPage = () => {
       </div>
       <Table
         scroll={{ y: 500 }}
+        locale={{
+          emptyText: (
+            <div className="w-full h-72 flex flex-col items-center justify-center gap-2">
+              <Empty description="Aún no has agregado profesores"></Empty>
+            </div>
+          ),
+        }}
         pagination={false}
         columns={[
           {

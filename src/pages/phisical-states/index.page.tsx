@@ -1,6 +1,6 @@
 import { NextPage } from "next";
 import AppLayout from "../../components/templates/AppLayout";
-import { Button, Pagination, Table } from "antd";
+import { Button, Empty, Pagination, Table } from "antd";
 import { useQuery } from "@apollo/client";
 import { phisicalStatesQuery } from "./gql";
 import { useEffect, useState } from "react";
@@ -31,6 +31,13 @@ const PhisicalStates: NextPage = () => {
         </Form>
       </div>
       <Table
+        locale={{
+          emptyText: (
+            <div className="w-full h-72 flex flex-col items-center justify-center gap-2">
+              <Empty description="Aún no has agregado estados físicos"></Empty>
+            </div>
+          ),
+        }}
         scroll={{ y: 500 }}
         pagination={false}
         columns={[

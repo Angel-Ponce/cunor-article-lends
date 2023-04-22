@@ -1,6 +1,6 @@
 import { NextPage } from "next";
 import AppLayout from "../../components/templates/AppLayout";
-import { Button, Pagination, Table, Tag } from "antd";
+import { Button, Empty, Pagination, Table, Tag } from "antd";
 import { useQuery } from "@apollo/client";
 import { articlesQuery } from "./gql";
 import { useEffect, useState } from "react";
@@ -37,6 +37,13 @@ const Articles: NextPage = () => {
         </Form>
       </div>
       <Table
+        locale={{
+          emptyText: (
+            <div className="w-full h-72 flex flex-col items-center justify-center gap-2">
+              <Empty description="Aún no has agregado artículos"></Empty>
+            </div>
+          ),
+        }}
         scroll={{ y: 500 }}
         pagination={false}
         columns={[

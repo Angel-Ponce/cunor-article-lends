@@ -1,6 +1,6 @@
 import { NextPage } from "next";
 import AppLayout from "../../components/templates/AppLayout";
-import { Avatar, Button, Pagination, Result, Table } from "antd";
+import { Avatar, Button, Empty, Pagination, Result, Table } from "antd";
 import { useQuery } from "@apollo/client";
 import { usersQuery } from "./gql";
 import { useEffect, useState } from "react";
@@ -49,6 +49,13 @@ const Users: NextPage = () => {
             </Form>
           </div>
           <Table
+            locale={{
+              emptyText: (
+                <div className="w-full h-72 flex flex-col items-center justify-center gap-2">
+                  <Empty description="Aún no has agregado usuarios"></Empty>
+                </div>
+              ),
+            }}
             scroll={{ y: 500 }}
             pagination={false}
             columns={[
