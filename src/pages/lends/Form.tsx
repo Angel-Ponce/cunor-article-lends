@@ -6,7 +6,6 @@ import {
   Select,
   Avatar,
   DatePicker,
-  TimePicker,
   InputNumber,
   Tooltip,
   Divider,
@@ -17,6 +16,7 @@ import { allProfessorsQuery } from "../professors/gql";
 import { allArticlesQuery } from "../articles/gql";
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
 import { createLendMutation } from "./gql";
+import locale from "antd/locale/es_ES";
 
 const Form: FC<{ children: ReactNode; onOk: () => void }> = ({
   children,
@@ -122,6 +122,7 @@ const Form: FC<{ children: ReactNode; onOk: () => void }> = ({
               className="w-full"
               placeholder="Selecciona fecha"
               showTime={true}
+              locale={locale.DatePicker}
             />
           </AntdForm.Item>
 
