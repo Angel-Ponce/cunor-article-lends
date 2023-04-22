@@ -85,7 +85,7 @@ const ChangePassword: FC<{ children: ReactNode }> = ({ children }) => {
               <Button onClick={() => setOpen(false)}>Cancelar</Button>
             </Form.Item>
             <Form.Item>
-              <Button type="primary" htmlType="submit">
+              <Button loading={loading} type="primary" htmlType="submit">
                 Guardar
               </Button>
             </Form.Item>
