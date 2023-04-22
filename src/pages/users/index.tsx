@@ -8,6 +8,7 @@ import { DeleteTwoTone, EditTwoTone, PlusOutlined } from "@ant-design/icons";
 import Delete from "./Delete";
 import { useAtom } from "jotai";
 import { user as userAtom } from "../../stores/auth";
+import Form from "./Form";
 
 const Users: NextPage = () => {
   const { data, loading, refetch } = useQuery(usersQuery, {
@@ -63,12 +64,18 @@ const Users: NextPage = () => {
             key: "actions",
             render: (_, u) => (
               <div className="flex items-center gap-2 text-lg">
-                <Button
-                  className="rounded-full"
-                  icon={<EditTwoTone twoToneColor="orange" />}
-                />
+                <Form
+                  editing
+                  user={u}
+                  onOk={() => refetch({ page: currentPage })}
+                >
+                  <Button
+                    className="rounded-full"
+                    icon={<EditTwoTone twoToneColor="orange" />}
+                  />
+                </Form>
                 {u.id != user?.id && (
-                  <Delete user={u} onOk={() => refetch()}>
+                  <Delete user={u} onOk={() => refetch({ page: currentPage })}>
                     <Button
                       className="rounded-full"
                       icon={<DeleteTwoTone twoToneColor="red" />}
