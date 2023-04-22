@@ -2,7 +2,7 @@ import { NextPage } from "next";
 import AppLayout from "../../components/templates/AppLayout";
 import { Button, Pagination, Table } from "antd";
 import { useQuery } from "@apollo/client";
-import { usersQuery } from "./util";
+import { usersQuery } from "./gql";
 import { useEffect, useState } from "react";
 import { DeleteTwoTone, EditTwoTone, PlusOutlined } from "@ant-design/icons";
 
