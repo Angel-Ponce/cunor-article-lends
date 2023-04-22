@@ -1,6 +1,6 @@
 import { NextPage } from "next";
 import AppLayout from "../../components/templates/AppLayout";
-import { Avatar, Button, Empty, Pagination, Result, Table } from "antd";
+import { Avatar, Badge, Button, Empty, Pagination, Result, Table } from "antd";
 import { useQuery } from "@apollo/client";
 import { usersQuery } from "./gql";
 import { useEffect, useState } from "react";
@@ -91,6 +91,26 @@ const Users: NextPage = () => {
                   <>{role == "admin" ? "Administrador" : "Usuario"}</>
                 ),
                 key: "role",
+              },
+              {
+                title: "Prestamos pendientes",
+                key: "countActiveLends",
+                render: (_, u) => (
+                  <Badge
+                    color="red"
+                    text={`${u.countActiveLends} pendientes`}
+                  />
+                ),
+              },
+              {
+                title: "Prestamos devueltos",
+                key: "countCompletedLends",
+                render: (_, u) => (
+                  <Badge
+                    color="green"
+                    text={`${u.countCompletedLends} devueltos`}
+                  />
+                ),
               },
               {
                 key: "actions",

@@ -1,6 +1,6 @@
 import { NextPage } from "next";
 import AppLayout from "../../components/templates/AppLayout";
-import { Avatar, Button, Empty, Pagination, Table } from "antd";
+import { Avatar, Badge, Button, Empty, Pagination, Table } from "antd";
 import { useQuery } from "@apollo/client";
 import { professorsQuery } from "./gql";
 import { useEffect, useState } from "react";
@@ -66,6 +66,23 @@ const Professors: NextPage = () => {
             title: "Teléfono",
             dataIndex: "phone",
             key: "phone",
+          },
+          {
+            title: "Prestamos pendientes",
+            key: "countActiveLends",
+            render: (_, p) => (
+              <Badge color="red" text={`${p.countActiveLends} pendientes`} />
+            ),
+          },
+          {
+            title: "Prestamos devueltos",
+            key: "countCompletedLends",
+            render: (_, p) => (
+              <Badge
+                color="green"
+                text={`${p.countCompletedLends} devueltos`}
+              />
+            ),
           },
           {
             key: "actions",

@@ -23,6 +23,8 @@ const professorsQuery = graphql(`
         lastname
         personalRegister
         phone
+        countCompletedLends
+        countActiveLends
       }
     }
   }
