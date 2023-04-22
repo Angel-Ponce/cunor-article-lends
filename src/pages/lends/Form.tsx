@@ -1,5 +1,13 @@
 import { useQuery } from "@apollo/client";
-import { Drawer, Form as AntdForm, Button, Select, Avatar } from "antd";
+import {
+  Drawer,
+  Form as AntdForm,
+  Button,
+  Select,
+  Avatar,
+  DatePicker,
+  TimePicker,
+} from "antd";
 import { FC, ReactNode, useState } from "react";
 import { allProfessorsQuery } from "../professors/gql";
 
@@ -24,7 +32,10 @@ const Form: FC<{ children: ReactNode; onOk: () => void }> = ({
         <AntdForm
           initialValues={{
             professorId: undefined,
-            dueDate: undefined,
+            dueDate: {
+              date: undefined,
+              hour: undefined,
+            },
             articles: [],
           }}
           onFinish={handleSubmit}
@@ -52,6 +63,14 @@ const Form: FC<{ children: ReactNode; onOk: () => void }> = ({
               ))}
             </Select>
           </AntdForm.Item>
+          <div className="flex gap-2 items-center">
+            <AntdForm.Item name="dueDate.date" label="Fecha de devolución">
+              <DatePicker placeholder="Selecciona fecha"></DatePicker>
+            </AntdForm.Item>
+            <AntdForm.Item name="dueDate.hour" label="Hora de devolución">
+              <TimePicker placeholder="Selecciona hora"></TimePicker>
+            </AntdForm.Item>
+          </div>
           <AntdForm.Item className="flex justify-end">
             <Button htmlType="submit" type="primary" loading={false}>
               Guardar
