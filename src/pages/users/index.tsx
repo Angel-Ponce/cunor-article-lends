@@ -4,6 +4,7 @@ import { Button, Pagination, Table } from "antd";
 import { useQuery } from "@apollo/client";
 import { usersQuery } from "./util";
 import { useEffect, useState } from "react";
+import { DeleteTwoTone, EditTwoTone, PlusOutlined } from "@ant-design/icons";
 
 const Users: NextPage = () => {
   const { data, loading, refetch } = useQuery(usersQuery, {
@@ -21,7 +22,9 @@ const Users: NextPage = () => {
   return (
     <AppLayout>
       <div className="flex justify-end mb-5">
-        <Button type="primary">Nuevo</Button>
+        <Button type="primary" icon={<PlusOutlined />}>
+          Nuevo
+        </Button>
       </div>
       <Table
         pagination={false}
@@ -51,6 +54,21 @@ const Users: NextPage = () => {
               <>{role == "admin" ? "Administrador" : "Usuario"}</>
             ),
             key: "role",
+          },
+          {
+            key: "actions",
+            render: (_, user) => (
+              <div className="flex items-center gap-2 text-lg">
+                <Button
+                  className="rounded-full"
+                  icon={<EditTwoTone twoToneColor="orange" />}
+                />
+                <Button
+                  className="rounded-full"
+                  icon={<DeleteTwoTone twoToneColor="red" />}
+                />
+              </div>
+            ),
           },
         ]}
         loading={loading}
