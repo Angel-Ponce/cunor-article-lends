@@ -1,11 +1,11 @@
 import { FC, ReactNode, useEffect } from "react";
 import {
-  AiOutlineDatabase,
-  AiOutlineCodeSandbox,
-  AiOutlineIdcard,
-  AiOutlineFund,
-  AiOutlineUser,
-} from "react-icons/ai";
+  DatabaseOutlined,
+  CodeSandboxOutlined,
+  IdcardOutlined,
+  FundOutlined,
+  UserOutlined,
+} from "@ant-design/icons";
 import { app } from "../../stores/app";
 import { useRouter } from "next/router";
 import { useAtom } from "jotai";
@@ -16,27 +16,27 @@ export const routes: Record<
 > = {
   "/": {
     title: "Prestamos",
-    icon: <AiOutlineDatabase />,
+    icon: <DatabaseOutlined />,
     show: true,
   },
   "/articles": {
     title: "Artículos",
-    icon: <AiOutlineCodeSandbox />,
+    icon: <CodeSandboxOutlined />,
     show: true,
   },
   "/professors": {
     title: "Profesores",
-    icon: <AiOutlineIdcard />,
+    icon: <IdcardOutlined />,
     show: true,
   },
   "/phisical-states": {
     title: "Estados físicos",
-    icon: <AiOutlineFund />,
+    icon: <FundOutlined />,
     show: true,
   },
   "/users": {
     title: "Usuarios",
-    icon: <AiOutlineUser />,
+    icon: <UserOutlined />,
     show: true,
   },
 };

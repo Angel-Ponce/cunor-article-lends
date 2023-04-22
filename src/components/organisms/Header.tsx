@@ -3,7 +3,8 @@ import { Avatar, Popover, Typography } from "antd";
 import { useAtom } from "jotai";
 import { user as userAtom } from "../../stores/auth";
 import UserOptions from "./UserOptions";
-import { AiOutlineCaretDown } from "react-icons/ai";
+import { CaretDownOutlined } from "@ant-design/icons";
+import Head from "next/head";
 
 const Header = () => {
   const [app] = useAtom(appAtom);
@@ -11,9 +12,12 @@ const Header = () => {
 
   return (
     <div className="w-full py-4 mb-8 flex items-center justify-between">
+      <Head>
+        <title>{app.title || "CUNOR"}</title>
+      </Head>
       <div className="flex gap-2 items-center">
         {app.icon && (
-          <div className="text-xl flex justify-center items-center rounded-full w-8 h-8 bg-[#001529] text-white">
+          <div className="text-lg flex justify-center items-center rounded-full w-8 h-8 bg-[#001529] text-white">
             {app.icon}
           </div>
         )}
@@ -42,7 +46,7 @@ const Header = () => {
               {user?.role}
             </Typography.Text>
           </div>
-          <AiOutlineCaretDown className="text-gray-400" />
+          <CaretDownOutlined className="text-gray-400" />
         </div>
       </Popover>
     </div>
