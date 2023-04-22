@@ -18,7 +18,7 @@ const UserOptions = () => {
           {user?.name} {user?.lastname}
         </Typography.Title>
         <Typography.Text className="!my-0 text-center" type="secondary">
-          {user?.role}
+          {user?.role == "admin" ? "Administrador" : "Usuario"}
         </Typography.Text>
       </div>
       <div className="w-full flex flex-col items-center">

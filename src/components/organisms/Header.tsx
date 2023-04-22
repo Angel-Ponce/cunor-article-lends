@@ -43,7 +43,7 @@ const Header = () => {
               {user?.name} {user?.lastname}
             </Typography.Text>
             <Typography.Text className="!my-0" type="secondary">
-              {user?.role}
+              {user?.role == "admin" ? "Administrador" : "Usuario"}
             </Typography.Text>
           </div>
           <CaretDownOutlined className="text-gray-400" />

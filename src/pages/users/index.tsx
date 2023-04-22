@@ -1,6 +1,6 @@
 import { NextPage } from "next";
 import AppLayout from "../../components/templates/AppLayout";
-import { Button, Pagination, Table } from "antd";
+import { Button, Pagination, Result, Table } from "antd";
 import { useQuery } from "@apollo/client";
 import { usersQuery } from "./gql";
 import { useEffect, useState } from "react";
@@ -26,74 +26,88 @@ const Users: NextPage = () => {
 
   return (
     <AppLayout>
-      <div className="flex justify-end mb-5">
-        <Form onOk={() => refetch({ page: currentPage })}>
-          <Button type="primary" icon={<PlusOutlined />}>
-            Nuevo
-          </Button>
-        </Form>
-      </div>
-      <Table
-        pagination={false}
-        columns={[
-          {
-            title: "Nombre",
-            render: (_, { name, lastname }) => (
-              <>
-                {name} {lastname}
-              </>
-            ),
-            key: "fullname",
-          },
-          {
-            title: "Teléfono",
-            dataIndex: "phone",
-            key: "phone",
-          },
-          {
-            title: "Nombre de usuario",
-            dataIndex: "username",
-            key: "username",
-          },
-          {
-            title: "Rol",
-            render: (_, { role }) => (
-              <>{role == "admin" ? "Administrador" : "Usuario"}</>
-            ),
-            key: "role",
-          },
-          {
-            key: "actions",
-            render: (_, u) => (
-              <div className="flex items-center gap-2 text-lg">
-                <Form
-                  editing
-                  user={u}
-                  onOk={() => refetch({ page: currentPage })}
-                >
-                  <Button
-                    className="rounded-full"
-                    icon={<EditTwoTone twoToneColor="orange" />}
-                  />
-                </Form>
-                {u.id != user?.id && (
-                  <Delete user={u} onOk={() => refetch({ page: currentPage })}>
-                    <Button
-                      className="rounded-full"
-                      icon={<DeleteTwoTone twoToneColor="red" />}
-                    />
-                  </Delete>
-                )}
-              </div>
-            ),
-          },
-        ]}
-        loading={loading}
-        dataSource={data?.users.rows}
-      />
-      <div className="flex justify-end">
-        <Pagination total={0} pageSize={20} onChange={setCurrentPage} />
-      </div>
+      {user?.role != "admin" ? (
+        <Result
+          status="403"
+          title="403"
+          subTitle="Lo sentimos, no estas autorizado para visualizar esta página."
+          extra={<Button type="primary">Volver a inicio</Button>}
+        />
+      ) : (
+        <>
+          <div className="flex justify-end mb-5">
+            <Form onOk={() => refetch({ page: currentPage })}>
+              <Button type="primary" icon={<PlusOutlined />}>
+                Nuevo
+              </Button>
+            </Form>
+          </div>
+          <Table
+            pagination={false}
+            columns={[
+              {
+                title: "Nombre",
+                render: (_, { name, lastname }) => (
+                  <>
+                    {name} {lastname}
+                  </>
+                ),
+                key: "fullname",
+              },
+              {
+                title: "Teléfono",
+                dataIndex: "phone",
+                key: "phone",
+              },
+              {
+                title: "Nombre de usuario",
+                dataIndex: "username",
+                key: "username",
+              },
+              {
+                title: "Rol",
+                render: (_, { role }) => (
+                  <>{role == "admin" ? "Administrador" : "Usuario"}</>
+                ),
+                key: "role",
+              },
+              {
+                key: "actions",
+                render: (_, u) => (
+                  <div className="flex items-center gap-2 text-lg">
+                    <Form
+                      editing
+                      user={u}
+                      onOk={() => refetch({ page: currentPage })}
+                    >
+                      <Button
+                        className="rounded-full"
+                        icon={<EditTwoTone twoToneColor="orange" />}
+                      />
+                    </Form>
+                    {u.id != user?.id && (
+                      <Delete
+                        user={u}
+                        onOk={() => refetch({ page: currentPage })}
+                      >
+                        <Button
+                          className="rounded-full"
+                          icon={<DeleteTwoTone twoToneColor="red" />}
+                        />
+                      </Delete>
+                    )}
+                  </div>
+                ),
+              },
+            ]}
+            loading={loading}
+            dataSource={data?.users.rows}
+          />
+          <div className="flex justify-end">
+            <Pagination total={0} pageSize={20} onChange={setCurrentPage} />
+          </div>
+        </>
+      )}
     </AppLayout>
   );
 };

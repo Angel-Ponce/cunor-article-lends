@@ -10,6 +10,7 @@ const useMenu = () => {
     label: React.ReactNode,
     key: React.Key,
     icon?: React.ReactNode,
+    disabled = false,
     children?: MenuItem[]
   ): MenuItem => {
     return {
@@ -20,6 +21,7 @@ const useMenu = () => {
       onClick: () => {
         router.push(key.toString());
       },
+      disabled,
     } as MenuItem;
   };
 

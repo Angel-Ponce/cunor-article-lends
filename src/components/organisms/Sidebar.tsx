@@ -5,15 +5,25 @@ import { Menu } from "antd";
 import { useMenu } from "../../hooks/useMenu";
 import { useRouter } from "next/router";
 import { routes } from "../templates/RoutesLayout";
+import { useAtom } from "jotai";
+import { user as userAtom } from "../../stores/auth";
 
 const Sidebar: FC<{ collapsed: boolean }> = ({ collapsed }) => {
   const getItem = useMenu();
   const router = useRouter();
   const [selected, setSelected] = useState<string[]>([]);
+  const [user] = useAtom(userAtom);
 
   const items = Object.keys(routes)
     .filter((k) => routes[k].show)
-    .map((k) => getItem(routes[k].title, k, routes[k].icon));
+    .map((k) =>
+      getItem(
+        routes[k].title,
+        k,
+        routes[k].icon,
+        k == "/users" && user?.role != "admin"
+      )
+    );
 
   useEffect(() => {
     const items = Object.keys(routes);
