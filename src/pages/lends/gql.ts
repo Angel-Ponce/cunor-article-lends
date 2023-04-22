@@ -23,11 +23,15 @@ const lendsQuery = graphql(`
           article {
             id
             name
-            phisicalState {
-              id
-              name
-            }
             serial
+          }
+          initialPhisicalState {
+            id
+            name
+          }
+          finalPhisicalState {
+            id
+            name
           }
           count
         }

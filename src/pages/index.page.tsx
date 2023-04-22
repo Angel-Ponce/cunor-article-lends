@@ -1,6 +1,6 @@
 import { NextPage } from "next";
 import AppLayout from "../components/templates/AppLayout";
-import { Avatar, Button, Pagination, Table, Tag } from "antd";
+import { Avatar, Button, Divider, Pagination, Table, Tag } from "antd";
 import { useQuery } from "@apollo/client";
 import { useEffect, useState } from "react";
 import {
@@ -179,18 +179,24 @@ const Lends: NextPage = () => {
             <div className="w-full flex gap-5 items-center justify-start flex-wrap">
               {row.articles.map((article) => (
                 <div
-                  className="flex gap-2 items-center"
                   key={article.article.id}
+                  className="relative flex flex-col items-center bg-white shadow-xl rounded-xl py-2 px-6"
                 >
-                  <div className="rounded-full text-xs w-8 h-8 bg-blue-500 text-white font-semibold flex justify-center items-center">
+                  <div className="-top-2.5 -right-2.5 absolute rounded-full text-xs w-8 h-8 bg-blue-500 text-white font-semibold flex justify-center items-center">
                     x{article.count}
                   </div>
-                  <div className="flex flex-col items-center bg-white shadow-xl rounded-xl py-2 w-32">
-                    <p>{article.article.name}</p>
-                    <p className="text-xs text-gray-400">
-                      serial: {article.article.serial}
-                    </p>
-                  </div>
+                  <p>{article.article.name}</p>
+                  <p className="text-xs text-gray-400">
+                    serial: {article.article.serial}
+                  </p>
+                  <Divider className="my-2"></Divider>
+                  <p className="text-xs text-gray-400">
+                    al entregar: <b>{article.initialPhisicalState.name}</b>
+                  </p>
+                  <p className="text-xs text-gray-400">
+                    al devolver:{" "}
+                    <b>{article.finalPhisicalState?.name || "sin devolver"}</b>
+                  </p>
                 </div>
               ))}
             </div>
