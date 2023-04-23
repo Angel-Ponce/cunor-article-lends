@@ -1,6 +1,6 @@
 import { makeSchema } from "nexus";
 import { join } from "path";
-import institutionTypes from "./app/Inst";
+import institutionTypes from "./app/Institution";
 import phisicalStateTypes from "./app/PhisicalState";
 import userTypes from "./app/User";
 import articleTypes from "./app/Article";
