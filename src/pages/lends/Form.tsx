@@ -42,7 +42,7 @@ const Form: FC<{ children: ReactNode; onOk: () => void }> = ({
     dueDate: Date;
     articles: { count: number; article: number }[];
   }) => {
-    const { errors } = await mutation({
+    const { data, errors } = await mutation({
       variables: {
         professorId: values.professorId,
         dueDate: values.dueDate.toISOString(),
@@ -65,6 +65,7 @@ const Form: FC<{ children: ReactNode; onOk: () => void }> = ({
 
     onOk();
     setOpen(false);
+    window.open(`/lends/print/${data?.createLend.id || 0}`, "_blank");
     notification.success({
       message: "Prestamo creado",
       description: `El prestamo se ha creado con éxito.`,
