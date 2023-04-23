@@ -7,8 +7,10 @@ import {
   Image,
   PDFViewer,
 } from "@react-pdf/renderer";
+import { FC } from "react";
+import { LendQuery } from "../../graphql/generated/client/graphql";
 
-const PDF = () => {
+const PDF: FC<{ lend: LendQuery["lend"] }> = ({ lend }) => {
   return (
     <div className="w-full h-screen flex items-center justify-center p-0">
       <PDFViewer showToolbar width="100%" height="100%">
@@ -36,7 +38,7 @@ const PDF = () => {
                 src="/usac-logo.png"
                 style={{ width: 75, height: "auto" }}
               />
-              <Text>Prestamo</Text>
+              <Text>{lend.professor.name}</Text>
             </View>
           </Page>
         </Document>
