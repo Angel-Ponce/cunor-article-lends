@@ -8,6 +8,7 @@ import {
   CheckOutlined,
   DeleteTwoTone,
   PlusOutlined,
+  PrinterTwoTone,
   StopOutlined,
 } from "@ant-design/icons";
 import { lendsQuery } from "./lends/gql";
@@ -19,7 +20,6 @@ import {
   parseISO,
 } from "date-fns";
 import { es } from "date-fns/locale";
-// import Delete from "./Delete";
 import Form from "./lends/Form";
 import Complete from "./lends/Complete";
 import Delete from "./lends/Delete";
@@ -175,6 +175,11 @@ const Lends: NextPage = () => {
                     icon={<DeleteTwoTone twoToneColor="red" />}
                   />
                 </Delete>
+                <Button
+                  className="rounded-full"
+                  icon={<PrinterTwoTone></PrinterTwoTone>}
+                  onClick={() => window.open(`/lends/print/${p.id}`, "_blank")}
+                />
               </div>
             ),
           },
