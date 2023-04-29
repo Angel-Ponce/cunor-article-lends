@@ -9,7 +9,14 @@ import {
 } from "@react-pdf/renderer";
 import { FC } from "react";
 import { LendQuery } from "../../graphql/generated/client/graphql";
-import { format, parseISO } from "date-fns";
+import {
+  format,
+  formatDistance,
+  formatDuration,
+  intervalToDuration,
+  parseISO,
+} from "date-fns";
+import { es } from "date-fns/locale";
 
 const PDF: FC<{ lend: LendQuery["lend"] }> = ({ lend }) => {
   return (
@@ -17,9 +24,9 @@ const PDF: FC<{ lend: LendQuery["lend"] }> = ({ lend }) => {
       <PDFViewer showToolbar width="100%" height="100%">
         <Document>
           <Page
-            size="A4"
+            size="LETTER"
             style={{
-              padding: "20px",
+              padding: "30px",
               display: "flex",
               flexDirection: "column",
               fontSize: 12,
@@ -48,7 +55,7 @@ const PDF: FC<{ lend: LendQuery["lend"] }> = ({ lend }) => {
                 />
                 <View>
                   <Text style={{ fontSize: 16, marginBottom: 2 }}>
-                    Prestamo de artículos
+                    Prestamo de artículos #{lend.id}
                   </Text>
                   <Text style={{ fontSize: 9 }}>
                     Centro Universitario del Norte -CUNOR-
@@ -148,12 +155,26 @@ const PDF: FC<{ lend: LendQuery["lend"] }> = ({ lend }) => {
             </View>
             <View style={{ marginTop: 20, marginBottom: 20 }}>
               <Text style={{ textAlign: "justify" }}>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Sapiente minus, delectus vitae cumque nesciunt quaerat obcaecati
-                natus dignissimos corrupti suscipit nemo perspiciatis quia
-                expedita sequi illum qui provident, atque reprehenderit? Aliquam
-                voluptates, assumenda accusamus atque inventore rem dolorem,
-                debitis, id quaerat accusantium esse?
+                Yo {lend.professor.name} {lend.professor.lastname}
+                {", "}
+                Docente/Administrativo, me hago responsable de los siguientes
+                artículos prestados que se me fueron entregados en la siguiente
+                fecha y hora: {parseISO(
+                  lend.createdAt
+                ).toLocaleDateString()}{" "}
+                {parseISO(lend.createdAt).toLocaleTimeString()} y que deben ser
+                devueltos en un plazo máximo de{" "}
+                {formatDuration(
+                  intervalToDuration({
+                    start: parseISO(lend.createdAt),
+                    end: parseISO(lend.dueDate),
+                  }),
+                  {
+                    locale: es,
+                    format: ["days", "hours", "minutes"],
+                  }
+                )}
+                .
               </Text>
             </View>
             <Text style={{ marginBottom: 12, fontSize: 14 }}>
@@ -168,6 +189,8 @@ const PDF: FC<{ lend: LendQuery["lend"] }> = ({ lend }) => {
                   - x{a.count} {a.article.name}
                 </Text>{" "}
                 ({a.article.serial}) · estado: {a.initialPhisicalState.name}
+                {", "}
+                desc.: {a.article.description}
               </Text>
             ))}
 
@@ -213,7 +236,7 @@ const PDF: FC<{ lend: LendQuery["lend"] }> = ({ lend }) => {
                   style={{ width: 120, height: 1, backgroundColor: "black" }}
                 />
                 <Text>
-                  {lend.user.name} {lend.user.lastname}
+                  {lend.professor.name} {lend.professor.lastname}
                 </Text>
                 <Text style={{ fontSize: 9, color: "#484a48" }}>
                   Devolución de artículos

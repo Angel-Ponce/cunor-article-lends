@@ -23,6 +23,7 @@ const lendQuery = graphql(`
           id
           name
           serial
+          description
         }
         initialPhisicalState {
           id
