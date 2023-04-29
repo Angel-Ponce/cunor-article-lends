@@ -7,6 +7,7 @@ const allArticlesQuery = graphql(`
         id
         name
         available
+        serial
       }
     }
   }

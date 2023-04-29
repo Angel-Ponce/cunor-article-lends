@@ -11,6 +11,7 @@ import {
   Divider,
   notification,
   Empty,
+  Typography,
 } from "antd";
 import { FC, ReactNode, useState } from "react";
 import { allProfessorsQuery } from "../professors/gql";
@@ -77,7 +78,10 @@ const Form: FC<{ children: ReactNode; onOk: () => void }> = ({
       <div onClick={() => setOpen(true)}>{children}</div>
       <Drawer
         open={open}
-        onClose={() => setOpen(false)}
+        onClose={() => {
+          setOpen(false);
+          setFormArticles([]);
+        }}
         title="Crear prestamo"
         destroyOnClose
       >
@@ -158,13 +162,6 @@ const Form: FC<{ children: ReactNode; onOk: () => void }> = ({
                       ]}
                     >
                       <Select
-                        options={articles?.articles.rows.map((a) => ({
-                          value: a.id,
-                          label: a.name,
-                          disabled:
-                            !a.available ||
-                            formArticles.some((fa) => fa.article == a.id),
-                        }))}
                         loading={articlesLoading}
                         notFoundContent={
                           <Empty
@@ -172,20 +169,45 @@ const Form: FC<{ children: ReactNode; onOk: () => void }> = ({
                             description="Sin datos"
                           />
                         }
-                      />
+                      >
+                        {articles?.articles.rows.map((a) => (
+                          <Select.Option
+                            key={a.id}
+                            value={a.id}
+                            label={`${a.name} (${a.serial})`}
+                            disabled={
+                              !a.available ||
+                              formArticles.some((fa) => fa.article == a.id)
+                            }
+                          >
+                            <div className="flex items-center">
+                              <Typography.Text>
+                                {a.name}{" "}
+                                <Typography.Text className="text-gray-500 text-xs">
+                                  ({a.serial})
+                                </Typography.Text>
+                              </Typography.Text>
+                            </div>
+                          </Select.Option>
+                        ))}
+                      </Select>
                     </AntdForm.Item>
                     <AntdForm.Item
                       name={[field.name, "count"]}
                       label="Cantidad"
-                      className="flex-1"
                       rules={[
                         {
                           required: true,
                           message: "Este campo es obligatorio.",
                         },
+                        {
+                          min: 1,
+                          type: "number",
+                          message: "La cantidad debe ser mayor a 0.",
+                        },
                       ]}
                     >
-                      <InputNumber className="w-full"></InputNumber>
+                      <InputNumber min={1}></InputNumber>
                     </AntdForm.Item>
                     {fields.length > 1 && (
                       <AntdForm.Item className="w-fit">
