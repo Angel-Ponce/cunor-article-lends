@@ -56,6 +56,14 @@ type InstitutionPage {
   rows: [Institution!]!
 }
 
+type KPIsTypes {
+  countActiveLends: Float!
+  countArticles: Float!
+  countCompletedLends: Float!
+  countProfessors: Float!
+  countUsers: Float!
+}
+
 type Lend {
   articles: [ArticleLend!]!
   completed: Boolean!
@@ -132,6 +140,7 @@ type Query {
   articles(limit: Int! = 10, page: Int! = 1): ArticlePage!
   institution(id: Int!): Institution!
   institutions(limit: Int! = 10, page: Int! = 1): InstitutionPage!
+  kpis: KPIsTypes!
   lend(id: Int!): Lend!
   lends(limit: Int! = 10, page: Int! = 1): LendPage!
   login(password: String!, username: String!): String

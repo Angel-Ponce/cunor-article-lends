@@ -77,6 +77,13 @@ export interface NexusGenObjects {
     pages: number; // Int!
     rows: NexusGenRootTypes['Institution'][]; // [Institution!]!
   }
+  KPIsTypes: { // root type
+    countActiveLends: number; // Float!
+    countArticles: number; // Float!
+    countCompletedLends: number; // Float!
+    countProfessors: number; // Float!
+    countUsers: number; // Float!
+  }
   Lend: { // root type
     completed: boolean; // Boolean!
     createdAt: NexusGenScalars['DateTime']; // DateTime!
@@ -176,6 +183,13 @@ export interface NexusGenFieldTypes {
     pages: number; // Int!
     rows: NexusGenRootTypes['Institution'][]; // [Institution!]!
   }
+  KPIsTypes: { // field return type
+    countActiveLends: number; // Float!
+    countArticles: number; // Float!
+    countCompletedLends: number; // Float!
+    countProfessors: number; // Float!
+    countUsers: number; // Float!
+  }
   Lend: { // field return type
     articles: NexusGenRootTypes['ArticleLend'][]; // [ArticleLend!]!
     completed: boolean; // Boolean!
@@ -245,6 +259,7 @@ export interface NexusGenFieldTypes {
     articles: NexusGenRootTypes['ArticlePage']; // ArticlePage!
     institution: NexusGenRootTypes['Institution']; // Institution!
     institutions: NexusGenRootTypes['InstitutionPage']; // InstitutionPage!
+    kpis: NexusGenRootTypes['KPIsTypes']; // KPIsTypes!
     lend: NexusGenRootTypes['Lend']; // Lend!
     lends: NexusGenRootTypes['LendPage']; // LendPage!
     login: string | null; // String
@@ -312,6 +327,13 @@ export interface NexusGenFieldTypeNames {
     length: 'Int'
     pages: 'Int'
     rows: 'Institution'
+  }
+  KPIsTypes: { // field return type name
+    countActiveLends: 'Float'
+    countArticles: 'Float'
+    countCompletedLends: 'Float'
+    countProfessors: 'Float'
+    countUsers: 'Float'
   }
   Lend: { // field return type name
     articles: 'ArticleLend'
@@ -382,6 +404,7 @@ export interface NexusGenFieldTypeNames {
     articles: 'ArticlePage'
     institution: 'Institution'
     institutions: 'InstitutionPage'
+    kpis: 'KPIsTypes'
     lend: 'Lend'
     lends: 'LendPage'
     login: 'String'

@@ -72,6 +72,15 @@ export type InstitutionPage = {
   rows: Array<Institution>;
 };
 
+export type KpIsTypes = {
+  __typename?: 'KPIsTypes';
+  countActiveLends: Scalars['Float'];
+  countArticles: Scalars['Float'];
+  countCompletedLends: Scalars['Float'];
+  countProfessors: Scalars['Float'];
+  countUsers: Scalars['Float'];
+};
+
 export type Lend = {
   __typename?: 'Lend';
   articles: Array<ArticleLend>;
@@ -286,6 +295,7 @@ export type Query = {
   articles: ArticlePage;
   institution: Institution;
   institutions: InstitutionPage;
+  kpis: KpIsTypes;
   lend: Lend;
   lends: LendPage;
   login?: Maybe<Scalars['String']>;

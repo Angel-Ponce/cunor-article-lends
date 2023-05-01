@@ -6,6 +6,7 @@ import userTypes from "./app/User";
 import articleTypes from "./app/Article";
 import professorTypes from "./app/Professor";
 import lendTypes from "./app/Lend";
+import dashboardTypes from "./app/Dashboard";
 
 const schema = makeSchema({
   types: [
@@ -15,6 +16,7 @@ const schema = makeSchema({
     ...articleTypes,
     ...professorTypes,
     ...lendTypes,
+    ...dashboardTypes,
   ],
   contextType: {
     module: join(process.cwd(), "src/graphql/context.ts"),
