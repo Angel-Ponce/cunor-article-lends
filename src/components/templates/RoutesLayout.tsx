@@ -5,6 +5,7 @@ import {
   IdcardOutlined,
   FundOutlined,
   UserOutlined,
+  HomeOutlined,
 } from "@ant-design/icons";
 import { app } from "../../stores/app";
 import { useRouter } from "next/router";
@@ -15,6 +16,11 @@ export const routes: Record<
   { title: string; icon: ReactNode; show: boolean }
 > = {
   "/": {
+    title: "Inicio",
+    icon: <HomeOutlined />,
+    show: true,
+  },
+  "/lends": {
     title: "Prestamos",
     icon: <DatabaseOutlined />,
     show: true,
