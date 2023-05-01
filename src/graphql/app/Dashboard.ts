@@ -1,8 +1,8 @@
 import { extendType, nonNull, objectType } from "nexus";
 import { authenticate } from "../../helpers";
 
-const KPIsTypes = objectType({
-  name: "KPIsTypes",
+const KPIS = objectType({
+  name: "KPIS",
   definition: (t) => {
     t.nonNull.float("countUsers");
     t.nonNull.float("countProfessors");
@@ -12,11 +12,11 @@ const KPIsTypes = objectType({
   },
 });
 
-const KPIs = extendType({
+const kpis = extendType({
   type: "Query",
   definition: (t) => {
     t.nonNull.field("kpis", {
-      type: nonNull(KPIsTypes),
+      type: nonNull(KPIS),
       resolve: async (_p, _a, ctx) => {
         authenticate(ctx);
 
@@ -45,6 +45,66 @@ const KPIs = extendType({
   },
 });
 
-const types = [KPIsTypes, KPIs];
+const EntityLend = objectType({
+  name: "EntityLend",
+  definition: (t) => {
+    t.nonNull.string("name");
+    t.nonNull.float("countLends");
+  },
+});
+
+const entityLends = extendType({
+  type: "Query",
+  definition: (t) => {
+    t.nonNull.list.field("professorLends", {
+      type: nonNull(EntityLend),
+      resolve: async (_p, _a, ctx) => {
+        authenticate(ctx);
+
+        const p = await ctx.prisma.professor.findMany({
+          select: {
+            name: true,
+            lastname: true,
+            _count: {
+              select: {
+                lends: true,
+              },
+            },
+          },
+        });
+
+        return p.map((p) => ({
+          name: `${p.name} ${p.lastname}`,
+          countLends: p._count.lends,
+        }));
+      },
+    });
+    t.nonNull.list.field("userLends", {
+      type: nonNull(EntityLend),
+      resolve: async (_p, _a, ctx) => {
+        authenticate(ctx);
+
+        const u = await ctx.prisma.user.findMany({
+          select: {
+            name: true,
+            lastname: true,
+            _count: {
+              select: {
+                lends: true,
+              },
+            },
+          },
+        });
+
+        return u.map((u) => ({
+          name: `${u.name} ${u.lastname}`,
+          countLends: u._count.lends,
+        }));
+      },
+    });
+  },
+});
+
+const types = [KPIS, kpis, EntityLend, entityLends];
 
 export default types;

@@ -43,6 +43,12 @@ export type ArticlePage = {
   rows: Array<Article>;
 };
 
+export type EntityLend = {
+  __typename?: 'EntityLend';
+  countLends: Scalars['Float'];
+  name: Scalars['String'];
+};
+
 export type InputArticleLend = {
   articleId: Scalars['Int'];
   count: Scalars['Int'];
@@ -72,8 +78,8 @@ export type InstitutionPage = {
   rows: Array<Institution>;
 };
 
-export type KpIsTypes = {
-  __typename?: 'KPIsTypes';
+export type Kpis = {
+  __typename?: 'KPIS';
   countActiveLends: Scalars['Float'];
   countArticles: Scalars['Float'];
   countCompletedLends: Scalars['Float'];
@@ -295,7 +301,7 @@ export type Query = {
   articles: ArticlePage;
   institution: Institution;
   institutions: InstitutionPage;
-  kpis: KpIsTypes;
+  kpis: Kpis;
   lend: Lend;
   lends: LendPage;
   login?: Maybe<Scalars['String']>;
@@ -303,8 +309,10 @@ export type Query = {
   phisicalState: PhisicalState;
   phisicalStates: PhisicalStatePage;
   professor: Professor;
+  professorLends: Array<EntityLend>;
   professors: ProfessorPage;
   user: User;
+  userLends: Array<EntityLend>;
   users: UserPage;
 };
 

@@ -29,6 +29,11 @@ type ArticlePage {
 """DateTime custom scalar type"""
 scalar DateTime
 
+type EntityLend {
+  countLends: Float!
+  name: String!
+}
+
 input InputArticleLend {
   articleId: Int!
   count: Int!
@@ -56,7 +61,7 @@ type InstitutionPage {
   rows: [Institution!]!
 }
 
-type KPIsTypes {
+type KPIS {
   countActiveLends: Float!
   countArticles: Float!
   countCompletedLends: Float!
@@ -140,7 +145,7 @@ type Query {
   articles(limit: Int! = 10, page: Int! = 1): ArticlePage!
   institution(id: Int!): Institution!
   institutions(limit: Int! = 10, page: Int! = 1): InstitutionPage!
-  kpis: KPIsTypes!
+  kpis: KPIS!
   lend(id: Int!): Lend!
   lends(limit: Int! = 10, page: Int! = 1): LendPage!
   login(password: String!, username: String!): String
@@ -148,8 +153,10 @@ type Query {
   phisicalState(id: Int!): PhisicalState!
   phisicalStates(limit: Int! = 10, page: Int! = 1): PhisicalStatePage!
   professor(id: Int!): Professor!
+  professorLends: [EntityLend!]!
   professors(limit: Int! = 10, page: Int! = 1): ProfessorPage!
   user(id: Int!): User!
+  userLends: [EntityLend!]!
   users(limit: Int! = 10, page: Int! = 1): UserPage!
 }
 

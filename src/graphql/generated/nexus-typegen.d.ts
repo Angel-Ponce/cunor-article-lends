@@ -68,6 +68,10 @@ export interface NexusGenObjects {
     pages: number; // Int!
     rows: NexusGenRootTypes['Article'][]; // [Article!]!
   }
+  EntityLend: { // root type
+    countLends: number; // Float!
+    name: string; // String!
+  }
   Institution: { // root type
     id: number; // Int!
     name: string; // String!
@@ -77,7 +81,7 @@ export interface NexusGenObjects {
     pages: number; // Int!
     rows: NexusGenRootTypes['Institution'][]; // [Institution!]!
   }
-  KPIsTypes: { // root type
+  KPIS: { // root type
     countActiveLends: number; // Float!
     countArticles: number; // Float!
     countCompletedLends: number; // Float!
@@ -168,6 +172,10 @@ export interface NexusGenFieldTypes {
     pages: number; // Int!
     rows: NexusGenRootTypes['Article'][]; // [Article!]!
   }
+  EntityLend: { // field return type
+    countLends: number; // Float!
+    name: string; // String!
+  }
   Institution: { // field return type
     countActiveLends: number; // Int!
     countArticles: number; // Int!
@@ -183,7 +191,7 @@ export interface NexusGenFieldTypes {
     pages: number; // Int!
     rows: NexusGenRootTypes['Institution'][]; // [Institution!]!
   }
-  KPIsTypes: { // field return type
+  KPIS: { // field return type
     countActiveLends: number; // Float!
     countArticles: number; // Float!
     countCompletedLends: number; // Float!
@@ -259,7 +267,7 @@ export interface NexusGenFieldTypes {
     articles: NexusGenRootTypes['ArticlePage']; // ArticlePage!
     institution: NexusGenRootTypes['Institution']; // Institution!
     institutions: NexusGenRootTypes['InstitutionPage']; // InstitutionPage!
-    kpis: NexusGenRootTypes['KPIsTypes']; // KPIsTypes!
+    kpis: NexusGenRootTypes['KPIS']; // KPIS!
     lend: NexusGenRootTypes['Lend']; // Lend!
     lends: NexusGenRootTypes['LendPage']; // LendPage!
     login: string | null; // String
@@ -267,8 +275,10 @@ export interface NexusGenFieldTypes {
     phisicalState: NexusGenRootTypes['PhisicalState']; // PhisicalState!
     phisicalStates: NexusGenRootTypes['PhisicalStatePage']; // PhisicalStatePage!
     professor: NexusGenRootTypes['Professor']; // Professor!
+    professorLends: NexusGenRootTypes['EntityLend'][]; // [EntityLend!]!
     professors: NexusGenRootTypes['ProfessorPage']; // ProfessorPage!
     user: NexusGenRootTypes['User']; // User!
+    userLends: NexusGenRootTypes['EntityLend'][]; // [EntityLend!]!
     users: NexusGenRootTypes['UserPage']; // UserPage!
   }
   User: { // field return type
@@ -313,6 +323,10 @@ export interface NexusGenFieldTypeNames {
     pages: 'Int'
     rows: 'Article'
   }
+  EntityLend: { // field return type name
+    countLends: 'Float'
+    name: 'String'
+  }
   Institution: { // field return type name
     countActiveLends: 'Int'
     countArticles: 'Int'
@@ -328,7 +342,7 @@ export interface NexusGenFieldTypeNames {
     pages: 'Int'
     rows: 'Institution'
   }
-  KPIsTypes: { // field return type name
+  KPIS: { // field return type name
     countActiveLends: 'Float'
     countArticles: 'Float'
     countCompletedLends: 'Float'
@@ -404,7 +418,7 @@ export interface NexusGenFieldTypeNames {
     articles: 'ArticlePage'
     institution: 'Institution'
     institutions: 'InstitutionPage'
-    kpis: 'KPIsTypes'
+    kpis: 'KPIS'
     lend: 'Lend'
     lends: 'LendPage'
     login: 'String'
@@ -412,8 +426,10 @@ export interface NexusGenFieldTypeNames {
     phisicalState: 'PhisicalState'
     phisicalStates: 'PhisicalStatePage'
     professor: 'Professor'
+    professorLends: 'EntityLend'
     professors: 'ProfessorPage'
     user: 'User'
+    userLends: 'EntityLend'
     users: 'UserPage'
   }
   User: { // field return type name
