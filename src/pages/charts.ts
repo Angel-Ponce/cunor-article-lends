@@ -31,6 +31,12 @@ const barChart = (data: any[], labels: string[], title: string) => {
       text: title,
       right: "center",
     },
+    toolbox: {
+      show: true,
+      feature: {
+        saveAsImage: { show: true, title: "Guardar imagen" },
+      },
+    },
     tooltip: {
       trigger: "axis",
       axisPointer: {
