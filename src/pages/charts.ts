@@ -53,7 +53,7 @@ const barChart = (data: any[], labels: string[], title: string) => {
     },
 
     series: {
-      name: "Usuarios",
+      name: "Prestamos",
       type: "bar",
       data,
       itemStyle: {
