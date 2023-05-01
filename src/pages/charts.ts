@@ -25,4 +25,36 @@ const roseChart = (data: any[]) => {
   };
 };
 
-export { roseChart };
+const barChart = (data: any[], labels: string[], title: string) => {
+  return {
+    title: {
+      text: title,
+      right: "center",
+    },
+    tooltip: {
+      trigger: "axis",
+      axisPointer: {
+        type: "shadow",
+      },
+    },
+    xAxis: {
+      type: "category",
+      data: labels,
+    },
+
+    yAxis: {
+      type: "value",
+    },
+
+    series: {
+      name: "Usuarios",
+      type: "bar",
+      data,
+      itemStyle: {
+        color: "#349DFE",
+      },
+    },
+  };
+};
+
+export { roseChart, barChart };

@@ -61,16 +61,24 @@ const entityLends = extendType({
       resolve: async (_p, _a, ctx) => {
         authenticate(ctx);
 
+        const where = {
+          deletedAt: null,
+          institutionId: ctx.user?.institutionId || 0,
+        };
+
         const p = await ctx.prisma.professor.findMany({
           select: {
             name: true,
             lastname: true,
             _count: {
               select: {
-                lends: true,
+                lends: {
+                  where,
+                },
               },
             },
           },
+          where,
         });
 
         return p.map((p) => ({
@@ -84,16 +92,24 @@ const entityLends = extendType({
       resolve: async (_p, _a, ctx) => {
         authenticate(ctx);
 
+        const where = {
+          deletedAt: null,
+          institutionId: ctx.user?.institutionId || 0,
+        };
+
         const u = await ctx.prisma.user.findMany({
           select: {
             name: true,
             lastname: true,
             _count: {
               select: {
-                lends: true,
+                lends: {
+                  where,
+                },
               },
             },
           },
+          where,
         });
 
         return u.map((u) => ({
