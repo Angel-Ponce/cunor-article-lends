@@ -25,6 +25,8 @@
     "apollo-server-micro": "^3.11.1",
     "bcrypt": "^5.1.0",
     "date-fns": "^2.29.3",
+    "echarts": "^5.4.2",
+    "echarts-for-react": "^3.0.2",
     "eslint": "8.29.0",
     "eslint-config-next": "13.0.7",
     "formik": "^2.2.9",
