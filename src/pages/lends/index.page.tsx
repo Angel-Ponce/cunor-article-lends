@@ -34,6 +34,7 @@ import { es } from "date-fns/locale";
 import Form from "./Form";
 import Complete from "./Complete";
 import Delete from "./Delete";
+import esAntD from "antd/locale/es_ES";
 
 const Lends: NextPage = () => {
   const { data, loading, refetch } = useQuery(lendsQuery, {
@@ -45,7 +46,6 @@ const Lends: NextPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [from, setFrom] = useState<string | undefined>(undefined);
   const [to, setTo] = useState<string | undefined>(undefined);
-  const [showTime, setShowTime] = useState(false);
 
   useEffect(() => {
     refetch({ page: currentPage, from: from || null, to: to || null });
@@ -54,16 +54,16 @@ const Lends: NextPage = () => {
   return (
     <AppLayout>
       <div className="flex justify-end items-center gap-4 mb-5">
-        <Typography.Text>Usar tiempo: </Typography.Text>
-        <Switch onChange={(e) => setShowTime(e)} />
         <Typography.Text>Desde:</Typography.Text>
         <DatePicker
-          showTime={showTime}
+          locale={esAntD.DatePicker}
+          showTime={true}
           onChange={(e) => setFrom(e?.toISOString())}
         />
         <Typography.Text>Hasta:</Typography.Text>
         <DatePicker
-          showTime={showTime}
+          locale={esAntD.DatePicker}
+          showTime={true}
           onChange={(e) => setTo(e?.toISOString())}
         />
         <Form
