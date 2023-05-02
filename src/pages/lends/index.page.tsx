@@ -53,9 +53,9 @@ const Lends: NextPage = () => {
     <AppLayout>
       <div className="flex justify-end items-center gap-4 mb-5">
         <Typography.Text>Desde:</Typography.Text>
-        <DatePicker showTime onChange={(e) => setFrom(e?.toISOString())} />
+        <DatePicker onChange={(e) => setFrom(e?.toISOString())} />
         <Typography.Text>Hasta:</Typography.Text>
-        <DatePicker showTime onChange={(e) => setTo(e?.toISOString())} />
+        <DatePicker onChange={(e) => setTo(e?.toISOString())} />
         <Form
           onOk={() =>
             refetch({ page: currentPage, from: from || null, to: to || null })
