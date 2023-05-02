@@ -7,6 +7,7 @@ import {
   Divider,
   Empty,
   Pagination,
+  Switch,
   Table,
   Tag,
   Typography,
@@ -44,6 +45,7 @@ const Lends: NextPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [from, setFrom] = useState<string | undefined>(undefined);
   const [to, setTo] = useState<string | undefined>(undefined);
+  const [showTime, setShowTime] = useState(false);
 
   useEffect(() => {
     refetch({ page: currentPage, from: from || null, to: to || null });
@@ -52,10 +54,18 @@ const Lends: NextPage = () => {
   return (
     <AppLayout>
       <div className="flex justify-end items-center gap-4 mb-5">
+        <Typography.Text>Usar tiempo: </Typography.Text>
+        <Switch onChange={(e) => setShowTime(e)} />
         <Typography.Text>Desde:</Typography.Text>
-        <DatePicker onChange={(e) => setFrom(e?.toISOString())} />
+        <DatePicker
+          showTime={showTime}
+          onChange={(e) => setFrom(e?.toISOString())}
+        />
         <Typography.Text>Hasta:</Typography.Text>
-        <DatePicker onChange={(e) => setTo(e?.toISOString())} />
+        <DatePicker
+          showTime={showTime}
+          onChange={(e) => setTo(e?.toISOString())}
+        />
         <Form
           onOk={() =>
             refetch({ page: currentPage, from: from || null, to: to || null })
