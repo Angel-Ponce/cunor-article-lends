@@ -1,9 +1,12 @@
 import {
+  arg,
+  core,
   extendType,
   inputObjectType,
   intArg,
   list,
   nonNull,
+  nullable,
   objectType,
   scalarType,
 } from "nexus";
@@ -211,6 +214,9 @@ const lend = extendType({
 
 const LendPage = modelPage(Lend, "LendPage");
 
+const dateTimeArg = (opts: core.CommonArgConfig) =>
+  arg({ ...opts, type: "DateTime" });
+
 const lends = extendType({
   type: "Query",
   definition: (t) => {
@@ -219,16 +225,28 @@ const lends = extendType({
       args: {
         limit: nonNull(intArg({ default: 10 })),
         page: nonNull(intArg({ default: 1 })),
+        from: nullable(dateTimeArg({})),
+        to: nullable(dateTimeArg({})),
       },
       resolve: async (_parent, args, ctx) => {
         authenticate(ctx);
+
+        let from = isValid(args.from)
+          ? new Date(args.from)
+          : new Date(1980, 0, 1);
+        let to = isValid(args.to) ? new Date(args.to) : new Date(3000, 0, 1);
 
         const totalRows = await ctx.prisma.lend.count({
           where: {
             deletedAt: null,
             institutionId: ctx.user?.institutionId || 0,
+            createdAt: {
+              gte: from,
+              lte: to,
+            },
           },
         });
+
         const pags = paginate(args.limit, args.page, totalRows);
 
         return {
@@ -238,6 +256,10 @@ const lends = extendType({
             where: {
               deletedAt: null,
               institutionId: ctx.user?.institutionId || 0,
+              createdAt: {
+                gte: from,
+                lte: to,
+              },
             },
           }),
           length: pags.length,

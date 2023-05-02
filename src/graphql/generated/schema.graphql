@@ -147,7 +147,7 @@ type Query {
   institutions(limit: Int! = 10, page: Int! = 1): InstitutionPage!
   kpis: KPIS!
   lend(id: Int!): Lend!
-  lends(limit: Int! = 10, page: Int! = 1): LendPage!
+  lends(from: DateTime, limit: Int! = 10, page: Int! = 1, to: DateTime): LendPage!
   login(password: String!, username: String!): String
   me: User
   phisicalState(id: Int!): PhisicalState!

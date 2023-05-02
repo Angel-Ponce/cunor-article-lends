@@ -566,8 +566,10 @@ export interface NexusGenArgTypes {
       id: number; // Int!
     }
     lends: { // args
+      from?: NexusGenScalars['DateTime'] | null; // DateTime
       limit: number; // Int!
       page: number; // Int!
+      to?: NexusGenScalars['DateTime'] | null; // DateTime
     }
     login: { // args
       password: string; // String!

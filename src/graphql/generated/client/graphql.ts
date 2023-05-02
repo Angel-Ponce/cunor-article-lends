@@ -345,8 +345,10 @@ export type QueryLendArgs = {
 
 
 export type QueryLendsArgs = {
+  from?: InputMaybe<Scalars['DateTime']>;
   limit?: Scalars['Int'];
   page?: Scalars['Int'];
+  to?: InputMaybe<Scalars['DateTime']>;
 };
 
 
