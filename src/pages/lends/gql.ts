@@ -40,8 +40,8 @@ const lendQuery = graphql(`
 `);
 
 const lendsQuery = graphql(`
-  query lends($page: Int!) {
-    lends(limit: 20, page: $page) {
+  query lends($page: Int!, $from: DateTime, $to: DateTime) {
+    lends(limit: 20, page: $page, from: $from, to: $to) {
       rows {
         user {
           id

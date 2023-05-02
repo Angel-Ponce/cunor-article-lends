@@ -1,6 +1,16 @@
 import { NextPage } from "next";
 import AppLayout from "../../components/templates/AppLayout";
-import { Avatar, Button, Divider, Empty, Pagination, Table, Tag } from "antd";
+import {
+  Avatar,
+  Button,
+  DatePicker,
+  Divider,
+  Empty,
+  Pagination,
+  Table,
+  Tag,
+  Typography,
+} from "antd";
 import { useQuery } from "@apollo/client";
 import { useEffect, useState } from "react";
 import {
@@ -32,15 +42,25 @@ const Lends: NextPage = () => {
     fetchPolicy: "cache-and-network",
   });
   const [currentPage, setCurrentPage] = useState(1);
+  const [from, setFrom] = useState<string | undefined>(undefined);
+  const [to, setTo] = useState<string | undefined>(undefined);
 
   useEffect(() => {
-    refetch({ page: currentPage });
-  }, [currentPage, refetch]);
+    refetch({ page: currentPage, from: from || null, to: to || null });
+  }, [currentPage, refetch, from, to]);
 
   return (
     <AppLayout>
-      <div className="flex justify-end mb-5">
-        <Form onOk={() => refetch({ page: currentPage })}>
+      <div className="flex justify-end items-center gap-4 mb-5">
+        <Typography.Text>Desde:</Typography.Text>
+        <DatePicker showTime onChange={(e) => setFrom(e?.toISOString())} />
+        <Typography.Text>Hasta:</Typography.Text>
+        <DatePicker showTime onChange={(e) => setTo(e?.toISOString())} />
+        <Form
+          onOk={() =>
+            refetch({ page: currentPage, from: from || null, to: to || null })
+          }
+        >
           <Button type="primary" icon={<PlusOutlined />}>
             Nuevo
           </Button>
@@ -161,7 +181,13 @@ const Lends: NextPage = () => {
                 {!p.completed && (
                   <Complete
                     lend={p}
-                    onOk={() => refetch({ page: currentPage })}
+                    onOk={() =>
+                      refetch({
+                        page: currentPage,
+                        from: from || null,
+                        to: to || null,
+                      })
+                    }
                   >
                     <Button
                       className="rounded-full"
@@ -169,7 +195,16 @@ const Lends: NextPage = () => {
                     />
                   </Complete>
                 )}
-                <Delete lend={p} onOk={() => refetch({ page: currentPage })}>
+                <Delete
+                  lend={p}
+                  onOk={() =>
+                    refetch({
+                      page: currentPage,
+                      from: from || null,
+                      to: to || null,
+                    })
+                  }
+                >
                   <Button
                     className="rounded-full"
                     icon={<DeleteTwoTone twoToneColor="red" />}
