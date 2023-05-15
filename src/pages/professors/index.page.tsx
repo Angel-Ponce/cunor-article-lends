@@ -47,7 +47,7 @@ const Professors: NextPage = () => {
             render: (_, { name, lastname }) => (
               <div className="flex items-center gap-2">
                 <Avatar
-                  src={`https://api.dicebear.com/6.x/identicon/svg?seed=${name} ${lastname}`}
+                  src={`https://api.dicebear.com/6.x/initials/svg?seed=${name} ${lastname}`}
                   alt={name}
                   size={36}
                 />

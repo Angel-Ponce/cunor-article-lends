@@ -110,7 +110,7 @@ const FormFields: FC<{
             >
               <div className="flex items-center gap-2">
                 <Avatar
-                  src={`https://api.dicebear.com/6.x/identicon/svg?seed=${p.name} ${p.lastname}`}
+                  src={`https://api.dicebear.com/6.x/initials/svg?seed=${p.name} ${p.lastname}`}
                   alt={p.name}
                   size={24}
                 />

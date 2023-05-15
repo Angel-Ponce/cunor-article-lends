@@ -100,7 +100,7 @@ const Lends: NextPage = () => {
             render: (_, { user }) => (
               <div className="flex items-center gap-2">
                 <Avatar
-                  src={`https://api.dicebear.com/6.x/identicon/svg?seed=${user.name} ${user.lastname}`}
+                  src={`https://api.dicebear.com/6.x/initials/svg?seed=${user.name} ${user.lastname}`}
                   alt={user.name}
                   size={36}
                 />
@@ -116,7 +116,7 @@ const Lends: NextPage = () => {
             render: (_, { professor }) => (
               <div className="flex items-center gap-2">
                 <Avatar
-                  src={`https://api.dicebear.com/6.x/identicon/svg?seed=${professor.name} ${professor.lastname}`}
+                  src={`https://api.dicebear.com/6.x/initials/svg?seed=${professor.name} ${professor.lastname}`}
                   alt={professor.name}
                   size={36}
                 />

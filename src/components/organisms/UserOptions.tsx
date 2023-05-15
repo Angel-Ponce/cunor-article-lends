@@ -12,7 +12,7 @@ const UserOptions = () => {
     <div className="w-[240px] p-6 flex flex-col items-center gap-4">
       <Avatar
         size={60}
-        src={`https://api.dicebear.com/6.x/identicon/svg?seed=${user?.name} ${user?.lastname}`}
+        src={`https://api.dicebear.com/6.x/initials/svg?seed=${user?.name} ${user?.lastname}`}
       />
       <div className="flex flex-col items-center">
         <Typography.Title level={4} className="!my-0 text-center">
