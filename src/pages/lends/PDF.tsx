@@ -6,19 +6,29 @@ import {
   Text,
   Image,
   PDFViewer,
+  Font,
 } from "@react-pdf/renderer";
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { LendQuery } from "../../graphql/generated/client/graphql";
-import {
-  format,
-  formatDistance,
-  formatDuration,
-  intervalToDuration,
-  parseISO,
-} from "date-fns";
+import { format, formatDuration, intervalToDuration, parseISO } from "date-fns";
 import { es } from "date-fns/locale";
 
 const PDF: FC<{ lend: LendQuery["lend"] }> = ({ lend }) => {
+  // useEffect(() => {
+  //   Font.register({
+  //     family: "Open Sans",
+  //     fonts: [
+  //       {
+  //         src: "https://cdn.jsdelivr.net/npm/open-sans-all@0.1.3/fonts/open-sans-regular.ttf",
+  //       },
+  //       {
+  //         src: "https://cdn.jsdelivr.net/npm/open-sans-all@0.1.3/fonts/open-sans-600.ttf",
+  //         fontWeight: 600,
+  //       },
+  //     ],
+  //   });
+  // }, []);
+
   return (
     <div className="w-full h-screen flex items-center justify-center p-0">
       <PDFViewer showToolbar width="100%" height="100%">
@@ -51,14 +61,20 @@ const PDF: FC<{ lend: LendQuery["lend"] }> = ({ lend }) => {
               >
                 <Image
                   src="/usac-logo.png"
-                  style={{ width: 60, height: "auto" }}
+                  style={{ width: 50, height: "auto" }}
                 />
                 <View>
-                  <Text style={{ fontSize: 16, marginBottom: 2 }}>
-                    Prestamo de artículos #{lend.id}
+                  <Text style={{ fontSize: 13, marginBottom: 2 }}>
+                    Departamento de Audiovisuales
+                  </Text>
+                  <Text style={{ fontSize: 12, marginBottom: 4 }}>
+                    Centro Universitario del Norte
                   </Text>
                   <Text style={{ fontSize: 9 }}>
-                    Centro Universitario del Norte -CUNOR-
+                    Universidad de San Carlos de Guatemala
+                  </Text>
+                  <Text style={{ fontSize: 9 }}>
+                    Prestamo de artículos #{lend.id}
                   </Text>
                 </View>
               </View>
@@ -71,7 +87,9 @@ const PDF: FC<{ lend: LendQuery["lend"] }> = ({ lend }) => {
                   gap: 2,
                 }}
               >
-                <Text>Fecha de emisión: {new Date().toLocaleDateString()}</Text>
+                <Text style={{ fontSize: 10 }}>
+                  Fecha de emisión: {new Date().toLocaleDateString()}
+                </Text>
                 <Text style={{ fontSize: 9, color: "gray" }}>
                   Hora de emisión: {new Date().toLocaleTimeString()}
                 </Text>
@@ -97,16 +115,16 @@ const PDF: FC<{ lend: LendQuery["lend"] }> = ({ lend }) => {
                     marginBottom: 8,
                   }}
                 >
-                  <Text>Usuario: </Text>
-                  <Text style={{ color: "#484a48", fontSize: 10 }}>
+                  <Text style={{ fontSize: 11 }}>Usuario:</Text>
+                  <Text style={{ color: "#484a48", fontSize: 9 }}>
                     {lend.user.name} {lend.user.lastname}
                   </Text>
                 </View>
                 <View
                   style={{ display: "flex", flexDirection: "column", gap: 5 }}
                 >
-                  <Text>Profesor: </Text>
-                  <Text style={{ color: "#484a48", fontSize: 10 }}>
+                  <Text style={{ fontSize: 11 }}>Profesor:</Text>
+                  <Text style={{ color: "#484a48", fontSize: 9 }}>
                     {lend.professor.name} {lend.professor.lastname}
                   </Text>
                 </View>
@@ -126,6 +144,7 @@ const PDF: FC<{ lend: LendQuery["lend"] }> = ({ lend }) => {
                     flexDirection: "column",
                     gap: 5,
                     marginBottom: 8,
+                    fontSize: 10,
                   }}
                 >
                   <Text>Fecha de prestamo</Text>
@@ -141,6 +160,7 @@ const PDF: FC<{ lend: LendQuery["lend"] }> = ({ lend }) => {
                     display: "flex",
                     flexDirection: "column",
                     gap: 5,
+                    fontSize: 10,
                   }}
                 >
                   <Text>Fecha de devolución</Text>
@@ -153,31 +173,34 @@ const PDF: FC<{ lend: LendQuery["lend"] }> = ({ lend }) => {
                 </View>
               </View>
             </View>
-            <View style={{ marginTop: 20, marginBottom: 20 }}>
-              <Text style={{ textAlign: "justify" }}>
+            <View style={{ marginTop: 20, marginBottom: 15 }}>
+              <Text style={{ textAlign: "justify", fontSize: 11 }}>
                 Yo {lend.professor.name} {lend.professor.lastname}
                 {", "}
                 Docente/Administrativo, me hago responsable de los siguientes
                 artículos prestados que se me fueron entregados en la siguiente
-                fecha y hora: {parseISO(
-                  lend.createdAt
-                ).toLocaleDateString()}{" "}
-                {parseISO(lend.createdAt).toLocaleTimeString()} y que deben ser
-                devueltos en un plazo máximo de{" "}
-                {formatDuration(
-                  intervalToDuration({
-                    start: parseISO(lend.createdAt),
-                    end: parseISO(lend.dueDate),
-                  }),
-                  {
-                    locale: es,
-                    format: ["days", "hours", "minutes"],
-                  }
-                )}
+                fecha y hora:{" "}
+                <Text style={{ fontFamily: "Helvetica-Bold" }}>
+                  {parseISO(lend.createdAt).toLocaleDateString()}{" "}
+                  {parseISO(lend.createdAt).toLocaleTimeString()}
+                </Text>{" "}
+                y que deben ser devueltos en un plazo máximo de{" "}
+                <Text style={{ fontFamily: "Helvetica-Bold" }}>
+                  {formatDuration(
+                    intervalToDuration({
+                      start: parseISO(lend.createdAt),
+                      end: parseISO(lend.dueDate),
+                    }),
+                    {
+                      locale: es,
+                      format: ["days", "hours", "minutes", "seconds"],
+                    }
+                  )}
+                </Text>
                 .
               </Text>
             </View>
-            <Text style={{ marginBottom: 12, fontSize: 14 }}>
+            <Text style={{ marginBottom: 12, fontSize: 10 }}>
               Artículos prestados:{" "}
             </Text>
             {lend.articles.map((a) => (
@@ -185,10 +208,14 @@ const PDF: FC<{ lend: LendQuery["lend"] }> = ({ lend }) => {
                 style={{ fontSize: 10, color: "#484a48" }}
                 key={a.article.id}
               >
-                <Text style={{ color: "black" }}>
+                <Text style={{ color: "black", fontFamily: "Helvetica-Bold" }}>
                   - x{a.count} {a.article.name}
                 </Text>{" "}
-                ({a.article.serial}) · estado: {a.initialPhisicalState.name}
+                ({a.article.serial}){", "}
+                estado de entrega: {a.initialPhisicalState.name}
+                {", "}
+                estado de devolución:{" "}
+                {a.finalPhisicalState?.name || "en proceso"}
                 {", "}
                 desc.: {a.article.description}
               </Text>
@@ -214,11 +241,11 @@ const PDF: FC<{ lend: LendQuery["lend"] }> = ({ lend }) => {
                 <View
                   style={{ width: 120, height: 1, backgroundColor: "black" }}
                 />
-                <Text>
+                <Text style={{ fontSize: 11 }}>
                   {lend.professor.name} {lend.professor.lastname}
                 </Text>
                 <Text style={{ fontSize: 9, color: "#484a48" }}>
-                  Entrega de artículos
+                  Artículos recibidos
                 </Text>
               </View>
               <View
@@ -235,11 +262,11 @@ const PDF: FC<{ lend: LendQuery["lend"] }> = ({ lend }) => {
                 <View
                   style={{ width: 120, height: 1, backgroundColor: "black" }}
                 />
-                <Text>
+                <Text style={{ fontSize: 11 }}>
                   {lend.professor.name} {lend.professor.lastname}
                 </Text>
                 <Text style={{ fontSize: 9, color: "#484a48" }}>
-                  Devolución de artículos
+                  Artículos devueltos
                 </Text>
               </View>
             </View>
