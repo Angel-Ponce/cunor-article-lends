@@ -261,6 +261,9 @@ const lends = extendType({
                 lte: to,
               },
             },
+            orderBy: {
+              completed: "asc",
+            },
           }),
           length: pags.length,
           pages: pags.pages,
