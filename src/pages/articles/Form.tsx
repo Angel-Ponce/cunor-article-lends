@@ -115,6 +115,12 @@ const Form: FC<{
           </AntdForm.Item>
           <AntdForm.Item name="phisicalStateId" label="Estado físico">
             <Select
+              showSearch
+              filterOption={(input, option) =>
+                (option?.label ?? "")
+                  .toLowerCase()
+                  .includes(input.toLowerCase())
+              }
               options={phisicalStates?.phisicalStates.rows}
               loading={loadingPhisicalStates}
               notFoundContent={

@@ -127,6 +127,12 @@ const Form: FC<{
             rules={[{ required: true, message: "Este campo es requerido" }]}
           >
             <Select
+              showSearch
+              filterOption={(input, option) =>
+                (option?.label ?? "")
+                  .toLowerCase()
+                  .includes(input.toLowerCase())
+              }
               options={[
                 { value: "admin", label: "Administrador" },
                 { value: "user", label: "Usuario" },

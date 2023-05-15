@@ -85,6 +85,12 @@ const Complete: FC<{
                       ]}
                     >
                       <Select
+                        showSearch
+                        filterOption={(input, option) =>
+                          (option?.label ?? "")
+                            .toLowerCase()
+                            .includes(input.toLowerCase())
+                        }
                         options={lend.articles.map((a) => ({
                           value: a.article.id,
                           label: a.article.name,
@@ -111,6 +117,12 @@ const Complete: FC<{
                       ]}
                     >
                       <Select
+                        showSearch
+                        filterOption={(input, option) =>
+                          (option?.label ?? "")
+                            .toLowerCase()
+                            .includes(input.toLowerCase())
+                        }
                         loading={loadingPhisicalStates}
                         options={phisicalStates?.phisicalStates.rows}
                         notFoundContent={

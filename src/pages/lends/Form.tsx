@@ -90,6 +90,10 @@ const FormFields: FC<{
         rules={[{ required: true, message: "Este campo es obligatorio" }]}
       >
         <Select
+          showSearch
+          filterOption={(input, option) =>
+            `${option?.label || ""}`.toLowerCase().includes(input.toLowerCase())
+          }
           loading={professorsLoading}
           notFoundContent={
             <Empty
@@ -150,6 +154,12 @@ const FormFields: FC<{
                   ]}
                 >
                   <Select
+                    showSearch
+                    filterOption={(input, option) =>
+                      `${option?.label || ""}`
+                        .toLowerCase()
+                        .includes(input.toLowerCase())
+                    }
                     loading={articlesLoading}
                     notFoundContent={
                       <Empty
